@@ -1,14 +1,7 @@
 import { ProModal } from '@/common';
 import { getRequiredDateFormat } from '@/utils/MomentHelpers';
-import React, { FC } from 'react';
-import ProForm, {
-  ProFormText,
-  ProFormDateRangePicker,
-  ProFormSelect,
-  ProFormTextArea,
-  ProFormTimePicker,
-} from '@ant-design/pro-form';
-import { format } from 'prettier';
+import React, { FC, useState } from 'react';
+import ProForm, { ProFormSelect, ProFormTextArea, ProFormTimePicker } from '@ant-design/pro-form';
 
 interface NewEntryProps {
   selectedKey: string;
@@ -16,6 +9,17 @@ interface NewEntryProps {
   setVisibility: any;
 }
 const NewEntry: FC<NewEntryProps> = ({ selectedKey, visible, setVisibility }) => {
+  const [form] = ProForm.useForm();
+  const [timeEntry, setTimeEntry] = useState<boolean>(false);
+
+  const onDateChange = (date: any, dateString: string) => {
+    console.log(date, dateString);
+    if (date) {
+      setTimeEntry(true);
+    } else {
+      setTimeEntry(false);
+    }
+  };
   return (
     <ProModal
       title={`New Time Entry for ${getRequiredDateFormat(selectedKey, 'dddd, DD MMM')}`}
@@ -23,8 +27,20 @@ const NewEntry: FC<NewEntryProps> = ({ selectedKey, visible, setVisibility }) =>
       destroyOnClose={true}
       onCancel={() => setVisibility(false)}
       width={540}
+      footer={false}
     >
-      <ProForm>
+      <ProForm
+        onReset={() => {
+          form.resetFields();
+          setVisibility(false);
+        }}
+        submitter={{
+          searchConfig: {
+            submitText: `${timeEntry ? 'Save Entry' : 'Start Timer'}`,
+            resetText: 'Close',
+          },
+        }}
+      >
         <ProFormSelect
           options={[
             {
@@ -32,7 +48,6 @@ const NewEntry: FC<NewEntryProps> = ({ selectedKey, visible, setVisibility }) =>
               label: 'Effective after stamping',
             },
           ]}
-          //   width="lg"
           name="project"
           label="Project/Client"
         />
@@ -43,7 +58,6 @@ const NewEntry: FC<NewEntryProps> = ({ selectedKey, visible, setVisibility }) =>
               label: 'Effective after stamping',
             },
           ]}
-          //   width="lg"
           name="task"
           label="Task"
         />
@@ -52,7 +66,14 @@ const NewEntry: FC<NewEntryProps> = ({ selectedKey, visible, setVisibility }) =>
           <ProFormTimePicker
             label="Select Time"
             name="time"
-            fieldProps={{ format: 'HH:mm', showNow: false }}
+            fieldProps={{
+              format: 'HH:mm',
+              showNow: false,
+              onOk: () => {
+                setTimeEntry(true);
+              },
+              onChange: onDateChange,
+            }}
           />
         </ProForm.Group>
       </ProForm>
