@@ -84,13 +84,20 @@ export default defineConfig({
               routes: [
                 {
                   path: '/',
-                  redirect: '/time/time-sheet',
+                  redirect: '/time/time-sheet/day',
                 },
                 {
                   name: 'time-sheet',
                   icon: 'ClockCircleOutlined',
-                  path: '/time/time-sheet',
+                  path: '/time/time-sheet/day',
                   component: './Time/TimeSheet',
+                },
+                {
+                  name: 'time-sheet',
+                  icon: 'ClockCircleOutlined',
+                  path: '/time/time-sheet/week',
+                  component: './Time/WeekTimeSheet',
+                  hideInMenu: true,
                 },
               ],
             },
@@ -98,7 +105,14 @@ export default defineConfig({
               name: 'projects',
               icon: 'FolderOutlined',
               path: '/projects',
-              component: './projects',
+              component: './projects/ProjectList',
+            },
+            {
+              name: 'projects',
+              icon: 'FolderOutlined',
+              path: '/projects/new',
+              component: './projects/CreateNewProject',
+              hideInMenu: true,
             },
             {
               name: 'teams',

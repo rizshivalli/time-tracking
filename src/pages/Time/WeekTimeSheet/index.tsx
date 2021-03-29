@@ -1,6 +1,6 @@
-import { ProGridContainer, ProSpace, ProTitle, ProModal } from '@/common';
+import { ProGridContainer, ProSpace, ProTitle } from '@/common';
 import { getWeekFromSuntoSat, getToday, getRequiredDateFormat } from '@/utils/MomentHelpers';
-import { LeftOutlined, PlusOutlined, RightOutlined, ClockCircleOutlined } from '@ant-design/icons';
+import { PlusOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import { Button, Col, DatePicker, Row, Tabs, Radio, Select, Tag } from 'antd';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -16,7 +16,7 @@ const fullDate = getToday('MM-DD-YYYY');
 const thisWeekDates = getWeekFromSuntoSat(fullDate);
 
 const TimeSheet = () => {
-  const [period, setPeriod] = useState<string>('day');
+  const [period, setPeriod] = useState<string>('week');
   const [datesToDisplay, setDatesToDisplay] = useState<Array<any>>(thisWeekDates);
   const [selectedTabKey, setSelectedTabKey] = useState<string>(todayDate);
   const [newEntryModalVisible, setNewEntryModalVisible] = useState<boolean>(false);
@@ -95,10 +95,11 @@ const TimeSheet = () => {
                     optionType="button"
                     buttonStyle="solid"
                   >
-                    <Radio.Button value="day">Day</Radio.Button>
-                    <Link to="/time/time-sheet/week" rel="noopener noreferrer">
-                      <Radio.Button value="week">Week</Radio.Button>
+                    <Link to="/time/time-sheet/day" rel="noopener noreferrer">
+                      <Radio.Button value="day">Day</Radio.Button>
                     </Link>
+
+                    <Radio.Button value="week">Week</Radio.Button>
                   </Radio.Group>
                   <Select
                     showSearch
