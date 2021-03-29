@@ -1,6 +1,6 @@
-import { ProGridContainer, ProSpace, ProTitle, ProModal } from '@/common';
+import { ProGridContainer, ProSpace, ProTitle } from '@/common';
 import { getWeekFromSuntoSat, getToday, getRequiredDateFormat } from '@/utils/MomentHelpers';
-import { LeftOutlined, PlusOutlined, RightOutlined, ClockCircleOutlined } from '@ant-design/icons';
+import { PlusOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import { Button, Col, DatePicker, Row, Tabs, Radio, Select, Tag } from 'antd';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -17,7 +17,7 @@ const thisWeekDates = getWeekFromSuntoSat(fullDate);
 
 const TimeSheet = () => {
   const [period, setPeriod] = useState<string>('day');
-  const [datesToDisplay, setDatesToDisplay] = useState<Array<any>>(thisWeekDates);
+  const [datesToDisplay, setDatesToDisplay] = useState<any[]>(thisWeekDates);
   const [selectedTabKey, setSelectedTabKey] = useState<string>(todayDate);
   const [newEntryModalVisible, setNewEntryModalVisible] = useState<boolean>(false);
 
