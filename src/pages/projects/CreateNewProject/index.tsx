@@ -1,4 +1,5 @@
 import { ProDivider, ProGridContainer, ProTitle } from '@/common';
+import { PlusOutlined } from '@ant-design/icons';
 import ProForm, {
   ProFormDateRangePicker,
   ProFormRadio,
@@ -6,6 +7,7 @@ import ProForm, {
   ProFormText,
   ProFormTextArea,
 } from '@ant-design/pro-form';
+import { Button } from 'antd';
 import React, { useState } from 'react';
 
 interface ItemProps {
@@ -15,7 +17,7 @@ interface ItemProps {
 
 const options: ItemProps[] = [];
 
-for (let i = 10; i < 36; i++) {
+for (let i = 10; i < 36; i + 1) {
   const value = i.toString(36) + i;
   options.push({
     label: `Long Task Name : ${value}`,
@@ -24,19 +26,62 @@ for (let i = 10; i < 36; i++) {
 }
 
 const CreateNewProject = () => {
-  const [value, setValue] = useState<Array<any>>([]);
-
+  const [value, setValue] = useState<any[]>([]);
+  console.log('value', value);
+  const [isClientNew, setClientNew] = useState<boolean>(false);
+  const [form] = ProForm.useForm();
   return (
     <ProGridContainer>
       <ProTitle size={2}>New Project</ProTitle>
       <ProDivider />
-      <ProForm>
-        <ProFormText
-          width="xl"
-          name="client_name"
-          label="Client Name"
-          placeholder="Enter Client Name"
-        />
+      <ProForm
+        onReset={() => {
+          form.resetFields();
+        }}
+        submitter={{
+          searchConfig: {
+            submitText: 'Create Project',
+            resetText: 'Reset Feilds',
+          },
+        }}
+      >
+        <ProForm.Group>
+          {isClientNew ? (
+            <ProFormText
+              width="xl"
+              name="new_client_name"
+              label="Client Name"
+              placeholder="Enter Client Name"
+            />
+          ) : (
+            <ProFormSelect
+              width="xl"
+              label="Select client for this project"
+              options={options}
+              placeholder="Please select a client"
+              rules={[{ required: true, message: 'Please select a client!' }]}
+            />
+          )}
+          {'or'}{' '}
+          {!isClientNew ? (
+            <Button
+              icon={<PlusOutlined />}
+              onClick={() => {
+                setClientNew(true);
+              }}
+            >
+              New Client
+            </Button>
+          ) : (
+            <Button
+              onClick={() => {
+                setClientNew(false);
+              }}
+            >
+              Choose a client
+            </Button>
+          )}
+        </ProForm.Group>
         <ProFormText
           width="xl"
           name="project_name"
@@ -46,9 +91,9 @@ const CreateNewProject = () => {
         <ProForm.Group>
           <ProFormText
             width="sm"
-            name="project_name"
-            label="Project Name"
-            placeholder="Enter Project Name"
+            name="project_code"
+            label="Project Code"
+            placeholder="Enter Project Code"
             tooltip="Optional. The Project Code helps identify your project. You can use any combo of numbers or letters."
           />
           <span>Example Sample Code: SAMPLE </span>
@@ -81,20 +126,34 @@ const CreateNewProject = () => {
             },
           ]}
         />
+        <ProDivider />
+        <ProDivider orientation="left">Tasks</ProDivider>
+        <ProFormSelect
+          width="xl"
+          mode="multiple"
+          label="Select tasks for this project"
+          options={options}
+          // @ts-ignore
+          onChange={(newValue: string[]) => {
+            setValue(newValue);
+          }}
+          placeholder="Please select a tasks"
+          rules={[{ required: true, message: 'Please select your tasks!' }]}
+        />
+        <ProDivider orientation="left">Team</ProDivider>
+        <ProFormSelect
+          width="xl"
+          mode="multiple"
+          label="Select team for this project"
+          options={options}
+          // @ts-ignore
+          onChange={(newValue: string[]) => {
+            setValue(newValue);
+          }}
+          placeholder="Please select a team"
+          rules={[{ required: true, message: 'Please select your team!' }]}
+        />
       </ProForm>
-      <ProDivider />
-      <ProDivider orientation="left">Tasks</ProDivider>
-      <ProFormSelect
-        width="lg"
-        mode="multiple"
-        // label="Select tasks for this project"
-        options={options}
-        onChange={(newValue: string[]) => {
-          setValue(newValue);
-        }}
-        placeholder="Please select a tasks"
-        rules={[{ required: true, message: 'Please select your tasks!' }]}
-      />
     </ProGridContainer>
   );
 };

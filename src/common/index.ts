@@ -4,4 +4,7 @@ import ProTitle from './AntDComponents/ProTitle';
 import ProModal from './AntDComponents/ProModal';
 import ProDivider from './AntDComponents/ProDivider';
 
-export { ProGridContainer, ProSpace, ProTitle, ProModal, ProDivider };
+// * Common Components
+import ListWithDelete from './ListWithDelete';
+
+export { ProGridContainer, ProSpace, ProTitle, ProModal, ProDivider, ListWithDelete };
