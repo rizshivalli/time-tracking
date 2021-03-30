@@ -118,7 +118,14 @@ export default defineConfig({
               name: 'teams',
               icon: 'TeamOutlined',
               path: '/teams',
-              component: './teams',
+              component: './teams/TeamList',
+            },
+            {
+              name: 'teams',
+              icon: 'TeamOutlined',
+              path: '/people/new',
+              component: './teams/AddNewMember',
+              hideInMenu: true,
             },
             {
               name: 'reports',

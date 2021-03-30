@@ -5,6 +5,5 @@ import ProModal from './AntDComponents/ProModal';
 import ProDivider from './AntDComponents/ProDivider';
 
 // * Common Components
-import ListWithDelete from './ListWithDelete';
 
-export { ProGridContainer, ProSpace, ProTitle, ProModal, ProDivider, ListWithDelete };
+export { ProGridContainer, ProSpace, ProTitle, ProModal, ProDivider };

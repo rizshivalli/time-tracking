@@ -17,7 +17,8 @@ interface ItemProps {
 
 const options: ItemProps[] = [];
 
-for (let i = 10; i < 36; i + 1) {
+// eslint-disable-next-line no-plusplus
+for (let i = 10; i < 36; i++) {
   const value = i.toString(36) + i;
   options.push({
     label: `Long Task Name : ${value}`,

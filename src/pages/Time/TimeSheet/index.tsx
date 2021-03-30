@@ -34,9 +34,6 @@ const TimeSheet = () => {
         return getNewDatesArray;
       });
     } else {
-      const todayDate = getToday('MM-DD-YYYY');
-      const fullDate = getToday('MM-DD-YYYY');
-      const thisWeekDates = getWeekFromSuntoSat(fullDate);
       setDatesToDisplay(() => {
         setSelectedTabKey(() => {
           return todayDate;
