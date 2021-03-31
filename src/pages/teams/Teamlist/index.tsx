@@ -3,6 +3,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import React from 'react';
 import { Link } from 'umi';
+import { ImportPeopleModal } from './Components';
 import './index.less';
 
 const TeamList = () => {
@@ -10,14 +11,14 @@ const TeamList = () => {
     <ProGridContainer>
       <div>
         <ProSpace className="top-action-container-team">
-          {' '}
           <Link to="/people/new">
             <Button icon={<PlusOutlined />}>Add Person</Button>
           </Link>
-          <Button>Import</Button>
+          <Button>Imports</Button>
           <Button>Export</Button>
         </ProSpace>
       </div>
+      <ImportPeopleModal />
     </ProGridContainer>
   );
 };
