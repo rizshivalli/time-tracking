@@ -76,6 +76,7 @@ export default defineConfig({
               icon: 'home',
               path: '/home',
               component: './home',
+              //  authority: ['admin'],
             },
             {
               path: '/time',
@@ -98,6 +99,12 @@ export default defineConfig({
                   path: '/time/time-sheet/week',
                   component: './Time/WeekTimeSheet',
                   hideInMenu: true,
+                },
+                {
+                  name: 'pending-approvals',
+                  path: '/time/time-sheet/approve',
+                  component: './Time/PendingApproval',
+                  authority: ['admin'],
                 },
               ],
             },

@@ -1,13 +1,12 @@
 import { ProGridContainer, ProSpace, ProTitle } from '@/common';
 import { getWeekFromSuntoSat, getToday, getRequiredDateFormat } from '@/utils/MomentHelpers';
 import { PlusOutlined, ClockCircleOutlined } from '@ant-design/icons';
-import { Button, Col, DatePicker, Row, Tabs, Radio, Select, Tag } from 'antd';
+import { Button, Col, DatePicker, Row, Radio, Select, Tag } from 'antd';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { NewEntryModal } from './components';
 import './index.less';
 
-const { TabPane } = Tabs;
 const { Option } = Select;
 
 const today = getToday('dddd, DD MMM');
@@ -114,26 +113,6 @@ const TimeSheet = () => {
                 </ProSpace>
               </ProSpace>
             </div>
-            <Tabs
-              type="card"
-              defaultActiveKey={selectedTabKey}
-              activeKey={selectedTabKey}
-              size="large"
-              tabBarExtraContent={OperationsSlot}
-              animated={true}
-              onChange={callback}
-            >
-              {datesToDisplay &&
-                datesToDisplay.map((item) => {
-                  const { date, day, key } = item;
-                  return (
-                    <TabPane tab={`${day} ${date}`} key={key}>
-                      <p>date is {date}</p>
-                      <p>day is {day}</p>
-                    </TabPane>
-                  );
-                })}
-            </Tabs>
           </div>
         </Col>
       </Row>

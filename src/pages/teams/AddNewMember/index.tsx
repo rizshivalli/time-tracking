@@ -7,6 +7,9 @@ const options = [
   { value: '1.0', label: '1.0' },
   { value: '2.0', label: '2.0' },
   { value: '3.0', label: '3.0' },
+  { value: '4.0', label: '4.0' },
+  { value: '5.0', label: '5.0' },
+  { value: '6.0', label: '6.0' },
 ];
 
 const AddNewMember = () => {
@@ -105,7 +108,7 @@ const AddNewMember = () => {
             },
             {
               label: 'Administrator (This person can see and do everything)',
-              value: 'b',
+              value: 'c',
             },
           ]}
         />

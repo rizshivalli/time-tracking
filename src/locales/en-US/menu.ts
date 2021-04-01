@@ -4,6 +4,7 @@ export default {
   'menu.home': 'Home',
   'menu.time': 'Time',
   'menu.time.time-sheet': 'Timesheet',
+  'menu.time.pending-approvals': 'Pending Approvals',
   'menu.teams': 'Teams',
   'menu.projects': 'Projects',
   'menu.reports': 'Reports',
