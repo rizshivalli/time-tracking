@@ -396,21 +396,25 @@ const TimeSheet = () => {
                         }
                         size="small"
                         dataSource={dummyDailyData}
-                        renderItem={(item) => (
+                        renderItem={(listItem) => (
                           <Row>
                             <Col span={24}>
-                              {item.spent_at === key ? (
+                              {listItem.spent_at === key ? (
                                 <Row justify="center" className="time-card-content">
                                   <Col span={18}>
                                     <ProSpace direction="vertical">
-                                      <Text className="time-client-name">{item.client_name}</Text>
-                                      <Text className="time-project-name">{item.project_name}</Text>
+                                      <Text className="time-client-name">
+                                        {listItem.client_name}
+                                      </Text>
+                                      <Text className="time-project-name">
+                                        {listItem.project_name}
+                                      </Text>
                                     </ProSpace>
                                   </Col>
                                   <Col span={6} className="card-left-content">
-                                    <Text className="time-hours">{item.hours}</Text>
+                                    <Text className="time-hours">{listItem.hours}</Text>
                                     <div>
-                                      {item.hours === 0 ? (
+                                      {listItem.hours === 0 ? (
                                         <Button
                                           size="large"
                                           type="primary"
