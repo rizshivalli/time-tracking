@@ -9,6 +9,7 @@ import ProForm, {
 } from '@ant-design/pro-form';
 import { Button } from 'antd';
 import React, { useState } from 'react';
+import SendInviteModal from './components/SendInviteModal';
 
 interface ItemProps {
   label: string;
@@ -30,6 +31,7 @@ const CreateNewProject = () => {
   const [value, setValue] = useState<any[]>([]);
   console.log('value', value);
   const [isClientNew, setClientNew] = useState<boolean>(false);
+  const [inviteFormVisible, setInviteFormVisiblity] = useState<boolean>(false);
   const [form] = ProForm.useForm();
   return (
     <ProGridContainer>
@@ -142,19 +144,33 @@ const CreateNewProject = () => {
           rules={[{ required: true, message: 'Please select your tasks!' }]}
         />
         <ProDivider orientation="left">Team</ProDivider>
-        <ProFormSelect
-          width="xl"
-          mode="multiple"
-          label="Select team for this project"
-          options={options}
-          // @ts-ignore
-          onChange={(newValue: string[]) => {
-            setValue(newValue);
-          }}
-          placeholder="Please select a team"
-          rules={[{ required: true, message: 'Please select your team!' }]}
-        />
+        <ProForm.Group>
+          <ProFormSelect
+            width="xl"
+            mode="multiple"
+            label="Select team for this project"
+            options={options}
+            // @ts-ignore
+            onChange={(newValue: string[]) => {
+              setValue(newValue);
+            }}
+            placeholder="Please select a team"
+            rules={[{ required: true, message: 'Please select your team!' }]}
+          />
+          <div>
+            Or,{' '}
+            <a
+              onClick={() => {
+                setInviteFormVisiblity(true);
+              }}
+            >
+              invite more people
+            </a>{' '}
+            to your Timetracking account.
+          </div>
+        </ProForm.Group>
       </ProForm>
+      <SendInviteModal visible={inviteFormVisible} setVisibility={setInviteFormVisiblity} />
     </ProGridContainer>
   );
 };
