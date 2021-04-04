@@ -5,12 +5,20 @@
  * For details, please see
  * https://pro.ant.design/docs/deploy
  */
+// 3.139.11.139:1337
 export default {
   dev: {
     '/api/': {
       target: 'https://preview.pro.ant.design',
       changeOrigin: true,
       pathRewrite: { '^': '' },
+    },
+  },
+  '/strapi/': {
+    target: 'https://3.139.11.139:1337/',
+    changeOrigin: true,
+    pathRewrite: {
+      '^/strapi/': '',
     },
   },
   test: {

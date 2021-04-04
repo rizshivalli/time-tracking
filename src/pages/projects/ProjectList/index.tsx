@@ -65,32 +65,29 @@ const ProjectList = () => {
 
   return (
     <ProGridContainer>
-      <div>
-        <ProSpace className="top-action-container">
-          {' '}
-          <Link to="/projects/new">
-            <Button className="left-button" icon={<PlusOutlined />}>
-              Create New Project
-            </Button>
-          </Link>
-          <Button
-            className="left-button"
-            onClick={() => {
-              setImportModalVisibility(true);
-            }}
-          >
-            Import
+      <ProSpace className="top-action-container">
+        <Link to="/projects/new">
+          <Button className="left-button" icon={<PlusOutlined />}>
+            Create New Project
           </Button>
-          <Button
-            className="left-button"
-            onClick={() => {
-              setExportModalVisibility(true);
-            }}
-          >
-            Export
-          </Button>
-        </ProSpace>
-      </div>
+        </Link>
+        <Button
+          className="left-button"
+          onClick={() => {
+            setImportModalVisibility(true);
+          }}
+        >
+          Import
+        </Button>
+        <Button
+          className="left-button"
+          onClick={() => {
+            setExportModalVisibility(true);
+          }}
+        >
+          Export
+        </Button>
+      </ProSpace>
 
       <Row>
         <Col span={24}>
@@ -129,7 +126,6 @@ const ProjectList = () => {
               pageSize: 5,
             }}
             dateFormatter="string"
-            headerTitle="高级表格"
             toolBarRender={false}
           />
         </Col>
