@@ -1,6 +1,6 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Alert } from 'antd';
-import React, { useState } from 'react';
+import React from 'react';
 import ProForm, { ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
 import { useIntl, connect, FormattedMessage } from 'umi';
 import type { Dispatch } from 'umi';
@@ -32,14 +32,13 @@ const LoginMessage: React.FC<{
 const Login: React.FC<LoginProps> = (props) => {
   const { userLogin = {}, submitting } = props;
   const { status, type: loginType } = userLogin;
-  const [type, setType] = useState<string>('account');
   const intl = useIntl();
 
   const handleSubmit = (values: LoginParamsType) => {
     const { dispatch } = props;
     dispatch({
       type: 'login/login',
-      payload: { ...values, type },
+      payload: { ...values },
     });
   };
   return (
@@ -74,14 +73,14 @@ const Login: React.FC<LoginProps> = (props) => {
 
         <>
           <ProFormText
-            name="userName"
+            name="identifier"
             fieldProps={{
               size: 'large',
               prefix: <UserOutlined className={styles.prefixIcon} />,
             }}
             placeholder={intl.formatMessage({
               id: 'pages.login.username.placeholder',
-              defaultMessage: '用户名: admin or user',
+              defaultMessage: 'Work Email',
             })}
             rules={[
               {
@@ -89,7 +88,7 @@ const Login: React.FC<LoginProps> = (props) => {
                 message: (
                   <FormattedMessage
                     id="pages.login.username.required"
-                    defaultMessage="请输入用户名!"
+                    defaultMessage="Email Required"
                   />
                 ),
               },
@@ -103,7 +102,7 @@ const Login: React.FC<LoginProps> = (props) => {
             }}
             placeholder={intl.formatMessage({
               id: 'pages.login.password.placeholder',
-              defaultMessage: '密码: ant.design',
+              defaultMessage: 'Password',
             })}
             rules={[
               {
@@ -111,7 +110,7 @@ const Login: React.FC<LoginProps> = (props) => {
                 message: (
                   <FormattedMessage
                     id="pages.login.password.required"
-                    defaultMessage="请输入密码！"
+                    defaultMessage="Password Required"
                   />
                 ),
               },

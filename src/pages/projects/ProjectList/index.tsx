@@ -31,7 +31,6 @@ const data = [
     costs: 250,
   },
 ];
-console.log('🚀 ~ file: index.tsx ~ line 34 ~ data', data);
 
 const ProjectList = () => {
   const actionRef = useRef<ActionType>();

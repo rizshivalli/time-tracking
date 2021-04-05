@@ -135,16 +135,61 @@ export default defineConfig({
               hideInMenu: true,
             },
             {
+              path: '/reports',
               name: 'reports',
               icon: 'FileExcelOutlined',
-              path: '/reports',
-              component: './reports',
+              routes: [
+                {
+                  path: '/',
+                  redirect: '/reports/clients',
+                },
+                {
+                  name: 'client',
+                  path: '/reports/clients',
+                  component: './reports/Clients',
+                },
+                {
+                  name: 'task',
+                  path: '/reports/tasks',
+                  component: './reports/Tasks',
+                },
+                {
+                  name: 'projects',
+                  path: '/reports/projects',
+                  component: './reports/Projects',
+                },
+                {
+                  name: 'teams',
+                  path: '/reports/teams',
+                  component: './reports/Teams',
+                },
+              ],
             },
             {
+              path: '/manage',
               name: 'manage',
               icon: 'smile',
-              path: '/manage',
-              component: './manage',
+              routes: [
+                {
+                  path: '/',
+                  redirect: '/manage/clients',
+                },
+                {
+                  name: 'client',
+                  path: '/manage/clients',
+                  component: './manage/Client',
+                },
+                {
+                  name: 'task',
+                  path: '/manage/tasks',
+                  component: './manage/Tasks',
+                },
+                {
+                  name: 'roles',
+                  path: '/manage/roles',
+                  component: './manage/Roles',
+                },
+              ],
             },
             // {
             //   path: '/dashboard',
