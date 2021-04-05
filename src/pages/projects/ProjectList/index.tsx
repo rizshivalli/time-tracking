@@ -113,6 +113,7 @@ const ProjectList = () => {
           </table> */}
 
           <ProTable
+            dataSource={data}
             columns={columns}
             actionRef={actionRef}
             editable={{

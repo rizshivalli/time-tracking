@@ -5,7 +5,7 @@
  * For details, please see
  * https://pro.ant.design/docs/deploy
  */
-// 3.139.11.139:1337
+// http://3.139.11.139:1337/
 export default {
   dev: {
     '/api/': {
@@ -13,12 +13,12 @@ export default {
       changeOrigin: true,
       pathRewrite: { '^': '' },
     },
-  },
-  '/strapi/': {
-    target: 'https://3.139.11.139:1337/',
-    changeOrigin: true,
-    pathRewrite: {
-      '^/strapi/': '',
+    '/strapi/': {
+      target: 'http://3.139.11.139:1337/',
+      changeOrigin: true,
+      pathRewrite: {
+        '^/strapi/': '',
+      },
     },
   },
   test: {
@@ -33,6 +33,13 @@ export default {
       target: 'your pre url',
       changeOrigin: true,
       pathRewrite: { '^': '' },
+    },
+    '/strapi/': {
+      target: 'http://3.139.11.139:1337/',
+      changeOrigin: true,
+      pathRewrite: {
+        '^/strapi/': '',
+      },
     },
   },
 };
