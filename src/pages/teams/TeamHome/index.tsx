@@ -1,4 +1,4 @@
-import { ProGridContainer, ProSpace } from '@/common';
+import { ProGridContainer, ProIntlProvider, ProSpace } from '@/common';
 import { PlusOutlined } from '@ant-design/icons';
 import ProTable, { ActionType, ProColumns } from '@ant-design/pro-table';
 import { Button, Col, Row } from 'antd';
@@ -46,21 +46,22 @@ const TeamHome = () => {
               <Button>Imports</Button>
               <Button>Export</Button>
             </ProSpace>
-
-            <ProTable
-              dataSource={data}
-              columns={columns}
-              actionRef={actionRef}
-              rowKey="id"
-              search={{
-                labelWidth: 'auto',
-              }}
-              pagination={{
-                pageSize: 5,
-              }}
-              dateFormatter="string"
-              toolBarRender={false}
-            />
+            <ProIntlProvider>
+              <ProTable
+                dataSource={data}
+                columns={columns}
+                actionRef={actionRef}
+                rowKey="id"
+                search={{
+                  labelWidth: 'auto',
+                }}
+                pagination={{
+                  pageSize: 5,
+                }}
+                dateFormatter="string"
+                toolBarRender={false}
+              />
+            </ProIntlProvider>
           </ProSpace>
         </Col>
       </Row>

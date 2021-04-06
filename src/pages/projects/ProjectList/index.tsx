@@ -1,4 +1,4 @@
-import { ProGridContainer, ProSpace } from '@/common';
+import { ProGridContainer, ProIntlProvider, ProSpace } from '@/common';
 import { PlusOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
@@ -64,33 +64,67 @@ const ProjectList = () => {
 
   return (
     <ProGridContainer>
-      <ProSpace className="top-action-container">
-        <Link to="/projects/new">
-          <Button className="left-button" icon={<PlusOutlined />}>
-            Create New Project
-          </Button>
-        </Link>
-        <Button
-          className="left-button"
-          onClick={() => {
-            setImportModalVisibility(true);
-          }}
-        >
-          Import
-        </Button>
-        <Button
-          className="left-button"
-          onClick={() => {
-            setExportModalVisibility(true);
-          }}
-        >
-          Export
-        </Button>
-      </ProSpace>
-
       <Row>
         <Col span={24}>
-          {/* <table>
+          <ProSpace direction="vertical" style={{ width: '100%' }}>
+            <ProSpace direction="horizontal">
+              <Link to="/projects/new">
+                <Button className="left-button" icon={<PlusOutlined />}>
+                  Create New Project
+                </Button>
+              </Link>
+              <Button
+                className="left-button"
+                onClick={() => {
+                  setImportModalVisibility(true);
+                }}
+              >
+                Import
+              </Button>
+              <Button
+                className="left-button"
+                onClick={() => {
+                  setExportModalVisibility(true);
+                }}
+              >
+                Export
+              </Button>
+            </ProSpace>
+
+            <ProIntlProvider>
+              <ProTable
+                dataSource={data}
+                columns={columns}
+                actionRef={actionRef}
+                editable={{
+                  type: 'multiple',
+                }}
+                rowKey="id"
+                search={{
+                  labelWidth: 'auto',
+                }}
+                pagination={{
+                  pageSize: 5,
+                }}
+                dateFormatter="string"
+                toolBarRender={false}
+              />
+            </ProIntlProvider>
+          </ProSpace>
+          <ImportProjects visible={importModalVisible} setVisibility={setImportModalVisibility} />
+          <ExportProjectsModal
+            visible={exportModalVisible}
+            setVisibility={setExportModalVisibility}
+          />
+        </Col>
+      </Row>
+    </ProGridContainer>
+  );
+};
+
+export default ProjectList;
+
+/* <table>
             <tr>
               <td>name</td>
               <td>Project name</td>
@@ -109,31 +143,4 @@ const ProjectList = () => {
                 </tr>
               );
             })}
-          </table> */}
-
-          <ProTable
-            dataSource={data}
-            columns={columns}
-            actionRef={actionRef}
-            editable={{
-              type: 'multiple',
-            }}
-            rowKey="id"
-            search={{
-              labelWidth: 'auto',
-            }}
-            pagination={{
-              pageSize: 5,
-            }}
-            dateFormatter="string"
-            toolBarRender={false}
-          />
-        </Col>
-      </Row>
-      <ImportProjects visible={importModalVisible} setVisibility={setImportModalVisibility} />
-      <ExportProjectsModal visible={exportModalVisible} setVisibility={setExportModalVisibility} />
-    </ProGridContainer>
-  );
-};
-
-export default ProjectList;
+          </table> */
