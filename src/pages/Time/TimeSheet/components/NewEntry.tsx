@@ -1,4 +1,4 @@
-import { ProModal } from '@/common';
+import { ProIntlProvider, ProModal } from '@/common';
 import { getRequiredDateFormat } from '@/utils/MomentHelpers';
 import React, { FC, useState } from 'react';
 import ProForm, { ProFormSelect, ProFormTextArea, ProFormTimePicker } from '@ant-design/pro-form';
@@ -29,54 +29,56 @@ const NewEntry: FC<NewEntryProps> = ({ selectedKey, visible, setVisibility }) =>
       width={540}
       footer={false}
     >
-      <ProForm
-        onReset={() => {
-          form.resetFields();
-          setVisibility(false);
-        }}
-        submitter={{
-          searchConfig: {
-            submitText: `${timeEntry ? 'Save Entry' : 'Start Timer'}`,
-            resetText: 'Close',
-          },
-        }}
-      >
-        <ProFormSelect
-          options={[
-            {
-              value: 'chapter',
-              label: 'Effective after stamping',
+      <ProIntlProvider>
+        <ProForm
+          onReset={() => {
+            form.resetFields();
+            setVisibility(false);
+          }}
+          submitter={{
+            searchConfig: {
+              submitText: `${timeEntry ? 'Save Entry' : 'Start Timer'}`,
+              resetText: 'Close',
             },
-          ]}
-          name="project"
-          label="Project/Client"
-        />
-        <ProFormSelect
-          options={[
-            {
-              value: 'chapter',
-              label: 'Effective after stamping',
-            },
-          ]}
-          name="task"
-          label="Task"
-        />
-        <ProForm.Group>
-          <ProFormTextArea width="md" name="notes" label="Notes" />
-          <ProFormTimePicker
-            label="Select Time"
-            name="time"
-            fieldProps={{
-              format: 'HH:mm',
-              showNow: false,
-              onOk: () => {
-                setTimeEntry(true);
+          }}
+        >
+          <ProFormSelect
+            options={[
+              {
+                value: 'chapter',
+                label: 'Effective after stamping',
               },
-              onChange: onDateChange,
-            }}
+            ]}
+            name="project"
+            label="Project/Client"
           />
-        </ProForm.Group>
-      </ProForm>
+          <ProFormSelect
+            options={[
+              {
+                value: 'chapter',
+                label: 'Effective after stamping',
+              },
+            ]}
+            name="task"
+            label="Task"
+          />
+          <ProForm.Group>
+            <ProFormTextArea width="md" name="notes" label="Notes" />
+            <ProFormTimePicker
+              label="Select Time"
+              name="time"
+              fieldProps={{
+                format: 'HH:mm',
+                showNow: false,
+                onOk: () => {
+                  setTimeEntry(true);
+                },
+                onChange: onDateChange,
+              }}
+            />
+          </ProForm.Group>
+        </ProForm>
+      </ProIntlProvider>
     </ProModal>
   );
 };

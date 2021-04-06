@@ -1,4 +1,4 @@
-import { ProDivider, ProGridContainer, ProSpace } from '@/common';
+import { ProDivider, ProGridContainer, ProIntlProvider, ProSpace } from '@/common';
 import React, { useState } from 'react';
 import { Button, Col, Row } from 'antd';
 import ProList from '@ant-design/pro-list';
@@ -42,25 +42,27 @@ const ManageClient = () => {
               </Button>
             </ProSpace>
             <ProDivider />
-            <ProList<{ title: string }>
-              toolBarRender={() => {
-                return [];
-              }}
-              metas={{
-                title: {},
-                description: {},
+            <ProIntlProvider>
+              <ProList<{ title: string }>
+                toolBarRender={() => {
+                  return [];
+                }}
+                metas={{
+                  title: {},
+                  description: {},
 
-                actions: {
-                  render: () => {
-                    return [<a key="edit">Edit Client Details</a>];
+                  actions: {
+                    render: () => {
+                      return [<a key="edit">Edit Client Details</a>];
+                    },
                   },
-                },
-              }}
-              rowKey="title"
-              headerTitle="Manage Clients"
-              rowSelection={false}
-              dataSource={dataSource}
-            />
+                }}
+                rowKey="title"
+                headerTitle="Manage Clients"
+                rowSelection={false}
+                dataSource={dataSource}
+              />
+            </ProIntlProvider>
           </ProSpace>
         </Col>
       </Row>

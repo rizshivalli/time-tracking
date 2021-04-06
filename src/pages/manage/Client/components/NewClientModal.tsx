@@ -1,4 +1,4 @@
-import { ProModal } from '@/common';
+import { ProIntlProvider, ProModal } from '@/common';
 import ProForm, { ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import React from 'react';
 import type { FC } from 'react';
@@ -18,22 +18,24 @@ const NewClientModal: FC<NewClientModalProps> = ({ visible, setVisibility }) => 
       width={540}
       footer={false}
     >
-      <ProForm
-        onReset={() => {
-          form.resetFields();
-          setVisibility(false);
-        }}
-        submitter={{
-          searchConfig: {
-            submitText: 'Save Client',
-            resetText: 'Cancel',
-          },
-        }}
-      >
-        <ProFormText name="client_name" label="Client Name" width="lg" />
+      <ProIntlProvider>
+        <ProForm
+          onReset={() => {
+            form.resetFields();
+            setVisibility(false);
+          }}
+          submitter={{
+            searchConfig: {
+              submitText: 'Save Client',
+              resetText: 'Cancel',
+            },
+          }}
+        >
+          <ProFormText name="client_name" label="Client Name" width="lg" />
 
-        <ProFormTextArea width="lg" name="address" label="Address" />
-      </ProForm>
+          <ProFormTextArea width="lg" name="address" label="Address" />
+        </ProForm>
+      </ProIntlProvider>
     </ProModal>
   );
 };

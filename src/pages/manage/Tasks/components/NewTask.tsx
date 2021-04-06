@@ -1,4 +1,4 @@
-import { ProModal } from '@/common';
+import { ProIntlProvider, ProModal } from '@/common';
 import ProForm, { ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
 import React from 'react';
 import type { FC } from 'react';
@@ -18,36 +18,39 @@ const NewTask: FC<NewTaskModalProps> = ({ visible, setVisibility }) => {
       width={540}
       footer={false}
     >
-      <ProForm
-        onReset={() => {
-          form.resetFields();
-          setVisibility(false);
-        }}
-        submitter={{
-          searchConfig: {
-            submitText: 'Save Client',
-            resetText: 'Cancel',
-          },
-        }}
-      >
-        <ProFormText name="task_name" label="Task Name" width="lg" />
+      <ProIntlProvider>
+        <ProForm
+          onReset={() => {
+            form.resetFields();
+            setVisibility(false);
+          }}
+          submitter={{
+            searchConfig: {
+              submitText: 'Save Client',
+              resetText: 'Cancel',
+            },
+          }}
+        >
+          <ProFormText name="task_name" label="Task Name" width="lg" />
 
-        <ProFormCheckbox.Group
-          layout="vertical"
-          label=""
-          name="types"
-          options={[
-            {
-              label: ' This is a common task, and should be added to all future projects',
-              value: 'a',
-            },
-            {
-              label: ' Add this task to all existing projects',
-              value: 'b',
-            },
-          ]}
-        />
-      </ProForm>
+          <ProFormCheckbox.Group
+            width="lg"
+            layout="horizontal"
+            label=""
+            name="types"
+            options={[
+              {
+                label: 'This is a common task, and should be added to all future projects',
+                value: 'a',
+              },
+              {
+                label: 'Add this task to all existing projects',
+                value: 'b',
+              },
+            ]}
+          />
+        </ProForm>
+      </ProIntlProvider>
     </ProModal>
   );
 };
