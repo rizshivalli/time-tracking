@@ -49,6 +49,9 @@ const Login: React.FC<LoginProps> = (props) => {
         }}
         submitter={{
           render: (_, dom) => dom.pop(),
+          searchConfig: {
+            submitText: 'Login',
+          },
           submitButtonProps: {
             loading: submitting,
             size: 'large',
