@@ -1,11 +1,9 @@
-import { stringify } from 'querystring';
 import type { Reducer, Effect } from 'umi';
 import { history } from 'umi';
-
 import { accountLogin } from '@/services/login';
 import { setAuthority } from '@/utils/authority';
-import { getPageQuery } from '@/utils/utils';
 import { message } from 'antd';
+import { removeToken, setToken } from '@/utils/token';
 
 export type StateType = {
   status?: 'ok' | 'error';
@@ -40,36 +38,21 @@ const Model: LoginModelType = {
         payload: response,
       });
       // Login successfully
-      if (response.status === 'ok') {
-        const urlParams = new URL(window.location.href);
-        const params = getPageQuery();
+      if (response.statusCode === 200) {
         message.success('🎉 🎉 🎉  login successful');
-        let { redirect } = params as { redirect: string };
-        if (redirect) {
-          const redirectUrlParams = new URL(redirect);
-          if (redirectUrlParams.origin === urlParams.origin) {
-            redirect = redirect.substr(urlParams.origin.length);
-            if (redirect.match(/^\/.*#/)) {
-              redirect = redirect.substr(redirect.indexOf('#') + 1);
-            }
-          } else {
-            window.location.href = '/';
-            return;
-          }
-        }
-        history.replace(redirect || '/');
+        window.location.href = '/';
+      } else if (response.status === 400) {
+        message.error('Email or password incorrect');
       }
+      return response;
     },
 
     logout() {
-      const { redirect } = getPageQuery();
+      removeToken();
       // Note: There may be security issues, please note
-      if (window.location.pathname !== '/user/login' && !redirect) {
+      if (window.location.pathname !== '/user/login') {
         history.replace({
           pathname: '/user/login',
-          search: stringify({
-            redirect: window.location.href,
-          }),
         });
       }
     },
@@ -78,6 +61,7 @@ const Model: LoginModelType = {
   reducers: {
     changeLoginStatus(state, { payload }) {
       setAuthority(payload.currentAuthority);
+      setToken(payload?.data.jwt);
       return {
         ...state,
         status: payload.status,

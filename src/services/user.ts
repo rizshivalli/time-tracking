@@ -1,11 +1,26 @@
 import request from '@/utils/request';
+import { getToken } from '@/utils/token';
 
 export async function query(): Promise<any> {
   return request('/api/users');
 }
 
-export async function queryCurrent(): Promise<any> {
-  return request('/api/currentUser');
+// To set user object in redux
+export async function queryCurrent() {
+  const token = await getToken();
+  const response = await request('/strapi/users/me', {
+    method: 'GET',
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (response?.statusCode === 200) {
+    if (response?.data && response?.data?.id) {
+      response.userid = response?.data?.id;
+      response.name = `${response?.data?.first_name} ${response?.data?.last_name}`;
+      response.avatar =
+        'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png';
+    }
+  }
+  return response;
 }
 
 export async function queryNotices(): Promise<any> {
