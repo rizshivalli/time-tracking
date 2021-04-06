@@ -1,6 +1,5 @@
 import type { Effect, Reducer } from 'umi';
-
-import { fakeRegister } from './service';
+import { register } from './service';
 
 export interface StateType {
   status?: 'ok' | 'error';
@@ -12,9 +11,11 @@ export interface ModelType {
   state: StateType;
   effects: {
     submit: Effect;
+    reset: Effect;
   };
   reducers: {
     registerHandle: Reducer<StateType>;
+    resetRegisterState: Reducer<StateType>;
   };
 }
 
@@ -27,20 +28,29 @@ const Model: ModelType = {
 
   effects: {
     *submit({ payload }, { call, put }) {
-      const response = yield call(fakeRegister, payload);
+      const response = yield call(register, payload);
       yield put({
         type: 'registerHandle',
         payload: response,
+      });
+    },
+    *reset({}, { call, put }) {
+      yield put({
+        type: 'resetRegisterState',
       });
     },
   },
 
   reducers: {
     registerHandle(state, { payload }) {
-      return {
-        ...state,
-        status: payload.status,
-      };
+      if (payload?.data?.jwt) {
+        return { ...state, status: 'ok' };
+      } else {
+        return { ...state, status: payload.message };
+      }
+    },
+    resetRegisterState(state) {
+      return { ...state, status: undefined };
     },
   },
 };

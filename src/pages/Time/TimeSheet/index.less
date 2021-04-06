@@ -1,8 +1,8 @@
 .card-container p {
-  margin: 0;
+  margin: 0; /* no unit */
 }
 .card-container > .ant-tabs-card .ant-tabs-content {
-  height: 120px;
+  height: auto;
   margin-top: -16px;
 }
 .card-container > .ant-tabs-card .ant-tabs-content > .ant-tabs-tabpane {
@@ -54,4 +54,33 @@
   .top-widget-container {
     place-items: center;
   }
+}
+
+.card-left-content {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  .time-hours {
+    padding-right: 25px;
+    font-weight: bold;
+    font-size: 18px;
+  }
+}
+
+.time-client-name {
+  font-weight: bold;
+  font-size: 18px;
+}
+.time-project-name {
+  font-size: 12px;
+}
+
+.time-card-content {
+  padding: 5px 0; /* no unit */
+  border-bottom: 1px solid lightblue;
+}
+
+.time-list-footer {
+  display: flex;
+  justify-content: flex-end;
 }

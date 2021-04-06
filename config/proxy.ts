@@ -5,12 +5,20 @@
  * For details, please see
  * https://pro.ant.design/docs/deploy
  */
+// http://3.139.11.139:1337/
 export default {
   dev: {
     '/api/': {
       target: 'https://preview.pro.ant.design',
       changeOrigin: true,
       pathRewrite: { '^': '' },
+    },
+    '/strapi/': {
+      target: 'http://www.simplifi.ml/',
+      changeOrigin: true,
+      pathRewrite: {
+        '^/strapi/': '',
+      },
     },
   },
   test: {
@@ -25,6 +33,13 @@ export default {
       target: 'your pre url',
       changeOrigin: true,
       pathRewrite: { '^': '' },
+    },
+    '/strapi/': {
+      target: 'http://www.simplifi.ml/',
+      changeOrigin: true,
+      pathRewrite: {
+        '^/strapi/': '',
+      },
     },
   },
 };
