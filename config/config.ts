@@ -128,9 +128,10 @@ export default defineConfig({
                 {
                   name: 'teams',
                   icon: 'TeamOutlined',
-                  path: '/teams',
-                  component: './teams/TeamList',
+                  path: '/teams/home',
+                  component: './teams/TeamHome',
                 },
+
                 {
                   name: 'teams',
                   icon: 'TeamOutlined',

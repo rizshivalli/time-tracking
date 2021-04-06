@@ -3,8 +3,8 @@ import React from 'react';
 
 const ImportPeopleModal = () => {
   return (
-    <ProModal title="Import Peopsle" visible={false}>
-      dsaddzss
+    <ProModal visible={false}>
+      <h1>sas</h1>
     </ProModal>
   );
 };
