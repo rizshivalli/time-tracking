@@ -45,7 +45,7 @@ interface RegisterProps {
 export interface UserRegisterParams {
   e: string;
   password: string;
-  confirm: string;
+  confirm_password: string;
   mobile: string;
   captcha: string;
   prefix: string;
@@ -122,7 +122,7 @@ const Register: FC<RegisterProps> = ({ submitting, dispatch, userAndregister }) 
       return promise.reject('');
     }
     if (value && confirmDirty) {
-      form.validateFields(['confirm']);
+      form.validateFields(['confirm_password']);
     }
     return promise.resolve();
   };
@@ -172,7 +172,7 @@ const Register: FC<RegisterProps> = ({ submitting, dispatch, userAndregister }) 
           <Input size="large" placeholder="Last Name" />
         </FormItem>
         <FormItem
-          name="company"
+          name="organisationName"
           rules={[
             {
               required: true,
@@ -244,7 +244,7 @@ const Register: FC<RegisterProps> = ({ submitting, dispatch, userAndregister }) 
           </FormItem>
         </Popover>
         <FormItem
-          name="confirm-password"
+          name="confirm_password"
           rules={[
             {
               required: true,
