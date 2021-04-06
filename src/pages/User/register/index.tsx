@@ -43,7 +43,7 @@ interface RegisterProps {
 }
 
 export interface UserRegisterParams {
-  e: string;
+  email: string;
   password: string;
   confirm_password: string;
   mobile: string;
@@ -52,6 +52,7 @@ export interface UserRegisterParams {
 }
 
 const Register: FC<RegisterProps> = ({ submitting, dispatch, userAndregister }) => {
+  console.log('🚀 ~ file: index.tsx ~ line 55 ~ userAndregister', userAndregister);
   const intl = useIntl();
   const [visible, setvisible]: [boolean, any] = useState(false);
   const [popover, setpopover]: [boolean, any] = useState(false);
@@ -65,14 +66,22 @@ const Register: FC<RegisterProps> = ({ submitting, dispatch, userAndregister }) 
     }
     const account = form.getFieldValue('email');
     if (userAndregister.status === 'ok') {
-      message.success('注册成功！');
+      message.success('Registration Successfull');
       history.push({
         pathname: '/user/register-result',
         state: {
           account,
         },
       });
+    } else {
+      if (userAndregister.status) message.error(userAndregister.status, 10);
+      return;
     }
+    return () => {
+      dispatch({
+        type: 'userAndregister/reset',
+      });
+    };
   }, [userAndregister]);
   useEffect(
     () => () => {
