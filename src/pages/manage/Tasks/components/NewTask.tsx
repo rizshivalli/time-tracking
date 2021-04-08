@@ -26,11 +26,13 @@ const NewTask: FC<NewTaskModalProps> = ({ visible, setVisibility, onSuccess }) =
 
     await createTask(values)
       .then((result) => {
-        Modal.success({
-          title: 'Success',
-          content: 'Task Created Successfully.',
-          onOk: onTaskCreated,
-        });
+        if (result) {
+          Modal.success({
+            title: 'Success',
+            content: 'Task Created Successfully.',
+            onOk: onTaskCreated,
+          });
+        }
       })
       .catch((error) => {
         Modal.error({ title: 'Error', content: error.message });

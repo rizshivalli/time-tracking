@@ -35,15 +35,11 @@ const ManageTasks = () => {
     deleteAlert,
   ]);
 
-  useEffect(() => {
-    getCommonTasksFromServer();
-  }, []);
   const getCommonTasksFromServer = useCallback(async () => {
     setCommonLoading(true);
 
     await getCommonTasks()
       .then((result) => {
-        console.log('🚀 ~ file: index.tsx ~ line 36 ~ .then ~ result', result);
         setCommonTasks(result);
       })
       .catch((error) => {
@@ -52,6 +48,10 @@ const ManageTasks = () => {
       .finally(() => {
         setCommonLoading(false);
       });
+  }, []);
+
+  useEffect(() => {
+    getCommonTasksFromServer();
   }, []);
 
   return (
@@ -79,10 +79,8 @@ const ManageTasks = () => {
                 title: {
                   dataIndex: 'name',
                 },
-
                 actions: {
                   render: (text, row) => {
-                    console.log('🚀 ~ file: index.tsx ~ line 80 ~ ManageTasks ~ row', row);
                     return [
                       <a key="archive">Archive</a>,
                       <Button

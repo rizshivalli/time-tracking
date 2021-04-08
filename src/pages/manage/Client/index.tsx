@@ -1,31 +1,34 @@
 import { ProDivider, ProGridContainer, ProIntlProvider, ProSpace } from '@/common';
-import React, { useState } from 'react';
-import { Button, Col, Row } from 'antd';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Button, Col, message, Row } from 'antd';
 import ProList from '@ant-design/pro-list';
 import { NewClientModal } from './components';
 import { PlusOutlined } from '@ant-design/icons';
-
-const dataSource = [
-  {
-    title: 'Client 1',
-    description: ' Client 1 description',
-  },
-  {
-    title: 'Client 2',
-    description: ' Client 2 description',
-  },
-  {
-    title: 'Client 3',
-    description: ' Client 3 description',
-  },
-  {
-    title: 'Client 4',
-    description: ' Client 4 description',
-  },
-];
+import { getClients } from './service';
 
 const ManageClient = () => {
   const [newClientModal, setNewClientModalVisibility] = useState<boolean>(false);
+  const [clientLoading, setClientLoading] = useState<boolean>(false);
+  const [clientList, setClientList] = useState([]);
+
+  const getClientsFromServer = useCallback(async () => {
+    setClientLoading(true);
+
+    await getClients()
+      .then((result) => {
+        setClientList(result);
+      })
+      .catch((error) => {
+        message.error(error);
+      })
+      .finally(() => {
+        setClientLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    getClientsFromServer();
+  }, []);
   return (
     <ProGridContainer>
       <Row>
@@ -44,13 +47,15 @@ const ManageClient = () => {
             <ProDivider />
             <ProIntlProvider>
               <ProList<{ title: string }>
+                loading={clientLoading}
                 toolBarRender={() => {
                   return [];
                 }}
                 metas={{
-                  title: {},
+                  title: {
+                    dataIndex: 'name',
+                  },
                   description: {},
-
                   actions: {
                     render: () => {
                       return [<a key="edit">Edit Client Details</a>];
@@ -60,14 +65,18 @@ const ManageClient = () => {
                 rowKey="title"
                 headerTitle="Manage Clients"
                 rowSelection={false}
-                dataSource={dataSource}
+                dataSource={clientList}
               />
             </ProIntlProvider>
           </ProSpace>
         </Col>
       </Row>
 
-      <NewClientModal visible={newClientModal} setVisibility={setNewClientModalVisibility} />
+      <NewClientModal
+        visible={newClientModal}
+        setVisibility={setNewClientModalVisibility}
+        onSuccess={getClientsFromServer}
+      />
     </ProGridContainer>
   );
 };
