@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import ExportProjectsModal from './components/ExportProjectsModal';
 import ImportProjects from './components/ImportProjects';
 import './index.less';
+import { getProjects, getProjectsCount } from '../service';
 
 const data = [
   { id: 1, client_id: 0, client_name: 'abc', project_name: 'planning', budget: 102, costs: 200 },
@@ -46,7 +47,7 @@ const ProjectList = () => {
     },
     {
       title: 'Task',
-      dataIndex: 'project_name',
+      dataIndex: 'name',
     },
     {
       title: 'client',
@@ -93,7 +94,17 @@ const ProjectList = () => {
 
             <ProIntlProvider>
               <ProTable
-                dataSource={data}
+                request={async (params = {}) => {
+                  const data = await getProjects(params);
+                  const count = await getProjectsCount();
+                  return {
+                    data,
+                    page: params.current,
+                    success: true,
+                    total: count,
+                  };
+                }}
+                // dataSource={data}
                 columns={columns}
                 actionRef={actionRef}
                 editable={{

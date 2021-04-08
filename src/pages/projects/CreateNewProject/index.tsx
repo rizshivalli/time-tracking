@@ -1,4 +1,6 @@
 import { ProDivider, ProGridContainer, ProIntlProvider, ProTitle } from '@/common';
+import { getClients } from '@/pages/manage/Client/service';
+import { getCommonTasks } from '@/pages/manage/Tasks/service';
 import { PlusOutlined } from '@ant-design/icons';
 import ProForm, {
   ProFormDateRangePicker,
@@ -8,7 +10,9 @@ import ProForm, {
   ProFormTextArea,
 } from '@ant-design/pro-form';
 import { Button } from 'antd';
-import React, { useState } from 'react';
+import { Modal } from 'antd';
+import React, { useCallback, useState } from 'react';
+import { createProject, getTeamMates } from '../service';
 import SendInviteModal from './components/SendInviteModal';
 
 interface ItemProps {
@@ -28,17 +32,39 @@ for (let i = 10; i < 36; i++) {
 }
 
 const CreateNewProject = () => {
-  const [value, setValue] = useState<any[]>([]);
-  console.log('value', value);
   const [isClientNew, setClientNew] = useState<boolean>(false);
   const [inviteFormVisible, setInviteFormVisiblity] = useState<boolean>(false);
   const [form] = ProForm.useForm();
+
+  const onTaskCreated = () => {
+    form.resetFields();
+  };
+
+  const handleFinish = useCallback(async (values) => {
+    // setPending(true);
+
+    await createProject(values)
+      .then((result) => {
+        if (result) {
+          Modal.success({
+            title: 'Success',
+            content: 'Project Created Successfully.',
+            onOk: onTaskCreated,
+          });
+        }
+      })
+      .catch((error) => {
+        Modal.error({ title: 'Error', content: error.message });
+      });
+  }, []);
+
   return (
     <ProGridContainer>
       <ProTitle size={2}>New Project</ProTitle>
       <ProDivider />
       <ProIntlProvider>
         <ProForm
+          form={form}
           onReset={() => {
             form.resetFields();
           }}
@@ -48,6 +74,29 @@ const CreateNewProject = () => {
               resetText: 'Reset Feilds',
             },
           }}
+          onFinish={(values: any) => {
+            console.log('🚀 ~ file: index.tsx ~ line 58 ~ CreateNewProject ~ values', values);
+
+            if (values.project_dates && values.project_dates !== 0) {
+              const pastDate = {
+                start_date: values?.project_dates[0],
+                end_date: values?.project_dates[1],
+              };
+              const newValues = { ...values, ...pastDate };
+
+              delete newValues?.project_dates;
+              console.log(
+                '🚀 ~ file: index.tsx ~ line 91 ~ CreateNewProject ~ newValues',
+                newValues,
+              );
+              handleFinish(newValues);
+              // return newDateRange;
+            } else {
+              handleFinish(values);
+            }
+
+            return Promise.resolve();
+          }}
         >
           <ProForm.Group>
             {isClientNew ? (
@@ -55,13 +104,21 @@ const CreateNewProject = () => {
                 width="xl"
                 name="new_client_name"
                 label="Client Name"
-                placeholder="Enter Client Name"
+                placeholder="Enter New Client Name"
+                rules={[{ required: true, message: 'Please Enter new client name' }]}
               />
             ) : (
               <ProFormSelect
                 width="xl"
+                name="client_id"
                 label="Select client for this project"
-                options={options}
+                request={async () => {
+                  const clientList = await getClients();
+                  return clientList.map((obj: any) => ({
+                    label: obj.name,
+                    value: obj.id,
+                  }));
+                }}
                 placeholder="Please select a client"
                 rules={[{ required: true, message: 'Please select a client!' }]}
               />
@@ -88,9 +145,10 @@ const CreateNewProject = () => {
           </ProForm.Group>
           <ProFormText
             width="xl"
-            name="project_name"
+            name="name"
             label="Project Name"
             placeholder="Enter Project Name"
+            rules={[{ required: true, message: 'Please Enter Project Name' }]}
           />
           <ProForm.Group>
             <ProFormText
@@ -109,7 +167,7 @@ const CreateNewProject = () => {
           />
           <ProFormTextArea
             width="xl"
-            name="project_notes"
+            name="notes"
             label="Notes"
             placeholder="Enter Project Notes"
             tooltip="Use notes to record info that you need to reference later, like invoice schedules. You'll see notes when you invoice for fixed fee projects. Administrators can control access to notes in Settings."
@@ -119,6 +177,7 @@ const CreateNewProject = () => {
             layout="vertical"
             name="radio-group"
             label="Permissions"
+            rules={[{ required: true, message: 'Please select any one of the permissions!' }]}
             options={[
               {
                 label:
@@ -137,10 +196,13 @@ const CreateNewProject = () => {
             width="xl"
             mode="multiple"
             label="Select tasks for this project"
-            options={options}
-            // @ts-ignore
-            onChange={(newValue: string[]) => {
-              setValue(newValue);
+            name="tasks"
+            request={async () => {
+              const clientList = await getCommonTasks();
+              return clientList.map((obj: any) => ({
+                label: obj.name,
+                value: obj.id,
+              }));
             }}
             placeholder="Please select a tasks"
             rules={[{ required: true, message: 'Please select your tasks!' }]}
@@ -149,12 +211,15 @@ const CreateNewProject = () => {
           <ProForm.Group>
             <ProFormSelect
               width="xl"
+              name="team_members"
               mode="multiple"
               label="Select team for this project"
-              options={options}
-              // @ts-ignore
-              onChange={(newValue: string[]) => {
-                setValue(newValue);
+              request={async () => {
+                const teammates = await getTeamMates();
+                return teammates?.team_members?.map((obj: any) => ({
+                  label: obj.email,
+                  value: obj.id,
+                }));
               }}
               placeholder="Please select a team"
               rules={[{ required: true, message: 'Please select your team!' }]}
