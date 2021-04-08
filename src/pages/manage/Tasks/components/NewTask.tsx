@@ -22,6 +22,7 @@ const NewTask: FC<NewTaskModalProps> = ({ visible, setVisibility, onSuccess }) =
   };
 
   const handleFinish = useCallback(async (values) => {
+    console.log('🚀 ~ file: NewTask.tsx ~ line 25 ~ handleFinish ~ values', values);
     // setPending(true);
 
     await createTask(values)
@@ -70,15 +71,15 @@ const NewTask: FC<NewTaskModalProps> = ({ visible, setVisibility, onSuccess }) =
             width="lg"
             layout="horizontal"
             label=""
-            name="types"
+            name="task_type"
             options={[
               {
                 label: 'This is a common task, and should be added to all future projects',
-                value: 'a',
+                value: 'common_task',
               },
               {
                 label: 'Add this task to all existing projects',
-                value: 'b',
+                value: 'all_exisiting_projects',
               },
             ]}
           />

@@ -29,10 +29,15 @@ const ProjectList = () => {
     {
       title: 'client',
       dataIndex: 'client_name',
+      render: (text, row) => <div>{row.client?.name}</div>,
     },
     {
-      title: 'Budget',
-      dataIndex: 'budget',
+      title: 'project_code',
+      dataIndex: 'project_code',
+    },
+    {
+      title: 'Notes',
+      dataIndex: 'notes',
     },
     {
       title: 'Cost',

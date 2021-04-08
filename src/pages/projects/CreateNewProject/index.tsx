@@ -110,7 +110,7 @@ const CreateNewProject = () => {
             ) : (
               <ProFormSelect
                 width="xl"
-                name="client_id"
+                name="client"
                 label="Select client for this project"
                 request={async () => {
                   const clientList = await getClients();
@@ -216,8 +216,8 @@ const CreateNewProject = () => {
               label="Select team for this project"
               request={async () => {
                 const teammates = await getTeamMates();
-                return teammates?.team_members?.map((obj: any) => ({
-                  label: obj.email,
+                return teammates?.map((obj: any) => ({
+                  label: `${obj.id} (${obj.role}) `,
                   value: obj.id,
                 }));
               }}

@@ -19,6 +19,7 @@ const ManageClient = () => {
         setClientList(result);
       })
       .catch((error) => {
+        setClientList([]);
         message.error(error);
       })
       .finally(() => {

@@ -6,13 +6,13 @@ type identifier = string | number | undefined;
 export async function getTeamMates() {
   const token = await getToken();
   const organization = await getOrganization();
-  const response = await request(`/strapi/organisations/${organization}`, {
+  const response = await request(`/strapi/organisation-members`, {
     method: 'GET',
     headers: { Authorization: `Bearer ${token}`, orgid: organization },
   });
 
   try {
-    return response;
+    return response.data;
   } catch (err) {
     throw new Error(response.message);
   }
