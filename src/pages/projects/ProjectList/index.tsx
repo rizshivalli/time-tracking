@@ -10,29 +10,6 @@ import ImportProjects from './components/ImportProjects';
 import './index.less';
 import { getProjects, getProjectsCount } from '../service';
 
-const data = [
-  { id: 1, client_id: 0, client_name: 'abc', project_name: 'planning', budget: 102, costs: 200 },
-  {
-    id: 2,
-    client_id: 0,
-    client_name: 'abc',
-    project_name: 'development',
-    budget: 103,
-    costs: 2151,
-  },
-  { id: 3, client_id: 0, client_name: 'abc', project_name: 'work', budget: 104, costs: 21532 },
-  { id: 4, client_id: 1, client_name: 'xyz', project_name: 'testing', budget: 105, costs: 2154 },
-  { id: 5, client_id: 1, client_name: 'xyz', project_name: 'deploying', budget: 10, costs: 2154 },
-  {
-    id: 6,
-    client_id: 2,
-    client_name: 'abc123',
-    project_name: 'preplaning',
-    budget: 106,
-    costs: 250,
-  },
-];
-
 const ProjectList = () => {
   const actionRef = useRef<ActionType>();
 
