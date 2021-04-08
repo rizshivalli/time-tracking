@@ -1,5 +1,5 @@
 import request from '@/utils/request';
-import { getToken } from '@/utils/token';
+import { getOrganization, getToken } from '@/utils/token';
 
 export async function query(): Promise<any> {
   return request('/api/users');
@@ -8,9 +8,10 @@ export async function query(): Promise<any> {
 // To set user object in redux
 export async function queryCurrent() {
   const token = await getToken();
+  const organization = await getOrganization();
   const response = await request('/strapi/users/me', {
     method: 'GET',
-    headers: { Authorization: `Bearer ${token}` },
+    headers: { Authorization: `Bearer ${token}`, orgid: organization },
   });
   if (response?.statusCode === 200) {
     if (response?.data && response?.data?.id) {

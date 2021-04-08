@@ -3,7 +3,7 @@ import { history } from 'umi';
 import { accountLogin } from '@/services/login';
 import { setAuthority } from '@/utils/authority';
 import { message } from 'antd';
-import { removeToken, setToken } from '@/utils/token';
+import { removeToken, setOrganization, setToken } from '@/utils/token';
 
 export type StateType = {
   status?: 'ok' | 'error' | number;
@@ -61,12 +61,14 @@ const Model: LoginModelType = {
 
   reducers: {
     changeLoginStatus(state, { payload }) {
+      console.log('🚀 ~ file: login.ts ~ line 64 ~ changeLoginStatus ~ payload', payload);
       setAuthority(payload?.currentAuthority);
       setToken(payload?.data?.jwt);
+      setOrganization(payload?.data?.user?.organisation?.id);
       return {
         ...state,
         status: payload?.statusCode,
-        message: payload.message ? payload.message : 'Login Successfull',
+        message: payload.statusCode !== 200 ? payload.message : 'Login Successfull',
         type: payload.type,
       };
     },
