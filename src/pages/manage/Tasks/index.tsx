@@ -1,9 +1,11 @@
 import { ProDivider, ProGridContainer, ProSpace } from '@/common';
-import React, { useState } from 'react';
-import { Button, Col, Row } from 'antd';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Button, Col, message, Row } from 'antd';
 import ProList from '@ant-design/pro-list';
 import { NewTaskModal } from './components';
 import { PlusOutlined } from '@ant-design/icons';
+import { getCommonTasks, deleteCommonTask } from './service';
+import DeleteAlert from '@/common/DeleteAlert';
 
 const dataSource = [
   {
@@ -25,7 +27,33 @@ const dataSource = [
 ];
 
 const ManageTasks = () => {
+  const [commonLoading, setCommonLoading] = useState<boolean>(false);
   const [newTaskModalVisble, setNewTaskModalVisibility] = useState<boolean>(false);
+  const [commonTasks, setCommonTasks] = useState([]);
+  const [deleteAlert, setDeleteAlert] = useState<any>({ visible: false, id: null });
+  const hideDeleteModal = useCallback(() => setDeleteAlert({ visible: false, id: null }), [
+    deleteAlert,
+  ]);
+
+  useEffect(() => {
+    getCommonTasksFromServer();
+  }, []);
+  const getCommonTasksFromServer = useCallback(async () => {
+    setCommonLoading(true);
+
+    await getCommonTasks()
+      .then((result) => {
+        console.log('🚀 ~ file: index.tsx ~ line 36 ~ .then ~ result', result);
+        setCommonTasks(result);
+      })
+      .catch((error) => {
+        message.error(error);
+      })
+      .finally(() => {
+        setCommonLoading(false);
+      });
+  }, []);
+
   return (
     <ProGridContainer>
       <Row>
@@ -42,24 +70,36 @@ const ManageTasks = () => {
               </Button>{' '}
             </ProSpace>
             <ProDivider />
-            <ProList<{ title: string }>
+            <ProList<{ id: string; name: string }>
+              loading={commonLoading}
               toolBarRender={() => {
                 return [];
               }}
               metas={{
-                title: {},
-                description: {},
+                title: {
+                  dataIndex: 'name',
+                },
 
                 actions: {
-                  render: () => {
-                    return [<a key="archive">Archive</a>, <a key="delete">Delete</a>];
+                  render: (text, row) => {
+                    console.log('🚀 ~ file: index.tsx ~ line 80 ~ ManageTasks ~ row', row);
+                    return [
+                      <a key="archive">Archive</a>,
+                      <Button
+                        key="delete"
+                        type="link"
+                        onClick={() => setDeleteAlert({ visible: true, id: row.id })}
+                      >
+                        Delete
+                      </Button>,
+                    ];
                   },
                 },
               }}
-              rowKey="title"
+              rowKey="id"
               headerTitle="Common Tasks"
               rowSelection={false}
-              dataSource={dataSource}
+              dataSource={commonTasks}
             />
             <ProDivider />
             <ProList<{ title: string }>
@@ -84,7 +124,18 @@ const ManageTasks = () => {
           </ProSpace>
         </Col>
       </Row>
-      <NewTaskModal visible={newTaskModalVisble} setVisibility={setNewTaskModalVisibility} />
+      <NewTaskModal
+        visible={newTaskModalVisble}
+        setVisibility={setNewTaskModalVisibility}
+        onSuccess={getCommonTasksFromServer}
+      />
+      <DeleteAlert
+        visible={deleteAlert.visible}
+        hideModal={hideDeleteModal}
+        info={deleteAlert.id}
+        deleteAPI={deleteCommonTask}
+        onSuccess={getCommonTasksFromServer}
+      />
     </ProGridContainer>
   );
 };

@@ -8,20 +8,23 @@ import { createTask } from '../service';
 interface NewTaskModalProps {
   visible: boolean;
   setVisibility: any;
+  onSuccess: () => void;
 }
 
-const NewTask: FC<NewTaskModalProps> = ({ visible, setVisibility }) => {
+const NewTask: FC<NewTaskModalProps> = ({ visible, setVisibility, onSuccess }) => {
   const [form] = ProForm.useForm();
 
   const onTaskCreated = () => {
+    if (onSuccess) {
+      onSuccess();
+    }
     setVisibility(false);
   };
 
-  const handleFinish = useCallback((values) => {
-    console.log('🚀 ~ file: NewTask.tsx ~ line 13 ~ values', values);
+  const handleFinish = useCallback(async (values) => {
     // setPending(true);
 
-    createTask(values)
+    await createTask(values)
       .then((result) => {
         Modal.success({
           title: 'Success',
@@ -59,7 +62,7 @@ const NewTask: FC<NewTaskModalProps> = ({ visible, setVisibility }) => {
             },
           }}
         >
-          <ProFormText name="task_name" label="Task Name" width="lg" />
+          <ProFormText name="name" label="Task Name" width="lg" />
 
           <ProFormCheckbox.Group
             width="lg"
