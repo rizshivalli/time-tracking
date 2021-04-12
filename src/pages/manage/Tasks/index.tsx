@@ -100,7 +100,7 @@ const ManageTasks = () => {
               dataSource={commonTasks}
             />
             <ProDivider />
-            <ProList<{ title: string }>
+            {/* <ProList<{ title: string }>
               toolBarRender={() => {
                 return [];
               }}
@@ -118,7 +118,7 @@ const ManageTasks = () => {
               headerTitle="Other Tasks"
               rowSelection={false}
               dataSource={dataSource}
-            />
+            /> */}
           </ProSpace>
         </Col>
       </Row>

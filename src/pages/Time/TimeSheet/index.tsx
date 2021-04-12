@@ -2,8 +2,9 @@ import { ProGridContainer, ProSpace, ProTitle } from '@/common';
 import { getWeekFromSuntoSat, getToday, getRequiredDateFormat } from '@/utils/MomentHelpers';
 import { PlusOutlined, ClockCircleOutlined, HistoryOutlined } from '@ant-design/icons';
 import { Button, Col, DatePicker, Row, Tabs, Radio, Select, Tag, Typography, List } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { createNewTimeRecord, getTimeRecords, stopTimeRecord } from '../service';
 import { NewEntryModal } from './components';
 import './index.less';
 
@@ -284,6 +285,21 @@ const TimeSheet = () => {
   const [datesToDisplay, setDatesToDisplay] = useState<any[]>(thisWeekDates);
   const [selectedTabKey, setSelectedTabKey] = useState<string>(todayDate);
   const [newEntryModalVisible, setNewEntryModalVisible] = useState<boolean>(false);
+  const [weekData, setWeekData] = useState<any[]>([]);
+
+  const getWeekData = async () => {
+    const time = await getTimeRecords();
+    setWeekData(time);
+  };
+
+  const stopTimer = async (id: string, values: any) => {
+    await stopTimeRecord(id, values);
+    getWeekData();
+  };
+
+  useEffect(() => {
+    getWeekData();
+  }, []);
 
   const onDateChange = (date: any, dateString: string) => {
     console.log(date, dateString);
@@ -391,43 +407,62 @@ const TimeSheet = () => {
                       <List
                         footer={
                           <div className="time-list-footer">
-                            <Button>Submit Week for Proposal</Button>
+                            <Button disabled={dummyDailyData.length !== 0 ? false : true}>
+                              Submit Week for Proposal
+                            </Button>
                           </div>
                         }
                         size="small"
-                        dataSource={dummyDailyData}
+                        dataSource={weekData}
                         renderItem={(listItem) => (
                           <Row>
                             <Col span={24}>
-                              {listItem.spent_at === key ? (
+                              {getRequiredDateFormat(listItem?.date, 'MM-DD-YYYY') === key ? (
                                 <Row justify="center" className="time-card-content">
                                   <Col span={18}>
                                     <ProSpace direction="vertical">
                                       <Text className="time-client-name">
-                                        {listItem.client_name}
+                                        {`[${
+                                          listItem?.project?.project_code
+                                            ? listItem?.project?.project_code
+                                            : listItem?.project?.name
+                                        }]${listItem?.task.name}`}
                                       </Text>
-                                      <Text className="time-project-name">
-                                        {listItem.project_name}
-                                      </Text>
+                                      {/* <Text className="time-project-name">{}</Text> */}
                                     </ProSpace>
                                   </Col>
                                   <Col span={6} className="card-left-content">
                                     <Text className="time-hours">{listItem.hours}</Text>
-                                    <div>
-                                      {listItem.hours === 0 ? (
-                                        <Button
-                                          size="large"
-                                          type="primary"
-                                          icon={<HistoryOutlined spin />}
-                                        >
-                                          Stop
-                                        </Button>
-                                      ) : (
-                                        <Button size="large" icon={<ClockCircleOutlined />}>
-                                          Start
-                                        </Button>
-                                      )}
-                                    </div>
+                                    {listItem.duration !== null || listItem.end_time !== null ? (
+                                      <Button
+                                        size="large"
+                                        icon={<ClockCircleOutlined />}
+                                        onClick={() => {
+                                          const values = {
+                                            start_time: new Date().toISOString(),
+                                            project: listItem?.project?.id,
+                                            task: listItem?.task.id,
+                                          };
+                                          // restartTimer(values)
+                                        }}
+                                      >
+                                        Start
+                                      </Button>
+                                    ) : (
+                                      <Button
+                                        size="large"
+                                        type="primary"
+                                        icon={<HistoryOutlined spin />}
+                                        onClick={() => {
+                                          const values = {
+                                            end_time: new Date().toISOString(),
+                                          };
+                                          stopTimer(listItem.id, values);
+                                        }}
+                                      >
+                                        Stop
+                                      </Button>
+                                    )}
                                   </Col>
                                 </Row>
                               ) : null}
@@ -447,6 +482,7 @@ const TimeSheet = () => {
         selectedKey={selectedTabKey}
         visible={newEntryModalVisible}
         setVisibility={setNewEntryModalVisible}
+        onSuccess={getWeekData}
       />
     </ProGridContainer>
   );
