@@ -1,10 +1,10 @@
 import { ProGridContainer, ProIntlProvider, ProSpace, ProTitle } from '@/common';
-import { getToday, getRequiredDateFormat } from '@/utils/MomentHelpers';
+import { getToday, getRequiredDateFormat, getStartAndEndOfWeek } from '@/utils/MomentHelpers';
 import { PlusOutlined } from '@ant-design/icons';
 import ProTable, { ActionType } from '@ant-design/pro-table';
 import { Button, Col, DatePicker, Row, Radio, Select } from 'antd';
 import moment from 'moment';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { Link } from 'umi';
 import { getWeekTimeRecords, updateWeekRecords } from '../service';
 import { NewEntryModal } from './components';
@@ -90,53 +90,6 @@ const getWeekFromSuntoSatForTable = (date: string) => {
   };
   const newD = [...taskName, ...weekDates, operation];
   return newD;
-};
-
-const data = [
-  {
-    id: '1',
-    task_name: 'rizwan',
-    project_id: 123,
-    '04-11-2021': 8,
-    '04-12-2021': 0,
-    '04-13-2021': 7,
-    '04-14-2021': 3,
-    '04-15-2021': 5,
-    '04-16-2021': 12,
-    '04-17-2021': 0,
-  },
-  {
-    id: '2',
-    task_name: 'dumy task 2',
-    project_id: 124,
-    '04-11-2021': 8,
-    '04-12-2021': 0,
-    '04-13-2021': 7,
-    '04-14-2021': 3,
-    '04-15-2021': 5,
-    '04-16-2021': 12,
-    '04-17-2021': 0,
-  },
-  {
-    id: '3',
-    task_name: 'dummy task 3',
-    project_id: 125,
-    '04-11-2021': 8,
-    '04-12-2021': 0,
-    '04-13-2021': 7,
-    '04-14-2021': 3,
-    '04-15-2021': 5,
-    '04-16-2021': 12,
-    '04-17-2021': 0,
-  },
-];
-
-const getStartAndEndOfWeek = (date: string) => {
-  const dates = {
-    start_date: getRequiredDateFormat(moment(date).startOf('week'), 'MM-DD-YYYY'),
-    end_date: getRequiredDateFormat(moment(date).endOf('week'), 'MM-DD-YYYY'),
-  };
-  return dates;
 };
 
 const TimeSheet = () => {

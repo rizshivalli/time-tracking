@@ -1,10 +1,9 @@
 import { ProIntlProvider, ProModal } from '@/common';
-import { getRequiredDateFormat } from '@/utils/MomentHelpers';
+import { getRequiredDateFormat, getStartAndEndOfWeek } from '@/utils/MomentHelpers';
 import React, { FC, useCallback, useState } from 'react';
 import ProForm, { ProFormSelect, ProFormTextArea } from '@ant-design/pro-form';
 import { Modal } from 'antd';
-import { getProjectsForTask, getTasks, createNewTimeRecord, addWeekRows } from '../../service';
-import moment from 'moment';
+import { getProjectsForTask, getTasks, addWeekRows } from '../../service';
 
 interface NewEntryProps {
   selectedKey: string;
@@ -14,17 +13,7 @@ interface NewEntryProps {
 }
 const NewEntry: FC<NewEntryProps> = ({ selectedKey, visible, setVisibility, onSuccess }) => {
   const [form] = ProForm.useForm();
-  const [timeEntry, setTimeEntry] = useState<boolean>(false);
-  const [client, setClient] = useState('');
   const [taskOptions, setTaskOptions] = useState([]);
-  const onDateChange = (date: any, dateString: string) => {
-    console.log(date, dateString);
-    if (date) {
-      setTimeEntry(true);
-    } else {
-      setTimeEntry(false);
-    }
-  };
 
   const onTaskCreated = () => {
     if (onSuccess) {
@@ -33,18 +22,7 @@ const NewEntry: FC<NewEntryProps> = ({ selectedKey, visible, setVisibility, onSu
     setVisibility(false);
   };
 
-  const getStartAndEndOfWeek = (date: string) => {
-    const dates = {
-      start_date: getRequiredDateFormat(moment(date).startOf('week'), 'MM-DD-YYYY'),
-      end_date: getRequiredDateFormat(moment(date).endOf('week'), 'MM-DD-YYYY'),
-    };
-    return dates;
-  };
-
   const handleFinish = useCallback(async (values) => {
-    console.log('🚀 ~ file: NewTask.tsx ~ line 25 ~ handleFinish ~ values', values);
-    // setPending(true);
-
     await addWeekRows(values)
       .then((result) => {
         if (result) {
