@@ -18,7 +18,7 @@ const today = getToday('dddd, DD MMM');
 
 const getWeekFromSuntoSatForTable = (date: string) => {
   let weekDates = [];
-  for (var i = 0; i <= 6; i++) {
+  for (let i = 0; i <= 6; i++) {
     // weekDates.push(getRequiredDateFormat(moment().day(i), 'ddd-DD-MM'));
     weekDates.push({
       title: getRequiredDateFormat(moment(date).day(i), 'DD-MMM'),
@@ -84,7 +84,10 @@ const getWeekFromSuntoSatForTable = (date: string) => {
           action.startEditable(row.id);
         }}
       >
-        edit
+        Edit
+      </a>,
+      <a key="a" onClick={() => {}}>
+        Delete
       </a>,
     ],
   };
@@ -96,7 +99,7 @@ const TimeSheet = () => {
   const todayDate = getToday('MM-DD-YYYY');
   const getWeekdata = getWeekFromSuntoSatForTable(todayDate);
   const [period, setPeriod] = useState<string>('week');
-  const [datesToDisplay, setDatesToDisplay] = useState<Array<any>>(getWeekdata);
+  const [datesToDisplay, setDatesToDisplay] = useState<any[]>(getWeekdata);
   const [selectedTabKey, setSelectedTabKey] = useState<string>(todayDate);
   const [newEntryModalVisible, setNewEntryModalVisible] = useState<boolean>(false);
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
@@ -104,8 +107,6 @@ const TimeSheet = () => {
   const [date, setDate] = useState<string>(todayDate);
 
   const onDateChange = (date: any, dateString: string) => {
-    console.log('🚀 ~ file: index.tsx ~ line 149 ~ onDateChange ~ date', date);
-
     if (date) {
       const newDate = getRequiredDateFormat(dateString, 'MM-DD-YYYY');
       setDate(newDate);
@@ -185,13 +186,14 @@ const TimeSheet = () => {
               <ProTable
                 actionRef={actionRef}
                 columns={datesToDisplay && datesToDisplay}
-                request={async (params = {}) => {
+                request={async () => {
                   const data = await getAllWeekData(date);
                   return { data };
                 }}
                 editable={{
                   type: 'multiple',
                   editableKeys,
+                  deletePopconfirmMessage: 'Delete This week entry?',
                   onSave: async (key, row) => {
                     const data = await updateWeekRecords(row);
                     if (data === 200) {

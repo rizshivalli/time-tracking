@@ -6,15 +6,22 @@ import {
   getStartAndEndOfWeek,
 } from '@/utils/MomentHelpers';
 import { PlusOutlined, ClockCircleOutlined, HistoryOutlined } from '@ant-design/icons';
-import { Button, Col, DatePicker, Row, Tabs, Radio, Select, Tag, Typography, List } from 'antd';
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import {
-  createNewTimeRecord,
-  getTimeRecords,
-  stopTimeRecord,
-  submitWeekForApproval,
-} from '../service';
+  Button,
+  Col,
+  DatePicker,
+  Row,
+  Tabs,
+  Radio,
+  Select,
+  Tag,
+  Typography,
+  List,
+  message,
+} from 'antd';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { getTimeRecords, stopTimeRecord, submitWeekForApproval } from '../service';
 import { NewEntryModal } from './components';
 import './index.less';
 
@@ -27,25 +34,53 @@ const todayDate = getToday('YYYY-MM-DD');
 const fullDate = getToday('YYYY-MM-DD');
 const thisWeekDates = getWeekFromSuntoSat(fullDate);
 
+const calulateTotalWeekTime = (weekArray: any[]) => {
+  return weekArray
+    ?.map((a: any) => parseFloat(a?.duration?.replace(':', '.')))
+    ?.filter((value: any) => !Number.isNaN(value))
+    ?.reduce((a: number, b: number) => a + b, 0)
+    ?.toFixed(2)
+    ?.toString()
+    ?.replace('.', ':');
+};
+
 const TimeSheet = () => {
   const [period, setPeriod] = useState<string>('day');
   const [datesToDisplay, setDatesToDisplay] = useState<any[]>(thisWeekDates);
   const [selectedTabKey, setSelectedTabKey] = useState<string>(todayDate);
   const [newEntryModalVisible, setNewEntryModalVisible] = useState<boolean>(false);
   const [weekData, setWeekData] = useState<any[]>([]);
+  const [listLoading, setListLoading] = useState<boolean>(false);
+  const [weekTotal, setWeekTotal] = useState<string>('0');
 
-  const getWeekData = async () => {
-    const time = await getTimeRecords();
-    setWeekData(time);
-  };
+  const getWeekData = useCallback(
+    async (key: string) => {
+      const newDates = getStartAndEndOfWeek(key);
+      setListLoading(true);
+      await getTimeRecords(newDates)
+        .then((time) => {
+          const total = calulateTotalWeekTime(time);
+          setWeekTotal(total);
+
+          setWeekData(time);
+        })
+        .catch((err) => {
+          message.error(err);
+        })
+        .finally(() => {
+          setListLoading(false);
+        });
+    },
+    [selectedTabKey],
+  );
 
   const stopTimer = async (id: string, values: any) => {
     await stopTimeRecord(id, values);
-    getWeekData();
+    getWeekData(selectedTabKey);
   };
 
   useEffect(() => {
-    getWeekData();
+    getWeekData(selectedTabKey);
   }, []);
 
   const onDateChange = (date: any, dateString: string) => {
@@ -60,6 +95,7 @@ const TimeSheet = () => {
         });
         return getNewDatesArray;
       });
+      getWeekData(newDate);
     } else {
       setDatesToDisplay(() => {
         setSelectedTabKey(() => {
@@ -67,6 +103,7 @@ const TimeSheet = () => {
         });
         return thisWeekDates;
       });
+      getWeekData(todayDate);
     }
   };
 
@@ -98,7 +135,7 @@ const TimeSheet = () => {
         New Entry
       </Button>
     ),
-    right: <Tag icon={<ClockCircleOutlined />}>Total: 8:46</Tag>,
+    right: <Tag icon={<ClockCircleOutlined />}>Week Total: {weekTotal && weekTotal}</Tag>,
   };
 
   return (
@@ -146,7 +183,7 @@ const TimeSheet = () => {
               type="card"
               defaultActiveKey={selectedTabKey}
               activeKey={selectedTabKey}
-              size="large"
+              size="middle"
               tabBarExtraContent={OperationsSlot}
               animated={true}
               onChange={callback}
@@ -160,7 +197,7 @@ const TimeSheet = () => {
                         footer={
                           <div className="time-list-footer">
                             <Button
-                              disabled={weekData.length !== 0 ? false : true}
+                              // disabled={weekData.length !== 0 ? false : true}
                               onClick={() => {
                                 submitWeek();
                               }}
@@ -170,6 +207,7 @@ const TimeSheet = () => {
                           </div>
                         }
                         size="small"
+                        loading={listLoading}
                         dataSource={weekData}
                         renderItem={(listItem) => {
                           return (

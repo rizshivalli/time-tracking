@@ -34,15 +34,12 @@ export async function createProject(params: any) {
   }
 }
 
-export async function getProjects(params: any) {
+export async function getProjects() {
   const token = await getToken();
   const organization = await getOrganization();
   const response = await request('/strapi/projects', {
     method: 'GET',
     headers: { Authorization: `Bearer ${token}`, orgid: organization },
-    // params: {
-    //   ...params,
-    // },
   });
 
   if (response.statusCode === 200) {
@@ -58,4 +55,33 @@ export async function getProjectsCount() {
   return request('/strapi/projects/count', {
     headers: { Authorization: `Bearer ${token}`, orgid: organization },
   });
+}
+
+export async function getProjectsById(id: identifier) {
+  const token = await getToken();
+  const organization = await getOrganization();
+  const response = await request(`/strapi/projects/${id}`, {
+    method: 'GET',
+    headers: { Authorization: `Bearer ${token}`, orgid: organization },
+  });
+  if (response.statusCode === 200) {
+    return response.data;
+  } else {
+    throw new Error(response.message);
+  }
+}
+
+export async function editProjectsById(id: identifier, params: any) {
+  const token = await getToken();
+  const organization = await getOrganization();
+  const response = await request(`/strapi/projects/${id}`, {
+    method: 'PUT',
+    headers: { Authorization: `Bearer ${token}`, orgid: organization },
+    data: params,
+  });
+  if (response.statusCode === 200) {
+    return response.data;
+  } else {
+    throw new Error(response.message);
+  }
 }

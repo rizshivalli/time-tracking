@@ -119,19 +119,25 @@ export default defineConfig({
                   component: './projects/ProjectList',
                 },
                 {
+                  path: '/projects/:detail',
+                  name: 'projects',
+                  component: './projects/ProjectList/ProjectDetails',
+                  hideInMenu: true,
+                },
+                {
                   name: 'projects',
                   icon: 'FolderOutlined',
                   path: '/projects/new',
                   component: './projects/CreateNewProject',
                   hideInMenu: true,
                 },
+
                 {
                   name: 'teams',
                   icon: 'TeamOutlined',
                   path: '/teams/home',
                   component: './teams/TeamHome',
                 },
-
                 {
                   name: 'teams',
                   icon: 'TeamOutlined',

@@ -1,14 +1,14 @@
 import { ProGridContainer, ProIntlProvider, ProSpace } from '@/common';
-import { PlusOutlined } from '@ant-design/icons';
+import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
-import { Button, Col, Row } from 'antd';
+import { Button, Col, Dropdown, Menu, Row } from 'antd';
 import React, { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
 import ExportProjectsModal from './components/ExportProjectsModal';
 import ImportProjects from './components/ImportProjects';
 import './index.less';
 import { getProjects, getProjectsCount } from '../service';
+import { Link } from 'umi';
 
 const ProjectList = () => {
   const actionRef = useRef<ActionType>();
@@ -40,8 +40,27 @@ const ProjectList = () => {
       dataIndex: 'notes',
     },
     {
-      title: 'Cost',
-      dataIndex: 'cost',
+      title: 'Options',
+      width: 120,
+      dataIndex: 'option',
+      valueType: 'option',
+      fixed: 'right',
+      render: (_, record) => [
+        <Dropdown
+          overlay={
+            <Menu>
+              <Menu.Item key="1">
+                <Link to={`/projects/${record.id}`}>Edit</Link>
+              </Menu.Item>
+              <Menu.Item key="2">Archive</Menu.Item>
+            </Menu>
+          }
+        >
+          <Button>
+            Button <DownOutlined />
+          </Button>
+        </Dropdown>,
+      ],
     },
   ];
 
@@ -77,7 +96,7 @@ const ProjectList = () => {
             <ProIntlProvider>
               <ProTable
                 request={async (params = {}) => {
-                  const data = await getProjects(params);
+                  const data = await getProjects();
                   const count = await getProjectsCount();
                   return {
                     data,
@@ -86,7 +105,6 @@ const ProjectList = () => {
                     total: count,
                   };
                 }}
-                // dataSource={data}
                 columns={columns}
                 actionRef={actionRef}
                 editable={{

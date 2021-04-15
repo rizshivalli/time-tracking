@@ -38,6 +38,10 @@ const AddNewMember = () => {
         onReset={() => {
           form.resetFields();
         }}
+        onFinish={(values) => {
+          console.log('🚀 ~ file: index.tsx ~ line 56 ~ AddNewMember ~ values', values);
+          return Promise.resolve();
+        }}
         submitter={{
           searchConfig: {
             submitText: 'Invite and Continue',
@@ -47,16 +51,16 @@ const AddNewMember = () => {
       >
         <ProFormRadio.Group
           layout="horizontal"
-          name="radio-group"
+          name="member_type"
           label="Type"
           options={[
             {
               label: 'Employee',
-              value: 'a',
+              value: 'employee',
             },
             {
               label: 'Contractor',
-              value: 'b',
+              value: 'contractor',
             },
           ]}
         />
@@ -90,8 +94,8 @@ const AddNewMember = () => {
         <ProDivider />
         <ProFormText
           width="lg"
-          name="roles"
-          label="Roles"
+          name="designation"
+          label="Designation"
           placeholder="Roles are just descriptors for your teammates"
         />
         <ProForm.Group>
@@ -106,22 +110,22 @@ const AddNewMember = () => {
         </ProForm.Group>
         <ProFormRadio.Group
           layout="vertical"
-          name="radio-group"
+          name="permissions"
           label="Permissions"
           options={[
             {
               label:
                 'Regular User (This person can only track time and expenses, and report on their own data.)',
-              value: 'a',
+              value: 'team_member',
             },
             {
               label:
                 'Project Manager (This person can track time and expenses, report on their own data, and edit, report on, and approve time for projects they manage)',
-              value: 'b',
+              value: 'project_manager',
             },
             {
               label: 'Administrator (This person can see and do everything)',
-              value: 'c',
+              value: 'admin',
             },
           ]}
         />
