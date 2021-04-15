@@ -191,6 +191,12 @@ export default defineConfig({
                       component: './manage/Client',
                     },
                     {
+                      path: '/manage/clients/:id',
+                      name: 'client',
+                      component: './manage/Client/EditClient',
+                      hideInMenu: true,
+                    },
+                    {
                       name: 'task',
                       path: '/manage/tasks',
                       component: './manage/Tasks',

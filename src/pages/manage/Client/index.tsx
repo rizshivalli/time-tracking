@@ -5,6 +5,7 @@ import ProList from '@ant-design/pro-list';
 import { NewClientModal } from './components';
 import { PlusOutlined } from '@ant-design/icons';
 import { getClients } from './service';
+import { Link } from 'react-router-dom';
 
 const ManageClient = () => {
   const [newClientModal, setNewClientModalVisibility] = useState<boolean>(false);
@@ -47,7 +48,7 @@ const ManageClient = () => {
             </ProSpace>
             <ProDivider />
             <ProIntlProvider>
-              <ProList<{ title: string }>
+              <ProList<{ title: string; id: string }>
                 loading={clientLoading}
                 toolBarRender={() => {
                   return [];
@@ -56,10 +57,15 @@ const ManageClient = () => {
                   title: {
                     dataIndex: 'name',
                   },
+                  id: { dataIndex: 'id' },
                   description: {},
                   actions: {
-                    render: () => {
-                      return [<a key="edit">Edit Client Details</a>];
+                    render: (text, row) => {
+                      return [
+                        <Link to={`/manage/clients/${row.id}`} key="edit">
+                          Edit Client Details{' '}
+                        </Link>,
+                      ];
                     },
                   },
                 }}

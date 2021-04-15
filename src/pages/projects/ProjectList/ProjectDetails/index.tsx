@@ -1,4 +1,5 @@
-import { ProDivider, ProGridContainer, ProIntlProvider, ProTitle } from '@/common';
+import { history } from '@/.umi/core/history';
+import { ProDivider, ProGridContainer, ProIntlProvider, ProSkeleton, ProTitle } from '@/common';
 import { getCommonTasks } from '@/pages/manage/Tasks/service';
 import ProForm, {
   ProFormRadio,
@@ -59,16 +60,18 @@ const ProjectDetails = (props: any) => {
       });
   }, []);
 
-  console.log('🚀 ~ file: index.tsx ~ line 6 ~ ProjectDetails ~ props', props);
   return (
     <ProGridContainer>
       <ProTitle size={2}>Edit Project</ProTitle>
       <ProDivider />
       <ProIntlProvider>
-        {!loading && (
+        {loading ? (
+          <ProSkeleton type="descriptions" />
+        ) : (
           <ProForm
             form={form}
             onReset={() => {
+              history.goBack();
               form.resetFields();
             }}
             initialValues={{

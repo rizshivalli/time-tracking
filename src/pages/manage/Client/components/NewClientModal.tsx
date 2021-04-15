@@ -63,7 +63,6 @@ const NewClientModal: FC<NewClientModalProps> = ({ visible, setVisibility, onSuc
           }}
         >
           <ProFormText name="name" label="Client Name" width="lg" />
-
           <ProFormTextArea width="lg" name="address" label="Address" />
         </ProForm>
       </ProIntlProvider>
