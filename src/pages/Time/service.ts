@@ -219,3 +219,19 @@ export async function getPendingApprovals() {
     throw new Error(response.message);
   }
 }
+
+// get list of pending Approvals for user
+export async function getPendingApprovalByID(id: identifier) {
+  const token = await getToken();
+  const organization = await getOrganization();
+  const response = await request(`/strapi/approvals/pending/${id}`, {
+    method: 'GET',
+    headers: { Authorization: `Bearer ${token}`, orgid: organization },
+  });
+
+  if (response.statusCode === 200) {
+    return response.data;
+  } else {
+    throw new Error(response.message);
+  }
+}

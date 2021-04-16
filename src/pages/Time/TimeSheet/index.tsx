@@ -227,7 +227,9 @@ const TimeSheet = () => {
                                       </ProSpace>
                                     </Col>
                                     <Col span={6} className="card-left-content">
-                                      <Text className="time-hours">{listItem?.duration}</Text>
+                                      <Text className="time-hours">
+                                        {listItem?.duration?.slice(0, -3)}
+                                      </Text>
                                       {listItem.duration === null || listItem.end_time === null ? (
                                         <Button
                                           size="large"

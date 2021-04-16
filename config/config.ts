@@ -110,6 +110,13 @@ export default defineConfig({
                       component: './Time/PendingApproval',
                       authority: ['admin'],
                     },
+                    {
+                      path: '/time/time-sheet/approve/:id',
+                      name: 'pending-approvals',
+                      component: './Time/PendingApproval/Details',
+                      hideInMenu: true,
+                      authority: ['admin'],
+                    },
                   ],
                 },
                 {

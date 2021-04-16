@@ -1,4 +1,4 @@
-import { ProGridContainer, ProIntlProvider, ProSpace } from '@/common';
+import { ProDivider, ProGridContainer, ProIntlProvider, ProSpace } from '@/common';
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
@@ -12,7 +12,6 @@ import { Link } from 'umi';
 
 const ProjectList = () => {
   const actionRef = useRef<ActionType>();
-
   const [importModalVisible, setImportModalVisibility] = useState<boolean>(false);
   const [exportModalVisible, setExportModalVisibility] = useState<boolean>(false);
 
@@ -92,7 +91,7 @@ const ProjectList = () => {
                 Export
               </Button>
             </ProSpace>
-
+            <ProDivider />
             <ProIntlProvider>
               <ProTable
                 request={async (params = {}) => {

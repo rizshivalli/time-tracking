@@ -1,11 +1,14 @@
 import { ProDivider, ProGridContainer, ProIntlProvider, ProSpace } from '@/common';
 import { PlusOutlined } from '@ant-design/icons';
+import ProCard from '@ant-design/pro-card';
 import ProTable, { ActionType, ProColumns } from '@ant-design/pro-table';
-import { Button, Col, Row } from 'antd';
+import { Button, Col, Row, Statistic } from 'antd';
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ImportPeopleModal } from './components';
 import './index.less';
+
+const { Divider } = ProCard;
 
 const data = [
   { employee_name: 'rizwan', total_hours: 84, total_capacity: 35 },
@@ -51,12 +54,12 @@ const TeamHome = () => {
               <Button>Imports</Button>
               <Button>Export</Button>
             </ProSpace>
-
-            <ProSpace>
-              <div className="total-hours">
-                <span>Total Hours</span>
-                <span>8.5</span>
-              </div>
+            <ProDivider />
+            <ProSpace size="large">
+              <Statistic title="Total Hours" value={80.0} precision={2} />
+              <ProDivider type="vertical" />
+              <Statistic title="Team Capacity" value={210.0} precision={2} />
+              <ProDivider type="vertical" />
             </ProSpace>
             <ProDivider />
             <ProIntlProvider>

@@ -1,12 +1,12 @@
 import { ProGridContainer, ProIntlProvider, ProSpace, ProTitle } from '@/common';
 import { getToday, getRequiredDateFormat, getStartAndEndOfWeek } from '@/utils/MomentHelpers';
-import { PlusOutlined } from '@ant-design/icons';
+import { CheckOutlined, PlusOutlined } from '@ant-design/icons';
 import ProTable, { ActionType } from '@ant-design/pro-table';
 import { Button, Col, DatePicker, Row, Radio, Select } from 'antd';
 import moment from 'moment';
 import React, { useCallback, useRef, useState } from 'react';
 import { Link } from 'umi';
-import { getWeekTimeRecords, updateWeekRecords } from '../service';
+import { getWeekTimeRecords, updateWeekRecords, submitWeekForApproval } from '../service';
 import { NewEntryModal } from './components';
 import './index.less';
 
@@ -33,9 +33,7 @@ const getWeekFromSuntoSatForTable = (date: string) => {
       title: 'Task Name',
       dataIndex: 'task_name',
       // @ts-ignore
-      // editable: (text, record, index) => {
-      //   return index < 0;
-      // },
+      render: (text, value) => <div>{`[${value?.project_name}] ${text}`}</div>,
       editable: false,
     },
 
@@ -55,9 +53,7 @@ const getWeekFromSuntoSatForTable = (date: string) => {
       hideInTable: true,
       // hideInForm: true,
       // @ts-ignore
-      editable: (text, record, index) => {
-        return index < 0;
-      },
+      editable: false,
     },
     {
       title: 'task_id',
@@ -71,27 +67,37 @@ const getWeekFromSuntoSatForTable = (date: string) => {
     },
   ];
 
-  const operation = {
-    title: 'Operation',
-    key: 'option',
-    width: 120,
-    valueType: 'option',
-    // @ts-ignore
-    render: (_, row, index, action) => [
-      <a
-        key="a"
-        onClick={() => {
-          action.startEditable(row.id);
-        }}
-      >
-        Edit
-      </a>,
-      <a key="a" onClick={() => {}}>
-        Delete
-      </a>,
-    ],
-  };
-  const newD = [...taskName, ...weekDates, operation];
+  const operation = [
+    {
+      title: 'Total Hours',
+      dataIndex: 'duration',
+      // hideInForm: true,
+      // @ts-ignore
+      editable: false,
+    },
+    {
+      title: 'Operation',
+      key: 'option',
+      width: 120,
+      valueType: 'option',
+      // @ts-ignore
+      render: (_, row, index, action) => [
+        <a
+          key="a"
+          onClick={() => {
+            action.startEditable(row.id);
+          }}
+        >
+          Edit
+        </a>,
+        // <a key="a" onClick={() => {}}>
+        //   Delete
+        // </a>,
+      ],
+    },
+  ];
+
+  const newD = [...taskName, ...weekDates, ...operation];
   return newD;
 };
 
@@ -105,6 +111,11 @@ const TimeSheet = () => {
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
   const actionRef = useRef<ActionType>();
   const [date, setDate] = useState<string>(todayDate);
+
+  const submitWeek = async () => {
+    const dates = getStartAndEndOfWeek(selectedTabKey);
+    await submitWeekForApproval(dates);
+  };
 
   const onDateChange = (date: any, dateString: string) => {
     if (date) {
@@ -202,9 +213,19 @@ const TimeSheet = () => {
                   },
                   onChange: setEditableRowKeys,
                 }}
-                // dataSource={data}
                 rowKey="id"
                 toolBarRender={() => [
+                  <Button
+                    size="large"
+                    key="2"
+                    type="primary"
+                    onClick={() => {
+                      submitWeek();
+                    }}
+                  >
+                    <CheckOutlined />
+                    Submit Week For Approval
+                  </Button>,
                   <Button
                     size="large"
                     key="3"

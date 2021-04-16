@@ -4,6 +4,7 @@ import { Col, Row } from 'antd';
 import React, { useRef } from 'react';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import { getPendingApprovals } from '../service';
+import { Link } from 'react-router-dom';
 
 const columns: ProColumns<any>[] = [
   {
@@ -14,6 +15,11 @@ const columns: ProColumns<any>[] = [
   {
     title: 'Employee Name',
     dataIndex: 'user_name',
+    render: (text, value) => <Link to={`/time/time-sheet/approve/${value.id}`}>{text}</Link>,
+  },
+  {
+    title: 'Date Range',
+    dataIndex: 'date_range',
   },
   {
     title: 'Submitted by',
@@ -37,7 +43,6 @@ const PendingApproval = () => {
                   const data = await getPendingApprovals();
                   return { data };
                 }}
-                // dataSource={data}
                 columns={columns}
                 actionRef={actionRef}
                 editable={{
