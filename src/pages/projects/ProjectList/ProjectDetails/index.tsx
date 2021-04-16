@@ -1,4 +1,4 @@
-import { history } from '@/.umi/core/history';
+import { history } from 'umi';
 import { ProDivider, ProGridContainer, ProIntlProvider, ProSkeleton, ProTitle } from '@/common';
 import { getCommonTasks } from '@/pages/manage/Tasks/service';
 import ProForm, {

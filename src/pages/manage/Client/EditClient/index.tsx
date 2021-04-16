@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Row, Col, Modal } from 'antd';
 import ProForm, { ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import { editClientById, getClientById } from '../service';
-import { history } from '@/.umi/core/history';
+import { history } from 'umi';
 
 const EditClient = (props: any) => {
   console.log('🚀 ~ file: index.tsx ~ line 8 ~ EditClient ~ props', props);
