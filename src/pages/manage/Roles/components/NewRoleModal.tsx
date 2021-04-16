@@ -1,4 +1,4 @@
-import { ProModal } from '@/common';
+import { ProIntlProvider, ProModal } from '@/common';
 import ProForm, { ProFormSelect, ProFormText } from '@ant-design/pro-form';
 import React from 'react';
 import type { FC } from 'react';
@@ -35,36 +35,43 @@ const NewRoleModal: FC<NewRoleModalProps> = ({ visible, setVisibility }) => {
       width={540}
       footer={false}
     >
-      <ProForm
-        onReset={() => {
-          form.resetFields();
-          setVisibility(false);
-        }}
-        submitter={{
-          searchConfig: {
-            submitText: 'Create New Role',
-            resetText: 'Cancel',
-          },
-        }}
-      >
-        <ProFormText width="lg" name="role_name" label="Role Name" placeholder="Enter Role Name" />
-        <ProFormSelect
-          width="lg"
-          mode="multiple"
-          label="Who’s assigned to this role?"
-          options={options}
-          // @ts-ignore
-          onChange={(newValue: string[]) => {
-            console.log(
-              '🚀 ~ file: NewRoleModal.tsx ~ line 51 ~ NewRoleModal ~ newValue',
-              newValue,
-            );
-            //   setValue(newValue);
+      <ProIntlProvider>
+        <ProForm
+          onReset={() => {
+            form.resetFields();
+            setVisibility(false);
           }}
-          placeholder="Please select a employee"
-          rules={[{ required: true, message: 'Please select an employee!' }]}
-        />
-      </ProForm>
+          submitter={{
+            searchConfig: {
+              submitText: 'Create New Role',
+              resetText: 'Cancel',
+            },
+          }}
+        >
+          <ProFormText
+            width="lg"
+            name="role_name"
+            label="Role Name"
+            placeholder="Enter Role Name"
+          />
+          <ProFormSelect
+            width="lg"
+            mode="multiple"
+            label="Who’s assigned to this role?"
+            options={options}
+            // @ts-ignore
+            onChange={(newValue: string[]) => {
+              console.log(
+                '🚀 ~ file: NewRoleModal.tsx ~ line 51 ~ NewRoleModal ~ newValue',
+                newValue,
+              );
+              //   setValue(newValue);
+            }}
+            placeholder="Please select a employee"
+            rules={[{ required: true, message: 'Please select an employee!' }]}
+          />
+        </ProForm>
+      </ProIntlProvider>
     </ProModal>
   );
 };

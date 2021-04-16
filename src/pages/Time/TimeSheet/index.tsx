@@ -1,9 +1,27 @@
 import { ProGridContainer, ProSpace, ProTitle } from '@/common';
-import { getWeekFromSuntoSat, getToday, getRequiredDateFormat } from '@/utils/MomentHelpers';
+import {
+  getWeekFromSuntoSat,
+  getToday,
+  getRequiredDateFormat,
+  getStartAndEndOfWeek,
+} from '@/utils/MomentHelpers';
 import { PlusOutlined, ClockCircleOutlined, HistoryOutlined } from '@ant-design/icons';
-import { Button, Col, DatePicker, Row, Tabs, Radio, Select, Tag, Typography, List } from 'antd';
-import React, { useState } from 'react';
+import {
+  Button,
+  Col,
+  DatePicker,
+  Row,
+  Tabs,
+  Radio,
+  Select,
+  Tag,
+  Typography,
+  List,
+  message,
+} from 'antd';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { getTimeRecords, stopTimeRecord, submitWeekForApproval } from '../service';
 import { NewEntryModal } from './components';
 import './index.less';
 
@@ -12,291 +30,72 @@ const { Option } = Select;
 const { Text } = Typography;
 
 const today = getToday('dddd, DD MMM');
-const todayDate = getToday('MM-DD-YYYY');
-const fullDate = getToday('MM-DD-YYYY');
+const todayDate = getToday('YYYY-MM-DD');
+const fullDate = getToday('YYYY-MM-DD');
 const thisWeekDates = getWeekFromSuntoSat(fullDate);
 
-const dummyDailyData = [
-  {
-    billable: true,
-    client_name: '[SAMPLE] Client A',
-    created_at: '2021-03-29T07:59:55Z',
-    hours: 3.45,
-    id: 1461886533,
-    invoice_id: 0,
-    is_archived: false,
-    is_billed: false,
-    is_closed: false,
-    notes: null,
-    project_active: true,
-    project_code: 'SAMPLE',
-    project_id: 28185502,
-    project_name: 'Fixed Fee Project',
-    spent_at: '03-30-2021',
-    task_active: true,
-    task_assignment_active: true,
-    task_id: 16324566,
-    task_name: 'Design',
-    timer_started_at: null,
-    updated_at: '2021-03-29T07:59:55Z',
-    user_active: true,
-    user_assignment_active: true,
-    user_id: 3692880,
-  },
-  {
-    billable: true,
-    client_name: 'next',
-    created_at: '2021-03-30T07:59:55Z',
-    hours: 2.45,
-    id: 1461886533,
-    invoice_id: 0,
-    is_archived: false,
-    is_billed: false,
-    is_closed: false,
-    notes: null,
-    project_active: true,
-    project_code: 'SAMPLE',
-    project_id: 28185502,
-    project_name: 'Fixed Fee Project',
-    spent_at: '03-31-2021',
-    task_active: true,
-    task_assignment_active: true,
-    task_id: 16324566,
-    task_name: 'Design',
-    timer_started_at: null,
-    updated_at: '2021-03-30T07:59:55Z',
-    user_active: true,
-    user_assignment_active: true,
-    user_id: 3692880,
-  },
-  {
-    billable: true,
-    client_name: '[SAMPLE] Client z',
-    created_at: '2021-03-31T07:59:55Z',
-    hours: 1.45,
-    id: 1461886533,
-    invoice_id: 0,
-    is_archived: false,
-    is_billed: false,
-    is_closed: false,
-    notes: null,
-    project_active: true,
-    project_code: 'SAMPLE',
-    project_id: 28185502,
-    project_name: 'Fixed Fee Project',
-    spent_at: '04-01-2021',
-    task_active: true,
-    task_assignment_active: true,
-    task_id: 16324566,
-    task_name: 'Design',
-    timer_started_at: null,
-    updated_at: '2021-03-31T07:59:55Z',
-    user_active: true,
-    user_assignment_active: true,
-    user_id: 3692880,
-  },
-  {
-    billable: true,
-    client_name: '[SAMPLE] Client A',
-    created_at: '2021-03-31T07:59:55Z',
-    hours: 0,
-    id: 1461886533,
-    invoice_id: 0,
-    is_archived: false,
-    is_billed: false,
-    is_closed: false,
-    notes: null,
-    project_active: true,
-    project_code: 'SAMPLE',
-    project_id: 28185502,
-    project_name: 'Fixed Fee Project',
-    spent_at: '04-01-2021',
-    task_active: true,
-    task_assignment_active: true,
-    task_id: 16324566,
-    task_name: 'Design',
-    timer_started_at: null,
-    updated_at: '2021-03-31T07:59:55Z',
-    user_active: true,
-    user_assignment_active: true,
-    user_id: 3692880,
-  },
-  {
-    billable: true,
-    client_name: '[SAMPLE] Client z',
-    created_at: '2021-03-31T07:59:55Z',
-    hours: 1.45,
-    id: 1461886533,
-    invoice_id: 0,
-    is_archived: false,
-    is_billed: false,
-    is_closed: false,
-    notes: null,
-    project_active: true,
-    project_code: 'SAMPLE',
-    project_id: 28185502,
-    project_name: 'Fixed Fee Project',
-    spent_at: '04-01-2021',
-    task_active: true,
-    task_assignment_active: true,
-    task_id: 16324566,
-    task_name: 'Design',
-    timer_started_at: null,
-    updated_at: '2021-03-31T07:59:55Z',
-    user_active: true,
-    user_assignment_active: true,
-    user_id: 3692880,
-  },
-  {
-    billable: true,
-    client_name: '[SAMPLE] Client A',
-    created_at: '2021-03-31T07:59:55Z',
-    hours: 0,
-    id: 1461886533,
-    invoice_id: 0,
-    is_archived: false,
-    is_billed: false,
-    is_closed: false,
-    notes: null,
-    project_active: true,
-    project_code: 'SAMPLE',
-    project_id: 28185502,
-    project_name: 'Fixed Fee Project',
-    spent_at: '04-01-2021',
-    task_active: true,
-    task_assignment_active: true,
-    task_id: 16324566,
-    task_name: 'Design',
-    timer_started_at: null,
-    updated_at: '2021-03-31T07:59:55Z',
-    user_active: true,
-    user_assignment_active: true,
-    user_id: 3692880,
-  },
-  {
-    billable: true,
-    client_name: '[SAMPLE] Client z',
-    created_at: '2021-03-31T07:59:55Z',
-    hours: 1.45,
-    id: 1461886533,
-    invoice_id: 0,
-    is_archived: false,
-    is_billed: false,
-    is_closed: false,
-    notes: null,
-    project_active: true,
-    project_code: 'SAMPLE',
-    project_id: 28185502,
-    project_name: 'Fixed Fee Project',
-    spent_at: '04-01-2021',
-    task_active: true,
-    task_assignment_active: true,
-    task_id: 16324566,
-    task_name: 'Design',
-    timer_started_at: null,
-    updated_at: '2021-03-31T07:59:55Z',
-    user_active: true,
-    user_assignment_active: true,
-    user_id: 3692880,
-  },
-  {
-    billable: true,
-    client_name: '[SAMPLE] Client A',
-    created_at: '2021-03-31T07:59:55Z',
-    hours: 0,
-    id: 1461886533,
-    invoice_id: 0,
-    is_archived: false,
-    is_billed: false,
-    is_closed: false,
-    notes: null,
-    project_active: true,
-    project_code: 'SAMPLE',
-    project_id: 28185502,
-    project_name: 'Fixed Fee Project',
-    spent_at: '04-01-2021',
-    task_active: true,
-    task_assignment_active: true,
-    task_id: 16324566,
-    task_name: 'Design',
-    timer_started_at: null,
-    updated_at: '2021-03-31T07:59:55Z',
-    user_active: true,
-    user_assignment_active: true,
-    user_id: 3692880,
-  },
-  {
-    billable: true,
-    client_name: '[SAMPLE] Client z',
-    created_at: '2021-03-31T07:59:55Z',
-    hours: 1.45,
-    id: 1461886533,
-    invoice_id: 0,
-    is_archived: false,
-    is_billed: false,
-    is_closed: false,
-    notes: null,
-    project_active: true,
-    project_code: 'SAMPLE',
-    project_id: 28185502,
-    project_name: 'Fixed Fee Project',
-    spent_at: '04-01-2021',
-    task_active: true,
-    task_assignment_active: true,
-    task_id: 16324566,
-    task_name: 'Design',
-    timer_started_at: null,
-    updated_at: '2021-03-31T07:59:55Z',
-    user_active: true,
-    user_assignment_active: true,
-    user_id: 3692880,
-  },
-  {
-    billable: true,
-    client_name: '[SAMPLE] Client A',
-    created_at: '2021-03-31T07:59:55Z',
-    hours: 0,
-    id: 1461886533,
-    invoice_id: 0,
-    is_archived: false,
-    is_billed: false,
-    is_closed: false,
-    notes: null,
-    project_active: true,
-    project_code: 'SAMPLE',
-    project_id: 28185502,
-    project_name: 'Fixed Fee Project',
-    spent_at: '04-01-2021',
-    task_active: true,
-    task_assignment_active: true,
-    task_id: 16324566,
-    task_name: 'Design',
-    timer_started_at: null,
-    updated_at: '2021-03-31T07:59:55Z',
-    user_active: true,
-    user_assignment_active: true,
-    user_id: 3692880,
-  },
-];
+const calulateTotalWeekTime = (weekArray: any[]) => {
+  return weekArray
+    ?.map((a: any) => parseFloat(a?.duration?.replace(':', '.')))
+    ?.filter((value: any) => !Number.isNaN(value))
+    ?.reduce((a: number, b: number) => a + b, 0)
+    ?.toFixed(2)
+    ?.toString()
+    ?.replace('.', ':');
+};
 
 const TimeSheet = () => {
   const [period, setPeriod] = useState<string>('day');
   const [datesToDisplay, setDatesToDisplay] = useState<any[]>(thisWeekDates);
   const [selectedTabKey, setSelectedTabKey] = useState<string>(todayDate);
   const [newEntryModalVisible, setNewEntryModalVisible] = useState<boolean>(false);
+  const [weekData, setWeekData] = useState<any[]>([]);
+  const [listLoading, setListLoading] = useState<boolean>(false);
+  const [weekTotal, setWeekTotal] = useState<string>('0');
+
+  const getWeekData = useCallback(
+    async (key: string) => {
+      const newDates = getStartAndEndOfWeek(key);
+      setListLoading(true);
+      await getTimeRecords(newDates)
+        .then((time) => {
+          const total = calulateTotalWeekTime(time);
+          setWeekTotal(total);
+
+          setWeekData(time);
+        })
+        .catch((err) => {
+          message.error(err);
+        })
+        .finally(() => {
+          setListLoading(false);
+        });
+    },
+    [selectedTabKey],
+  );
+
+  const stopTimer = async (id: string, values: any) => {
+    await stopTimeRecord(id, values);
+    getWeekData(selectedTabKey);
+  };
+
+  useEffect(() => {
+    getWeekData(selectedTabKey);
+  }, []);
 
   const onDateChange = (date: any, dateString: string) => {
     console.log(date, dateString);
     if (date) {
-      const newDate = getRequiredDateFormat(dateString, 'MM-DD-YYYY');
+      const newDate = getRequiredDateFormat(dateString, 'YYYY-MM-DD');
       const getNewDatesArray = getWeekFromSuntoSat(newDate);
-      const selectedTab = getRequiredDateFormat(newDate, 'MM-DD-YYYY');
+      const selectedTab = getRequiredDateFormat(newDate, 'YYYY-MM-DD');
       setDatesToDisplay(() => {
         setSelectedTabKey(() => {
           return selectedTab;
         });
         return getNewDatesArray;
       });
+      getWeekData(newDate);
     } else {
       setDatesToDisplay(() => {
         setSelectedTabKey(() => {
@@ -304,6 +103,7 @@ const TimeSheet = () => {
         });
         return thisWeekDates;
       });
+      getWeekData(todayDate);
     }
   };
 
@@ -316,6 +116,11 @@ const TimeSheet = () => {
       return key;
     });
   }
+
+  const submitWeek = async () => {
+    const dates = getStartAndEndOfWeek(selectedTabKey);
+    await submitWeekForApproval(dates);
+  };
 
   const OperationsSlot = {
     left: (
@@ -330,7 +135,7 @@ const TimeSheet = () => {
         New Entry
       </Button>
     ),
-    right: <Tag icon={<ClockCircleOutlined />}>Total: 8:46</Tag>,
+    right: <Tag icon={<ClockCircleOutlined />}>Week Total: {weekTotal && weekTotal}</Tag>,
   };
 
   return (
@@ -378,7 +183,7 @@ const TimeSheet = () => {
               type="card"
               defaultActiveKey={selectedTabKey}
               activeKey={selectedTabKey}
-              size="large"
+              size="middle"
               tabBarExtraContent={OperationsSlot}
               animated={true}
               onChange={callback}
@@ -391,49 +196,77 @@ const TimeSheet = () => {
                       <List
                         footer={
                           <div className="time-list-footer">
-                            <Button>Submit Week for Proposal</Button>
+                            <Button
+                              // disabled={weekData.length !== 0 ? false : true}
+                              onClick={() => {
+                                submitWeek();
+                              }}
+                            >
+                              Submit Week for Proposal
+                            </Button>
                           </div>
                         }
                         size="small"
-                        dataSource={dummyDailyData}
-                        renderItem={(listItem) => (
-                          <Row>
-                            <Col span={24}>
-                              {listItem.spent_at === key ? (
-                                <Row justify="center" className="time-card-content">
-                                  <Col span={18}>
-                                    <ProSpace direction="vertical">
-                                      <Text className="time-client-name">
-                                        {listItem.client_name}
+                        loading={listLoading}
+                        dataSource={weekData}
+                        renderItem={(listItem) => {
+                          return (
+                            <Row>
+                              <Col span={24}>
+                                {getRequiredDateFormat(listItem?.date, 'YYYY-MM-DD') === key ? (
+                                  <Row justify="center" className="time-card-content">
+                                    <Col span={18}>
+                                      <ProSpace direction="vertical">
+                                        <Text className="time-client-name">
+                                          {`[${
+                                            listItem?.project?.project_code
+                                              ? listItem?.project?.project_code
+                                              : listItem?.project?.name
+                                          }]${listItem?.task.name}`}
+                                        </Text>
+                                      </ProSpace>
+                                    </Col>
+                                    <Col span={6} className="card-left-content">
+                                      <Text className="time-hours">
+                                        {listItem?.duration?.slice(0, -3)}
                                       </Text>
-                                      <Text className="time-project-name">
-                                        {listItem.project_name}
-                                      </Text>
-                                    </ProSpace>
-                                  </Col>
-                                  <Col span={6} className="card-left-content">
-                                    <Text className="time-hours">{listItem.hours}</Text>
-                                    <div>
-                                      {listItem.hours === 0 ? (
+                                      {listItem.duration === null || listItem.end_time === null ? (
+                                        <Button
+                                          size="large"
+                                          icon={<ClockCircleOutlined />}
+                                          onClick={() => {
+                                            const values = {
+                                              start_time: new Date().toISOString(),
+                                              project: listItem?.project?.id,
+                                              task: listItem?.task.id,
+                                            };
+                                            // restartTimer(values)
+                                          }}
+                                        >
+                                          Start
+                                        </Button>
+                                      ) : (
                                         <Button
                                           size="large"
                                           type="primary"
                                           icon={<HistoryOutlined spin />}
+                                          onClick={() => {
+                                            const values = {
+                                              end_time: new Date().toISOString(),
+                                            };
+                                            stopTimer(listItem.id, values);
+                                          }}
                                         >
                                           Stop
                                         </Button>
-                                      ) : (
-                                        <Button size="large" icon={<ClockCircleOutlined />}>
-                                          Start
-                                        </Button>
                                       )}
-                                    </div>
-                                  </Col>
-                                </Row>
-                              ) : null}
-                            </Col>
-                          </Row>
-                        )}
+                                    </Col>
+                                  </Row>
+                                ) : null}
+                              </Col>
+                            </Row>
+                          );
+                        }}
                       />
                       {/* TODO Total Time of the day */}
                     </TabPane>
@@ -447,6 +280,7 @@ const TimeSheet = () => {
         selectedKey={selectedTabKey}
         visible={newEntryModalVisible}
         setVisibility={setNewEntryModalVisible}
+        onSuccess={getWeekData}
       />
     </ProGridContainer>
   );

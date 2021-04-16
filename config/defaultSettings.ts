@@ -11,7 +11,7 @@ const proSettings: DefaultSettings = {
   contentWidth: 'Fluid',
   fixedHeader: true,
   fixSiderbar: true,
-  title: 'Ant Design Pro',
+  title: 'Simplifi Team',
   pwa: false,
   iconfontUrl: '',
   menu: {

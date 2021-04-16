@@ -17,7 +17,7 @@ export type LoginProps = {
 };
 
 const LoginMessage: React.FC<{
-  content: string;
+  content: string | undefined;
 }> = ({ content }) => (
   <Alert
     style={{
@@ -31,7 +31,7 @@ const LoginMessage: React.FC<{
 
 const Login: React.FC<LoginProps> = (props) => {
   const { userLogin = {}, submitting } = props;
-  const { status, type: loginType } = userLogin;
+  const { status, type: loginType, message } = userLogin;
   const intl = useIntl();
 
   const handleSubmit = (values: LoginParamsType) => {
@@ -121,9 +121,7 @@ const Login: React.FC<LoginProps> = (props) => {
           />
         </>
 
-        {status === 'error' && loginType === 'mobile' && !submitting && (
-          <LoginMessage content="验证码错误" />
-        )}
+        {status && status !== 200 && !submitting && <LoginMessage content={message} />}
 
         <div
           style={{

@@ -1,32 +1,32 @@
 import { ProDivider, ProGridContainer, ProTitle } from '@/common';
+import { capacityOptions } from '@/utils/generalUtils';
 import ProForm, { ProFormRadio, ProFormSelect, ProFormText } from '@ant-design/pro-form';
-import React from 'react';
-
-const options = [
-  { value: '0.5', label: '0.5' },
-  { value: '1.0', label: '1.0' },
-  { value: '1.5', label: '1.5' },
-  { value: '2.0', label: '2.0' },
-  { value: '2.5', label: '2.5' },
-  { value: '3.0', label: '3.0' },
-  { value: '3.5', label: '3.5' },
-  { value: '4.0', label: '4.0' },
-  { value: '4.5', label: '4.5' },
-  { value: '5.0', label: '5.0' },
-  { value: '5.5', label: '5.5' },
-  { value: '6.0', label: '6.0' },
-  { value: '6.5', label: '6.5' },
-  { value: '7.0', label: '7.0' },
-  { value: '7.5', label: '7.5' },
-  { value: '8.0', label: '8.0' },
-  { value: '8.5', label: '8.5' },
-  { value: '9.0', label: '9.0' },
-  { value: '9.5', label: '9.5' },
-  { value: '10.0', label: '10.0' },
-];
+import { Modal } from 'antd';
+import React, { useCallback } from 'react';
+import { createTeamMember } from '../service';
 
 const AddNewMember = () => {
   const [form] = ProForm.useForm();
+
+  const onTaskCreated = () => {
+    form.resetFields();
+  };
+  const handleFinish = useCallback(async (values) => {
+    await createTeamMember(values)
+      .then((result) => {
+        if (result) {
+          Modal.success({
+            title: 'Success',
+            content: 'Team Member Added Successfully.',
+            onOk: onTaskCreated,
+          });
+        }
+      })
+      .catch((error) => {
+        Modal.error({ title: 'Error', content: error.message });
+      });
+  }, []);
+
   return (
     <ProGridContainer>
       <ProTitle size={2}>New Person</ProTitle>
@@ -38,6 +38,21 @@ const AddNewMember = () => {
         onReset={() => {
           form.resetFields();
         }}
+        onFinish={(values) => {
+          const fullName = { name: `${values.first_name} ${values.last_name}` };
+          let contractor;
+          if (values.member_type === 'contractor') {
+            contractor = { contractor: true };
+          } else {
+            contractor = { contractor: false };
+          }
+          delete values.member_type;
+          delete values.first_name;
+          delete values.last_name;
+          const finalValues = { ...values, ...contractor, ...fullName };
+          handleFinish(finalValues);
+          return Promise.resolve();
+        }}
         submitter={{
           searchConfig: {
             submitText: 'Invite and Continue',
@@ -47,16 +62,16 @@ const AddNewMember = () => {
       >
         <ProFormRadio.Group
           layout="horizontal"
-          name="radio-group"
+          name="member_type"
           label="Type"
           options={[
             {
               label: 'Employee',
-              value: 'a',
+              value: 'employee',
             },
             {
               label: 'Contractor',
-              value: 'b',
+              value: 'contractor',
             },
           ]}
         />
@@ -90,15 +105,16 @@ const AddNewMember = () => {
         <ProDivider />
         <ProFormText
           width="lg"
-          name="roles"
-          label="Roles"
+          name="designation"
+          label="Designation"
           placeholder="Roles are just descriptors for your teammates"
         />
         <ProForm.Group>
           <ProFormSelect
             width="sm"
             label="Capacity"
-            options={options}
+            fieldProps={{ defaultValue: '35' }}
+            options={capacityOptions}
             placeholder="Please select a tasks"
             rules={[{ required: true, message: 'Please select your tasks!' }]}
           />
@@ -106,22 +122,22 @@ const AddNewMember = () => {
         </ProForm.Group>
         <ProFormRadio.Group
           layout="vertical"
-          name="radio-group"
+          name="permissions"
           label="Permissions"
           options={[
             {
               label:
                 'Regular User (This person can only track time and expenses, and report on their own data.)',
-              value: 'a',
+              value: 'team_member',
             },
             {
               label:
                 'Project Manager (This person can track time and expenses, report on their own data, and edit, report on, and approve time for projects they manage)',
-              value: 'b',
+              value: 'project_manager',
             },
             {
               label: 'Administrator (This person can see and do everything)',
-              value: 'c',
+              value: 'admin',
             },
           ]}
         />

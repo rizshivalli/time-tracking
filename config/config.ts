@@ -110,6 +110,13 @@ export default defineConfig({
                       component: './Time/PendingApproval',
                       authority: ['admin'],
                     },
+                    {
+                      path: '/time/time-sheet/approve/:id',
+                      name: 'pending-approvals',
+                      component: './Time/PendingApproval/Details',
+                      hideInMenu: true,
+                      authority: ['admin'],
+                    },
                   ],
                 },
                 {
@@ -119,19 +126,25 @@ export default defineConfig({
                   component: './projects/ProjectList',
                 },
                 {
+                  path: '/project/:detail',
+                  name: 'projects',
+                  component: './projects/ProjectList/ProjectDetails',
+                  hideInMenu: true,
+                },
+                {
                   name: 'projects',
                   icon: 'FolderOutlined',
                   path: '/projects/new',
                   component: './projects/CreateNewProject',
                   hideInMenu: true,
                 },
+
                 {
                   name: 'teams',
                   icon: 'TeamOutlined',
                   path: '/teams/home',
                   component: './teams/TeamHome',
                 },
-
                 {
                   name: 'teams',
                   icon: 'TeamOutlined',
@@ -183,6 +196,12 @@ export default defineConfig({
                       name: 'client',
                       path: '/manage/clients',
                       component: './manage/Client',
+                    },
+                    {
+                      path: '/manage/clients/:id',
+                      name: 'client',
+                      component: './manage/Client/EditClient',
+                      hideInMenu: true,
                     },
                     {
                       name: 'task',

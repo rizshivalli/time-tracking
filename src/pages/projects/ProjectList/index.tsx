@@ -1,40 +1,17 @@
-import { ProGridContainer, ProIntlProvider, ProSpace } from '@/common';
-import { PlusOutlined } from '@ant-design/icons';
+import { ProDivider, ProGridContainer, ProIntlProvider, ProSpace } from '@/common';
+import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
-import { Button, Col, Row } from 'antd';
+import { Button, Col, Dropdown, Menu, Row } from 'antd';
 import React, { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
 import ExportProjectsModal from './components/ExportProjectsModal';
 import ImportProjects from './components/ImportProjects';
 import './index.less';
-
-const data = [
-  { id: 1, client_id: 0, client_name: 'abc', project_name: 'planning', budget: 102, costs: 200 },
-  {
-    id: 2,
-    client_id: 0,
-    client_name: 'abc',
-    project_name: 'development',
-    budget: 103,
-    costs: 2151,
-  },
-  { id: 3, client_id: 0, client_name: 'abc', project_name: 'work', budget: 104, costs: 21532 },
-  { id: 4, client_id: 1, client_name: 'xyz', project_name: 'testing', budget: 105, costs: 2154 },
-  { id: 5, client_id: 1, client_name: 'xyz', project_name: 'deploying', budget: 10, costs: 2154 },
-  {
-    id: 6,
-    client_id: 2,
-    client_name: 'abc123',
-    project_name: 'preplaning',
-    budget: 106,
-    costs: 250,
-  },
-];
+import { getProjects, getProjectsCount } from '../service';
+import { Link } from 'umi';
 
 const ProjectList = () => {
   const actionRef = useRef<ActionType>();
-
   const [importModalVisible, setImportModalVisibility] = useState<boolean>(false);
   const [exportModalVisible, setExportModalVisibility] = useState<boolean>(false);
 
@@ -46,19 +23,43 @@ const ProjectList = () => {
     },
     {
       title: 'Task',
-      dataIndex: 'project_name',
+      dataIndex: 'name',
     },
     {
       title: 'client',
       dataIndex: 'client_name',
+      render: (text, row) => <div>{row.client?.name}</div>,
     },
     {
-      title: 'Budget',
-      dataIndex: 'budget',
+      title: 'project_code',
+      dataIndex: 'project_code',
     },
     {
-      title: 'Cost',
-      dataIndex: 'cost',
+      title: 'Notes',
+      dataIndex: 'notes',
+    },
+    {
+      title: 'Options',
+      width: 120,
+      dataIndex: 'option',
+      valueType: 'option',
+      fixed: 'right',
+      render: (_, record) => [
+        <Dropdown
+          overlay={
+            <Menu>
+              <Menu.Item key="1">
+                <Link to={`/project/${record.id}`}>Edit</Link>
+              </Menu.Item>
+              <Menu.Item key="2">Archive</Menu.Item>
+            </Menu>
+          }
+        >
+          <Button>
+            Button <DownOutlined />
+          </Button>
+        </Dropdown>,
+      ],
     },
   ];
 
@@ -90,10 +91,19 @@ const ProjectList = () => {
                 Export
               </Button>
             </ProSpace>
-
+            <ProDivider />
             <ProIntlProvider>
               <ProTable
-                dataSource={data}
+                request={async (params = {}) => {
+                  const data = await getProjects();
+                  const count = await getProjectsCount();
+                  return {
+                    data,
+                    page: params.current,
+                    success: true,
+                    total: count,
+                  };
+                }}
                 columns={columns}
                 actionRef={actionRef}
                 editable={{

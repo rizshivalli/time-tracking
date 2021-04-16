@@ -32,3 +32,31 @@ export function removeToken() {
   localStorage.clear();
   reloadAuthorized();
 }
+
+export function setOrganization(authority: string | string[]): void {
+  const proAuthority = typeof authority === 'string' ? [authority] : authority;
+  localStorage.setItem('organization', JSON.stringify(proAuthority));
+  // auto reload
+  reloadAuthorized();
+}
+
+export function getOrganization(str?: string) {
+  const tokenString =
+    typeof str === 'undefined' && localStorage ? localStorage.getItem('organization') : str; // tokenString could be admin, "admin", ["admin"]
+
+  let token;
+
+  try {
+    if (tokenString) {
+      token = JSON.parse(tokenString);
+    }
+  } catch (e) {
+    token = tokenString;
+  }
+
+  if (typeof token === 'string') {
+    return [token];
+  }
+
+  return token;
+}

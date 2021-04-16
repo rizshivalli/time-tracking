@@ -1,47 +1,143 @@
-import { ProGridContainer, ProSpace, ProTitle } from '@/common';
-import { getWeekFromSuntoSat, getToday, getRequiredDateFormat } from '@/utils/MomentHelpers';
-import { PlusOutlined, ClockCircleOutlined } from '@ant-design/icons';
-import { Button, Col, DatePicker, Row, Radio, Select, Tag } from 'antd';
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { ProGridContainer, ProIntlProvider, ProSpace, ProTitle } from '@/common';
+import { getToday, getRequiredDateFormat, getStartAndEndOfWeek } from '@/utils/MomentHelpers';
+import { CheckOutlined, PlusOutlined } from '@ant-design/icons';
+import ProTable, { ActionType } from '@ant-design/pro-table';
+import { Button, Col, DatePicker, Row, Radio, Select } from 'antd';
+import moment from 'moment';
+import React, { useCallback, useRef, useState } from 'react';
+import { Link } from 'umi';
+import { getWeekTimeRecords, updateWeekRecords, submitWeekForApproval } from '../service';
 import { NewEntryModal } from './components';
 import './index.less';
 
 const { Option } = Select;
 
 const today = getToday('dddd, DD MMM');
-const todayDate = getToday('MM-DD-YYYY');
-const fullDate = getToday('MM-DD-YYYY');
-const thisWeekDates = getWeekFromSuntoSat(fullDate);
+
+// const thisWeekDates = getWeekFromSuntoSat(fullDate);
+
+const getWeekFromSuntoSatForTable = (date: string) => {
+  let weekDates = [];
+  for (let i = 0; i <= 6; i++) {
+    // weekDates.push(getRequiredDateFormat(moment().day(i), 'ddd-DD-MM'));
+    weekDates.push({
+      title: getRequiredDateFormat(moment(date).day(i), 'DD-MMM'),
+      dataIndex: getRequiredDateFormat(moment(date).day(i), 'MM-DD-YYYY'),
+      // day: getRequiredDateFormat(moment(date).day(i), 'ddd'),
+      key: getRequiredDateFormat(moment(date).day(i), 'MM-DD-YYYY'),
+    });
+  }
+
+  const taskName = [
+    {
+      title: 'Task Name',
+      dataIndex: 'task_name',
+      // @ts-ignore
+      render: (text, value) => <div>{`[${value?.project_name}] ${text}`}</div>,
+      editable: false,
+    },
+
+    {
+      title: 'project_id',
+      dataIndex: 'project_id',
+      hideInTable: true,
+      // hideInForm: true,
+      // @ts-ignore
+      editable: (text, record, index) => {
+        return index < 0;
+      },
+    },
+    {
+      title: 'project_name',
+      dataIndex: 'project_name',
+      hideInTable: true,
+      // hideInForm: true,
+      // @ts-ignore
+      editable: false,
+    },
+    {
+      title: 'task_id',
+      dataIndex: 'task_id',
+      hideInTable: true,
+      // hideInForm: true,
+      // @ts-ignore
+      editable: (text, record, index) => {
+        return index < 0;
+      },
+    },
+  ];
+
+  const operation = [
+    {
+      title: 'Total Hours',
+      dataIndex: 'duration',
+      // hideInForm: true,
+      // @ts-ignore
+      editable: false,
+    },
+    {
+      title: 'Operation',
+      key: 'option',
+      width: 120,
+      valueType: 'option',
+      // @ts-ignore
+      render: (_, row, index, action) => [
+        <a
+          key="a"
+          onClick={() => {
+            action.startEditable(row.id);
+          }}
+        >
+          Edit
+        </a>,
+        // <a key="a" onClick={() => {}}>
+        //   Delete
+        // </a>,
+      ],
+    },
+  ];
+
+  const newD = [...taskName, ...weekDates, ...operation];
+  return newD;
+};
 
 const TimeSheet = () => {
+  const todayDate = getToday('MM-DD-YYYY');
+  const getWeekdata = getWeekFromSuntoSatForTable(todayDate);
   const [period, setPeriod] = useState<string>('week');
-  const [datesToDisplay, setDatesToDisplay] = useState<Array<any>>(thisWeekDates);
+  const [datesToDisplay, setDatesToDisplay] = useState<any[]>(getWeekdata);
   const [selectedTabKey, setSelectedTabKey] = useState<string>(todayDate);
   const [newEntryModalVisible, setNewEntryModalVisible] = useState<boolean>(false);
+  const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
+  const actionRef = useRef<ActionType>();
+  const [date, setDate] = useState<string>(todayDate);
+
+  const submitWeek = async () => {
+    const dates = getStartAndEndOfWeek(selectedTabKey);
+    await submitWeekForApproval(dates);
+  };
 
   const onDateChange = (date: any, dateString: string) => {
-    console.log(date, dateString);
     if (date) {
       const newDate = getRequiredDateFormat(dateString, 'MM-DD-YYYY');
-      const getNewDatesArray = getWeekFromSuntoSat(newDate);
-      const selectedTab = getRequiredDateFormat(newDate, 'MM-DD-YYYY');
+      setDate(newDate);
+      const getNewDatesArray = getWeekFromSuntoSatForTable(newDate);
+      getStartAndEndOfWeek(date);
+      setSelectedTabKey(newDate);
       setDatesToDisplay(() => {
-        setSelectedTabKey(() => {
-          return selectedTab;
-        });
         return getNewDatesArray;
       });
+      actionRef?.current?.reload();
     } else {
-      const todayDate = getToday('MM-DD-YYYY');
       const fullDate = getToday('MM-DD-YYYY');
-      const thisWeekDates = getWeekFromSuntoSat(fullDate);
+      setDate(fullDate);
+      const thisWeekDates = getWeekFromSuntoSatForTable(fullDate);
+      getStartAndEndOfWeek(fullDate);
+      setSelectedTabKey(fullDate);
       setDatesToDisplay(() => {
-        setSelectedTabKey(() => {
-          return todayDate;
-        });
         return thisWeekDates;
       });
+      actionRef?.current?.reload();
     }
   };
 
@@ -49,27 +145,11 @@ const TimeSheet = () => {
     setPeriod(e.target.value);
   };
 
-  function callback(key: string) {
-    setSelectedTabKey(() => {
-      return key;
-    });
-  }
-
-  const OperationsSlot = {
-    left: (
-      <Button
-        type="primary"
-        icon={<PlusOutlined />}
-        size="large"
-        onClick={() => {
-          setNewEntryModalVisible(true);
-        }}
-      >
-        New Entry
-      </Button>
-    ),
-    right: <Tag icon={<ClockCircleOutlined />}>Total: 8:46</Tag>,
-  };
+  const getAllWeekData = useCallback(async (date: string) => {
+    const dates = getStartAndEndOfWeek(date);
+    const weekData = await getWeekTimeRecords(dates.start_date, dates.end_date);
+    return weekData;
+  }, []);
 
   return (
     <ProGridContainer>
@@ -113,6 +193,54 @@ const TimeSheet = () => {
                 </ProSpace>
               </ProSpace>
             </div>
+            <ProIntlProvider>
+              <ProTable
+                actionRef={actionRef}
+                columns={datesToDisplay && datesToDisplay}
+                request={async () => {
+                  const data = await getAllWeekData(date);
+                  return { data };
+                }}
+                editable={{
+                  type: 'multiple',
+                  editableKeys,
+                  deletePopconfirmMessage: 'Delete This week entry?',
+                  onSave: async (key, row) => {
+                    const data = await updateWeekRecords(row);
+                    if (data === 200) {
+                      actionRef?.current?.reload();
+                    }
+                  },
+                  onChange: setEditableRowKeys,
+                }}
+                rowKey="id"
+                toolBarRender={() => [
+                  <Button
+                    size="large"
+                    key="2"
+                    type="primary"
+                    onClick={() => {
+                      submitWeek();
+                    }}
+                  >
+                    <CheckOutlined />
+                    Submit Week For Approval
+                  </Button>,
+                  <Button
+                    size="large"
+                    key="3"
+                    type="primary"
+                    onClick={() => {
+                      setNewEntryModalVisible(true);
+                    }}
+                  >
+                    <PlusOutlined />
+                    New Entry
+                  </Button>,
+                ]}
+                search={false}
+              />
+            </ProIntlProvider>
           </div>
         </Col>
       </Row>
@@ -120,6 +248,7 @@ const TimeSheet = () => {
         selectedKey={selectedTabKey}
         visible={newEntryModalVisible}
         setVisibility={setNewEntryModalVisible}
+        onSuccess={actionRef?.current?.reload()}
       />
     </ProGridContainer>
   );

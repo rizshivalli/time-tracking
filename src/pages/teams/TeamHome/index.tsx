@@ -1,16 +1,15 @@
-import { ProGridContainer, ProIntlProvider, ProSpace } from '@/common';
+import { ProDivider, ProGridContainer, ProIntlProvider, ProSpace } from '@/common';
 import { PlusOutlined } from '@ant-design/icons';
+import ProCard from '@ant-design/pro-card';
 import ProTable, { ActionType, ProColumns } from '@ant-design/pro-table';
-import { Button, Col, Row } from 'antd';
+import { Button, Col, Row, Statistic } from 'antd';
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { getTeamMembers } from '../service';
 import { ImportPeopleModal } from './components';
+import './index.less';
 
-const data = [
-  { employee_name: 'rizwan', total_hours: 8, total_capacity: 35 },
-  { employee_name: 'ahmed', total_hours: 2, total_capacity: 35 },
-  { employee_name: 'jane', total_hours: 4, total_capacity: 35 },
-];
+const { Divider } = ProCard;
 
 const columns: ProColumns<any>[] = [
   {
@@ -19,12 +18,28 @@ const columns: ProColumns<any>[] = [
     width: 48,
   },
   {
-    title: 'Employees',
-    dataIndex: 'employee_name',
+    title: 'Name',
+    dataIndex: 'full_name',
+  },
+  {
+    title: 'Capacity',
+    dataIndex: 'capacity',
+  },
+  {
+    title: 'Designation',
+    dataIndex: 'designation',
+  },
+  {
+    title: 'Work Email',
+    dataIndex: 'email',
   },
   {
     title: 'Total Hours',
     dataIndex: 'total_hours',
+    valueType: (item) => ({
+      type: 'progress',
+      status: item.status,
+    }),
   },
   {
     title: 'Total Capacity',
@@ -46,9 +61,24 @@ const TeamHome = () => {
               <Button>Imports</Button>
               <Button>Export</Button>
             </ProSpace>
+            <ProDivider />
+            <ProSpace size="large">
+              <Statistic title="Total Hours" value={80.0} precision={2} />
+              <ProDivider type="vertical" />
+              <Statistic title="Team Capacity" value={210.0} precision={2} />
+              <ProDivider type="vertical" />
+            </ProSpace>
+            <ProDivider />
             <ProIntlProvider>
               <ProTable
-                dataSource={data}
+                request={async (params = {}) => {
+                  const data = await getTeamMembers();
+
+                  return {
+                    data,
+                  };
+                }}
+                // dataSource={data}
                 columns={columns}
                 actionRef={actionRef}
                 rowKey="id"
@@ -56,7 +86,7 @@ const TeamHome = () => {
                   labelWidth: 'auto',
                 }}
                 pagination={{
-                  pageSize: 5,
+                  pageSize: 25,
                 }}
                 dateFormatter="string"
                 toolBarRender={false}

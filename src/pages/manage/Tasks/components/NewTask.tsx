@@ -1,14 +1,44 @@
-import { ProModal } from '@/common';
+import { ProIntlProvider, ProModal } from '@/common';
 import ProForm, { ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
-import React from 'react';
+import React, { useCallback } from 'react';
 import type { FC } from 'react';
+import { Modal } from 'antd';
+import { createTask } from '../service';
 
 interface NewTaskModalProps {
   visible: boolean;
   setVisibility: any;
+  onSuccess: () => void;
 }
-const NewTask: FC<NewTaskModalProps> = ({ visible, setVisibility }) => {
+
+const NewTask: FC<NewTaskModalProps> = ({ visible, setVisibility, onSuccess }) => {
   const [form] = ProForm.useForm();
+
+  const onTaskCreated = () => {
+    if (onSuccess) {
+      onSuccess();
+    }
+    setVisibility(false);
+  };
+
+  const handleFinish = useCallback(async (values) => {
+    console.log('🚀 ~ file: NewTask.tsx ~ line 25 ~ handleFinish ~ values', values);
+    // setPending(true);
+
+    await createTask(values)
+      .then((result) => {
+        if (result) {
+          Modal.success({
+            title: 'Success',
+            content: 'Task Created Successfully.',
+            onOk: onTaskCreated,
+          });
+        }
+      })
+      .catch((error) => {
+        Modal.error({ title: 'Error', content: error.message });
+      });
+  }, []);
   return (
     <ProModal
       title="New Task"
@@ -18,36 +48,43 @@ const NewTask: FC<NewTaskModalProps> = ({ visible, setVisibility }) => {
       width={540}
       footer={false}
     >
-      <ProForm
-        onReset={() => {
-          form.resetFields();
-          setVisibility(false);
-        }}
-        submitter={{
-          searchConfig: {
-            submitText: 'Save Client',
-            resetText: 'Cancel',
-          },
-        }}
-      >
-        <ProFormText name="task_name" label="Task Name" width="lg" />
+      <ProIntlProvider>
+        <ProForm
+          onFinish={(values) => {
+            handleFinish(values);
+            return Promise.resolve();
+          }}
+          onReset={() => {
+            form.resetFields();
+            setVisibility(false);
+          }}
+          submitter={{
+            searchConfig: {
+              submitText: 'Save Task',
+              resetText: 'Cancel',
+            },
+          }}
+        >
+          <ProFormText name="name" label="Task Name" width="lg" />
 
-        <ProFormCheckbox.Group
-          layout="vertical"
-          label=""
-          name="types"
-          options={[
-            {
-              label: ' This is a common task, and should be added to all future projects',
-              value: 'a',
-            },
-            {
-              label: ' Add this task to all existing projects',
-              value: 'b',
-            },
-          ]}
-        />
-      </ProForm>
+          <ProFormCheckbox.Group
+            width="lg"
+            layout="horizontal"
+            label=""
+            name="task_type"
+            options={[
+              {
+                label: 'This is a common task, and should be added to all future projects',
+                value: 'common_task',
+              },
+              {
+                label: 'Add this task to all existing projects',
+                value: 'all_exisiting_projects',
+              },
+            ]}
+          />
+        </ProForm>
+      </ProIntlProvider>
     </ProModal>
   );
 };

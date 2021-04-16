@@ -1,5 +1,5 @@
 /**
- * Ant Design Pro v4 use `@ant-design/pro-layout` to handle Layout.
+ * Simplifi Team v4 use `@ant-design/pro-layout` to handle Layout.
  *
  * @see You can view component api by: https://github.com/ant-design/ant-design-pro-layout
  */
