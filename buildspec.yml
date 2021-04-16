@@ -5,7 +5,7 @@ phases:
     commands:
       # install node 12
       - echo Installing Node ...
-      - curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
+      - curl -fsSL https://deb.nodesource.com/setup_12.x | bash -
       - apt install -y nodejs
       # install Yarn
       - echo Installing Yarn ...
