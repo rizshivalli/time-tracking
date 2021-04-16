@@ -202,7 +202,7 @@ const TimeSheet = () => {
                                 submitWeek();
                               }}
                             >
-                              Submit Week for Proposal
+                              Submit Week for Approval
                             </Button>
                           </div>
                         }
