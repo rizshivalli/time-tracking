@@ -49,7 +49,7 @@ const ProjectList = () => {
           overlay={
             <Menu>
               <Menu.Item key="1">
-                <Link to={`/projects/${record.id}`}>Edit</Link>
+                <Link to={`/project/${record.id}`}>Edit</Link>
               </Menu.Item>
               <Menu.Item key="2">Archive</Menu.Item>
             </Menu>

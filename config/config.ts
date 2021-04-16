@@ -126,7 +126,7 @@ export default defineConfig({
                   component: './projects/ProjectList',
                 },
                 {
-                  path: '/projects/:detail',
+                  path: '/project/:detail',
                   name: 'projects',
                   component: './projects/ProjectList/ProjectDetails',
                   hideInMenu: true,
