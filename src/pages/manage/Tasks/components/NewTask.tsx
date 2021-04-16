@@ -60,7 +60,7 @@ const NewTask: FC<NewTaskModalProps> = ({ visible, setVisibility, onSuccess }) =
           }}
           submitter={{
             searchConfig: {
-              submitText: 'Save Client',
+              submitText: 'Save Task',
               resetText: 'Cancel',
             },
           }}
