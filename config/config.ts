@@ -57,6 +57,24 @@ export default defineConfig({
               component: './User/register',
             },
             {
+              name: 'register',
+              icon: 'smile',
+              path: '/user/team-member-register',
+              component: './User/user-register',
+            },
+            {
+              name: 'register-result',
+              icon: 'smile',
+              path: '/user/forgot-password',
+              component: './User/forgot-password',
+            },
+            {
+              name: 'register-result',
+              icon: 'smile',
+              path: '/user/reset-password',
+              component: './User/reset-password',
+            },
+            {
               component: '404',
             },
           ],
@@ -108,14 +126,14 @@ export default defineConfig({
                       name: 'pending-approvals',
                       path: '/time/time-sheet/approve',
                       component: './Time/PendingApproval',
-                      authority: ['admin'],
+                      authority: ['admin', 'owner', 'project_manager'],
                     },
                     {
                       path: '/time/time-sheet/approve/:id',
                       name: 'pending-approvals',
                       component: './Time/PendingApproval/Details',
                       hideInMenu: true,
-                      authority: ['admin'],
+                      authority: ['admin', 'owner', 'project_manager'],
                     },
                   ],
                 },
@@ -156,6 +174,7 @@ export default defineConfig({
                   path: '/reports',
                   name: 'reports',
                   icon: 'FileExcelOutlined',
+                  authority: ['admin', 'owner', 'project_manager'],
                   routes: [
                     {
                       path: '/',
@@ -187,6 +206,7 @@ export default defineConfig({
                   path: '/manage',
                   name: 'manage',
                   icon: 'smile',
+                  authority: ['admin', 'owner', 'project_manager'],
                   routes: [
                     {
                       path: '/',

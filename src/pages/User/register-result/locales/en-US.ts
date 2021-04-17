@@ -17,7 +17,7 @@ export default {
   'userandregister-result.register-result.msg': 'Account：registered at {email}',
   'userandregister-result.register-result.activation-email':
     'The activation email has been sent to your email address and is valid for 24 hours. Please log in to the email in time and click on the link in the email to activate the account.',
-  'userandregister-result.register-result.back-home': 'Back to home',
+  'userandregister-result.register-result.back-home': 'Back to login',
   'userandregister-result.register-result.view-mailbox': 'View mailbox',
   'userandregister-result.navBar.lang': 'Languages',
 };

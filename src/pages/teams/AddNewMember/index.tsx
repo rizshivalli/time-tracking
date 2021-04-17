@@ -39,17 +39,15 @@ const AddNewMember = () => {
           form.resetFields();
         }}
         onFinish={(values) => {
-          const fullName = { name: `${values.first_name} ${values.last_name}` };
           let contractor;
           if (values.member_type === 'contractor') {
-            contractor = { contractor: true };
+            contractor = { contract: true };
           } else {
-            contractor = { contractor: false };
+            contractor = { contract: false };
           }
           delete values.member_type;
-          delete values.first_name;
-          delete values.last_name;
-          const finalValues = { ...values, ...contractor, ...fullName };
+
+          const finalValues = { ...values, ...contractor };
           handleFinish(finalValues);
           return Promise.resolve();
         }}
@@ -113,6 +111,7 @@ const AddNewMember = () => {
           <ProFormSelect
             width="sm"
             label="Capacity"
+            name="capacity"
             fieldProps={{ defaultValue: '35' }}
             options={capacityOptions}
             placeholder="Please select a tasks"
@@ -122,7 +121,7 @@ const AddNewMember = () => {
         </ProForm.Group>
         <ProFormRadio.Group
           layout="vertical"
-          name="permissions"
+          name="permission"
           label="Permissions"
           options={[
             {

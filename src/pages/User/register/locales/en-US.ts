@@ -23,7 +23,7 @@ export default {
   'userandregister.email.wrong-format': 'The email address is in the wrong format!',
   'userandregister.userName.required': 'Please enter your userName!',
   'userandregister.password.required': 'Please enter your password!',
-  'userandregister.password.twice': 'The passwords entered twice do not match!',
+  'userandregister.password.twice': 'The passwords do not match!',
   'userandregister.strength.msg':
     "Please enter at least 6 characters and don't use passwords that are easy to guess.",
   'userandregister.strength.strong': 'Strength: strong',
@@ -75,4 +75,6 @@ export default {
   'userandregister.option.B': 'Colleague B',
   'userandregister.option.C': 'Colleague C',
   'userandregister.navBar.lang': 'Languages',
+  'userandregister-forgot-password': 'Forgot Password',
+  'userandregister-reset-password': 'Reset password',
 };

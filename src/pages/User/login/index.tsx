@@ -132,7 +132,7 @@ const Login: React.FC<LoginProps> = (props) => {
             <FormattedMessage id="pages.login.rememberMe" defaultMessage="自动登录" />
           </ProFormCheckbox>
           <Link
-            to="/user/register"
+            to="/user/forgot-password"
             style={{
               float: 'right',
             }}
