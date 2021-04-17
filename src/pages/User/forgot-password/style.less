@@ -1,0 +1,87 @@
+@import '~antd/es/style/themes/default.less';
+
+.registerResult {
+  width: 800px;
+  min-height: 400px;
+  margin: auto;
+  padding: 80px;
+  background: none;
+  :global {
+    .anticon {
+      font-size: 64px;
+    }
+  }
+  .title {
+    margin-top: 32px;
+    font-size: 20px;
+    line-height: 28px;
+  }
+  .actions {
+    margin-top: 40px;
+    a + a {
+      margin-left: 8px;
+    }
+  }
+}
+
+.title {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 10px;
+}
+
+.main {
+  padding: 25px 20px;
+  width: 368px;
+  background-color: white;
+  margin: 0px auto;
+  @media screen and (max-width: @screen-sm) {
+    width: 95%;
+  }
+
+  .icon {
+    margin-left: 16px;
+    color: rgba(0, 0, 0, 0.2);
+    font-size: 24px;
+    vertical-align: middle;
+    cursor: pointer;
+    transition: color 0.3s;
+
+    &:hover {
+      color: @primary-color;
+    }
+  }
+  .getCaptcha {
+    display: block;
+    width: 100%;
+  }
+  .submit {
+    width: 100%;
+  }
+  h3 {
+    font-size: 19px;
+    margin: 0;
+  }
+  p {
+    text-align: center;
+    font-size: 13px;
+    margin-bottom: 30px;
+  }
+
+  .other {
+    display: inline;
+    line-height: 22px;
+
+    .register {
+      float: left;
+      padding: 8px 0;
+    }
+  }
+
+  :global {
+    .antd-pro-login-submit {
+      width: 100%;
+      margin-top: 24px;
+    }
+  }
+}
