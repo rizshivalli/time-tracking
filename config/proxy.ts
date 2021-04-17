@@ -14,7 +14,7 @@ export default {
       pathRewrite: { '^': '' },
     },
     '/strapi/': {
-      target: 'http://www.simplifi.ml/',
+      target: 'http://api.simplifi.ml/',
       changeOrigin: true,
       pathRewrite: {
         '^/strapi/': '',
@@ -35,7 +35,7 @@ export default {
       pathRewrite: { '^': '' },
     },
     '/strapi/': {
-      target: 'http://www.simplifi.ml/',
+      target: 'http://api.simplifi.ml/',
       changeOrigin: true,
       pathRewrite: {
         '^/strapi/': '',
