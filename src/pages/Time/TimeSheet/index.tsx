@@ -167,6 +167,7 @@ const TimeSheet = () => {
                     </Link>
                   </Radio.Group>
                   <Select
+                    disabled
                     showSearch
                     style={{ width: 200 }}
                     placeholder="Employee"

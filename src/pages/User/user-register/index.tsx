@@ -102,10 +102,14 @@ const Register: FC<RegisterProps> = ({ submitting, dispatch, teamRegister, locat
     return 'poor';
   };
   const onFinish = (values: Record<string, any>) => {
+    const organisation_members = { organisation_members: JSON.parse(`[${code.org_id}]`) };
+    const finalValues: any = { ...values, ...organisation_members };
+    delete finalValues.organisationName;
+
     dispatch({
       type: 'teamRegister/submit',
       payload: {
-        ...values,
+        ...finalValues,
       },
     });
   };
@@ -185,7 +189,7 @@ const Register: FC<RegisterProps> = ({ submitting, dispatch, teamRegister, locat
         </FormItem>
         <FormItem
           name="organisationName"
-          initialValue={code?.organisationName}
+          initialValue={code?.org_name}
           rules={[
             {
               required: true,
@@ -193,7 +197,7 @@ const Register: FC<RegisterProps> = ({ submitting, dispatch, teamRegister, locat
             },
           ]}
         >
-          <Input size="large" placeholder="Company" />
+          <Input disabled size="large" placeholder="Company" />
         </FormItem>
 
         <FormItem
