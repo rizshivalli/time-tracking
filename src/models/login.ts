@@ -62,7 +62,7 @@ const Model: LoginModelType = {
   reducers: {
     changeLoginStatus(state, { payload }) {
       console.log('🚀 ~ file: login.ts ~ line 64 ~ changeLoginStatus ~ payload', payload);
-      setAuthority('admin');
+      setAuthority(payload?.data?.user?.organisation_role);
       setToken(payload?.data?.jwt);
       setOrganization(payload?.data?.user?.organisation?.id);
       return {
