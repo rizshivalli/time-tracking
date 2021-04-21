@@ -56,7 +56,7 @@ const ProjectList = () => {
           }
         >
           <Button>
-            Button <DownOutlined />
+            Options <DownOutlined />
           </Button>
         </Dropdown>,
       ],

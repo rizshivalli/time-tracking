@@ -65,7 +65,12 @@ const NewTask: FC<NewTaskModalProps> = ({ visible, setVisibility, onSuccess }) =
             },
           }}
         >
-          <ProFormText name="name" label="Task Name" width="lg" />
+          <ProFormText
+            name="name"
+            label="Task Name"
+            width="lg"
+            rules={[{ required: true, message: 'Please enter task name' }]}
+          />
 
           <ProFormCheckbox.Group
             width="lg"

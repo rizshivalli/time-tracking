@@ -235,3 +235,44 @@ export async function getPendingApprovalByID(id: identifier) {
     throw new Error(response.message);
   }
 }
+
+export async function approveTimesheet(id: identifier) {
+  const hide = message.loading('Approving Timesheet...', 0);
+  const token = await getToken();
+  const organization = await getOrganization();
+  await request(`/strapi/approvals/approve/${id}`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}`, orgid: organization },
+  })
+    .then((response) => {
+      if (response.statusCode === 200) {
+        hide();
+        message.success('Timesheet has been successfully approved');
+        return response.data;
+      } else {
+        hide();
+        message.error(response.message);
+        throw new Error(response.message);
+      }
+    })
+    .catch((error) => {
+      hide();
+      message.error(error.message);
+      throw new Error(error.message);
+    });
+}
+
+export async function addMultipleTeamMembers(params: any[]) {
+  const token = await getToken();
+  const organization = await getOrganization();
+  const response = await request('/strapi/organisation-members/many', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}`, orgid: organization },
+    data: params,
+  });
+  if (response.statusCode === 200) {
+    return response.data;
+  } else {
+    throw new Error(response.message);
+  }
+}

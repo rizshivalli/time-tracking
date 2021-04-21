@@ -119,3 +119,30 @@ export const capacityOptions = [
   { value: '59.5', label: '59.5' },
   { value: '60.0', label: '60.0' },
 ];
+
+export function humanize(str: string) {
+  let i,
+    frags = str.split('_');
+  for (i = 0; i < frags.length; i++) {
+    frags[i] = frags[i].charAt(0).toUpperCase() + frags[i].slice(1);
+  }
+  return frags.join(' ');
+}
+
+export const createTableColumns = (
+  title: string,
+  dataIndex: string,
+  key: string | null = null,
+  render = null,
+  sorter = false,
+  width = false,
+) => {
+  return {
+    title,
+    dataIndex,
+    key: key || dataIndex,
+    render,
+    sorter,
+    width,
+  };
+};

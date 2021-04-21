@@ -2,8 +2,8 @@ import { ProGridContainer, ProSpace, ProTitle } from '@/common';
 import {
   getWeekFromSuntoSat,
   getToday,
-  getRequiredDateFormat,
   getStartAndEndOfWeek,
+  getRequiredDateFormat,
 } from '@/utils/MomentHelpers';
 import { PlusOutlined, ClockCircleOutlined, HistoryOutlined } from '@ant-design/icons';
 import {
@@ -18,6 +18,7 @@ import {
   Typography,
   List,
   message,
+  Statistic,
 } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -227,10 +228,60 @@ const TimeSheet = () => {
                                         </Text>
                                       </ProSpace>
                                     </Col>
-                                    <Col span={6} className="card-left-content">
-                                      <Text className="time-hours">
-                                        {listItem?.duration?.slice(0, -3)}
-                                      </Text>
+
+                                    {listItem.start_time !== null && listItem.end_time === null ? (
+                                      <Col span={6} className="card-left-content">
+                                        {/* <Text className="time-hours">
+                                          Start Time{' '}
+                                          {getRequiredDateFormat(
+                                            listItem?.start_time,
+                                            'MM-DD-YYYY HH:mm:ss',
+                                          )}
+                                        </Text> */}
+
+                                        <Statistic
+                                          title=" Start Time"
+                                          value={getRequiredDateFormat(
+                                            listItem?.start_time,
+                                            'MM-DD-YYYY HH:mm:ss',
+                                          )}
+                                        />
+                                        <Button
+                                          size="large"
+                                          type="primary"
+                                          icon={<HistoryOutlined spin />}
+                                          onClick={() => {
+                                            const values = {
+                                              end_time: new Date().toISOString(),
+                                            };
+                                            stopTimer(listItem.id, values);
+                                          }}
+                                        >
+                                          Stop
+                                        </Button>
+                                      </Col>
+                                    ) : (
+                                      <Col span={6} className="card-left-content">
+                                        <Text className="time-hours">
+                                          {listItem?.duration?.slice(0, -3)}
+                                        </Text>
+                                        <Button
+                                          size="large"
+                                          icon={<ClockCircleOutlined />}
+                                          onClick={() => {
+                                            const values = {
+                                              start_time: new Date().toISOString(),
+                                              project: listItem?.project?.id,
+                                              task: listItem?.task.id,
+                                            };
+                                            // restartTimer(values)
+                                          }}
+                                        >
+                                          Start
+                                        </Button>
+                                      </Col>
+                                    )}
+                                    {/* 
                                       {listItem.duration === null || listItem.end_time === null ? (
                                         <Button
                                           size="large"
@@ -260,8 +311,7 @@ const TimeSheet = () => {
                                         >
                                           Stop
                                         </Button>
-                                      )}
-                                    </Col>
+                                      )} */}
                                   </Row>
                                 ) : null}
                               </Col>

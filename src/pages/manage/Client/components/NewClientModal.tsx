@@ -62,7 +62,12 @@ const NewClientModal: FC<NewClientModalProps> = ({ visible, setVisibility, onSuc
             },
           }}
         >
-          <ProFormText name="name" label="Client Name" width="lg" />
+          <ProFormText
+            name="name"
+            label="Client Name"
+            width="lg"
+            rules={[{ required: true, message: 'Please enter a client name!' }]}
+          />
           <ProFormTextArea width="lg" name="address" label="Address" />
         </ProForm>
       </ProIntlProvider>

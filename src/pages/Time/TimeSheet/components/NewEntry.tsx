@@ -4,7 +4,6 @@ import React, { FC, useCallback, useState } from 'react';
 import ProForm, { ProFormSelect, ProFormTextArea, ProFormTimePicker } from '@ant-design/pro-form';
 import { Modal } from 'antd';
 import { getProjectsForTask, getTasks, createNewTimeRecord } from '../../service';
-import moment from 'moment';
 
 interface NewEntryProps {
   selectedKey: string;
@@ -15,7 +14,6 @@ interface NewEntryProps {
 const NewEntry: FC<NewEntryProps> = ({ selectedKey, visible, setVisibility, onSuccess }) => {
   const [form] = ProForm.useForm();
   const [timeEntry, setTimeEntry] = useState<boolean>(false);
-  const [client, setClient] = useState('');
   const [taskOptions, setTaskOptions] = useState([]);
   const onDateChange = (date: any, dateString: string) => {
     console.log(date, dateString);
@@ -75,10 +73,10 @@ const NewEntry: FC<NewEntryProps> = ({ selectedKey, visible, setVisibility, onSu
           onFinish={(values) => {
             let newValues;
             if ('duration' in values) {
-              newValues = { date: moment(selectedKey).toISOString(), ...values };
+              newValues = { date: selectedKey, ...values };
             } else {
               newValues = {
-                date: moment(selectedKey).toISOString(),
+                date: selectedKey,
                 start_time: new Date().toISOString(),
                 ...values,
               };
@@ -116,9 +114,15 @@ const NewEntry: FC<NewEntryProps> = ({ selectedKey, visible, setVisibility, onSu
             }}
             name="project"
             label="Project/Client"
+            rules={[{ required: true, message: 'Please select a client!' }]}
           />
 
-          <ProFormSelect options={taskOptions} name="task" label="Task" />
+          <ProFormSelect
+            options={taskOptions}
+            name="task"
+            label="Task"
+            rules={[{ required: true, message: 'Please select your task!' }]}
+          />
 
           <ProForm.Group>
             <ProFormTextArea width="md" name="notes" label="Notes" />
