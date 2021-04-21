@@ -78,7 +78,13 @@ const EditClient = (props: any) => {
                   },
                 }}
               >
-                <ProFormText name="name" label="Client Name" width="lg" initialValue={data?.name} />
+                <ProFormText
+                  name="name"
+                  label="Client Name"
+                  width="lg"
+                  initialValue={data?.name}
+                  rules={[{ required: true, message: 'Please enter clinet name!' }]}
+                />
                 <ProFormTextArea
                   width="lg"
                   name="address"

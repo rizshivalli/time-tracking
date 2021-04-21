@@ -75,10 +75,10 @@ const NewEntry: FC<NewEntryProps> = ({ selectedKey, visible, setVisibility, onSu
           onFinish={(values) => {
             let newValues;
             if ('duration' in values) {
-              newValues = { date: moment(selectedKey).toISOString(), ...values };
+              newValues = { date: selectedKey, ...values };
             } else {
               newValues = {
-                date: moment(selectedKey).toISOString(),
+                date: selectedKey,
                 start_time: new Date().toISOString(),
                 ...values,
               };
@@ -116,9 +116,15 @@ const NewEntry: FC<NewEntryProps> = ({ selectedKey, visible, setVisibility, onSu
             }}
             name="project"
             label="Project/Client"
+            rules={[{ required: true, message: 'Please select a client!' }]}
           />
 
-          <ProFormSelect options={taskOptions} name="task" label="Task" />
+          <ProFormSelect
+            options={taskOptions}
+            name="task"
+            label="Task"
+            rules={[{ required: true, message: 'Please select your task!' }]}
+          />
 
           <ProForm.Group>
             <ProFormTextArea width="md" name="notes" label="Notes" />

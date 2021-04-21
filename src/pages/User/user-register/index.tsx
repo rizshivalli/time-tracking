@@ -102,10 +102,10 @@ const Register: FC<RegisterProps> = ({ submitting, dispatch, teamRegister, locat
     return 'poor';
   };
   const onFinish = (values: Record<string, any>) => {
-    const organisation_members = { organisation_members: JSON.parse(`[${code.org_id}]`) };
+    const organisation_members = { organisation_members: JSON.parse(`[${code.omId}]`) };
     const finalValues: any = { ...values, ...organisation_members };
     delete finalValues.organisationName;
-
+    console.log('🚀 ~ file: index.tsx ~ line 116 ~ onFinish ~ finalValues', finalValues);
     dispatch({
       type: 'teamRegister/submit',
       payload: {
@@ -113,6 +113,7 @@ const Register: FC<RegisterProps> = ({ submitting, dispatch, teamRegister, locat
       },
     });
   };
+
   const checkConfirm = (_: any, value: string) => {
     const promise = Promise;
     if (value && value !== form.getFieldValue('password')) {

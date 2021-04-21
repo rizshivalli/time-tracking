@@ -15,22 +15,6 @@ import React, { useCallback, useState } from 'react';
 import { createProject, getTeamMates } from '../service';
 import SendInviteModal from './components/SendInviteModal';
 
-interface ItemProps {
-  label: string;
-  value: string;
-}
-
-const options: ItemProps[] = [];
-
-// eslint-disable-next-line no-plusplus
-for (let i = 10; i < 36; i++) {
-  const value = i.toString(36) + i;
-  options.push({
-    label: `Long Task Name : ${value}`,
-    value,
-  });
-}
-
 const CreateNewProject = () => {
   const [isClientNew, setClientNew] = useState<boolean>(false);
   const [inviteFormVisible, setInviteFormVisiblity] = useState<boolean>(false);
@@ -102,7 +86,7 @@ const CreateNewProject = () => {
             {isClientNew ? (
               <ProFormText
                 width="xl"
-                name="new_client_name"
+                name="client_new"
                 label="Client Name"
                 placeholder="Enter New Client Name"
                 rules={[{ required: true, message: 'Please Enter new client name' }]}
@@ -217,7 +201,7 @@ const CreateNewProject = () => {
               request={async () => {
                 const teammates = await getTeamMates();
                 return teammates?.map((obj: any) => ({
-                  label: `${obj.id} (${obj.role}) `,
+                  label: `${obj.full_name} [${obj.permission}]`,
                   value: obj.id,
                 }));
               }}

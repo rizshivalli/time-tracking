@@ -66,7 +66,7 @@ export async function getClientById(id: identifier) {
 export async function editClientById(id: identifier, params: any) {
   const token = await getToken();
   const organization = await getOrganization();
-  const response = await request(`/strapi/clients${id}`, {
+  const response = await request(`/strapi/clients/${id}`, {
     method: 'PUT',
     headers: { Authorization: `Bearer ${token}`, orgid: organization },
     data: params,
