@@ -185,7 +185,7 @@ const ProjectDetails = (props: any) => {
                 request={async () => {
                   const teammates = await getTeamMates();
                   return teammates?.map((obj: any) => ({
-                    label: `${obj.id} (${obj.role}) `,
+                    label: `${obj.full_name} [${obj.permission}]`,
                     value: obj.id,
                   }));
                 }}

@@ -18,6 +18,7 @@ import {
   Typography,
   List,
   message,
+  Statistic,
 } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -230,12 +231,21 @@ const TimeSheet = () => {
 
                                     {listItem.start_time !== null && listItem.end_time === null ? (
                                       <Col span={6} className="card-left-content">
-                                        <Text className="time-hours">
+                                        {/* <Text className="time-hours">
+                                          Start Time{' '}
                                           {getRequiredDateFormat(
                                             listItem?.start_time,
                                             'MM-DD-YYYY HH:mm:ss',
                                           )}
-                                        </Text>
+                                        </Text> */}
+
+                                        <Statistic
+                                          title=" Start Time"
+                                          value={getRequiredDateFormat(
+                                            listItem?.start_time,
+                                            'MM-DD-YYYY HH:mm:ss',
+                                          )}
+                                        />
                                         <Button
                                           size="large"
                                           type="primary"

@@ -4,7 +4,6 @@ import React, { FC, useCallback, useState } from 'react';
 import ProForm, { ProFormSelect, ProFormTextArea, ProFormTimePicker } from '@ant-design/pro-form';
 import { Modal } from 'antd';
 import { getProjectsForTask, getTasks, createNewTimeRecord } from '../../service';
-import moment from 'moment';
 
 interface NewEntryProps {
   selectedKey: string;
@@ -15,7 +14,6 @@ interface NewEntryProps {
 const NewEntry: FC<NewEntryProps> = ({ selectedKey, visible, setVisibility, onSuccess }) => {
   const [form] = ProForm.useForm();
   const [timeEntry, setTimeEntry] = useState<boolean>(false);
-  const [client, setClient] = useState('');
   const [taskOptions, setTaskOptions] = useState([]);
   const onDateChange = (date: any, dateString: string) => {
     console.log(date, dateString);

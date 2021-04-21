@@ -1,8 +1,9 @@
 import { ProModal, ProSpace } from '@/common';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import type { FC } from 'react';
-import { Button, Form, Input } from 'antd';
+import { FC, useCallback } from 'react';
+import { Button, Form, Input, Modal } from 'antd';
 import React from 'react';
+import { addMultipleTeamMembers } from '@/pages/Time/service';
 
 const { Item, List } = Form;
 
@@ -13,9 +14,27 @@ interface SendInviteProps {
 const SendInvite: FC<SendInviteProps> = ({ visible, setVisibility }) => {
   const [form] = Form.useForm();
 
-  const onFinish = (value: any) => {
-    console.log('Received values of form:', value);
+  const onFinish = () => {
+    setVisibility(false);
   };
+  const handleFinish = useCallback(async (values) => {
+    console.log('🚀 ~ file: NewTask.tsx ~ line 25 ~ handleFinish ~ values', values);
+    // setPending(true);
+
+    await addMultipleTeamMembers(values.invites)
+      .then((result) => {
+        if (result) {
+          Modal.success({
+            title: 'Success',
+            content: 'Users added Successfully.',
+            onOk: onFinish,
+          });
+        }
+      })
+      .catch((error) => {
+        Modal.error({ title: 'Error', content: error.message });
+      });
+  }, []);
 
   const onReset = () => {
     setVisibility(false);
@@ -33,7 +52,7 @@ const SendInvite: FC<SendInviteProps> = ({ visible, setVisibility }) => {
       <Form
         form={form}
         name="dynamic_form_nest_item"
-        onFinish={onFinish}
+        onFinish={handleFinish}
         autoComplete="off"
         layout="vertical"
       >
@@ -72,8 +91,8 @@ const SendInvite: FC<SendInviteProps> = ({ visible, setVisibility }) => {
                   <Item
                     {...field}
                     label="Email"
-                    name={[field.name, 'work_email']}
-                    fieldKey={[field.fieldKey, 'work_email']}
+                    name={[field.name, 'email']}
+                    fieldKey={[field.fieldKey, 'email']}
                     rules={[{ required: true, message: 'Work Email required', type: 'email' }]}
                   >
                     <Input />
