@@ -146,3 +146,5 @@ export const createTableColumns = (
     width,
   };
 };
+
+export const zeroPad = (num: number, places: number = 2) => String(num).padStart(places, '0');

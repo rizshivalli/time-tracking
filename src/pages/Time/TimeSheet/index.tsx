@@ -19,12 +19,15 @@ import {
   List,
   message,
   Statistic,
+  Empty,
 } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getTimeRecords, stopTimeRecord, submitWeekForApproval } from '../service';
 import { NewEntryModal } from './components';
+import moment from 'moment';
 import './index.less';
+import { zeroPad } from '@/utils/generalUtils';
 
 const { TabPane } = Tabs;
 const { Option } = Select;
@@ -123,6 +126,12 @@ const TimeSheet = () => {
     await submitWeekForApproval(dates);
   };
 
+  const getDuration = (startTime: string, endTime: string) => {
+    const hourDiff = zeroPad(moment(endTime).diff(startTime, 'hours'));
+    const minDiffer = zeroPad(moment(endTime).diff(startTime, 'minutes'));
+    const totalDiffer = `${hourDiff}:${minDiffer}`;
+    return totalDiffer;
+  };
   const OperationsSlot = {
     left: (
       <Button
@@ -197,16 +206,17 @@ const TimeSheet = () => {
                     <TabPane tab={`${day} ${date}`} key={key}>
                       <List
                         footer={
-                          <div className="time-list-footer">
-                            <Button
-                              // disabled={weekData.length !== 0 ? false : true}
-                              onClick={() => {
-                                submitWeek();
-                              }}
-                            >
-                              Submit Week for Approval
-                            </Button>
-                          </div>
+                          weekData && weekData.length > 0 ? (
+                            <div className="time-list-footer">
+                              <Button
+                                onClick={() => {
+                                  submitWeek();
+                                }}
+                              >
+                                Submit Week for Approval
+                              </Button>
+                            </div>
+                          ) : null
                         }
                         size="small"
                         loading={listLoading}
@@ -231,14 +241,6 @@ const TimeSheet = () => {
 
                                     {listItem.start_time !== null && listItem.end_time === null ? (
                                       <Col span={6} className="card-left-content">
-                                        {/* <Text className="time-hours">
-                                          Start Time{' '}
-                                          {getRequiredDateFormat(
-                                            listItem?.start_time,
-                                            'MM-DD-YYYY HH:mm:ss',
-                                          )}
-                                        </Text> */}
-
                                         <Statistic
                                           title=" Start Time"
                                           value={getRequiredDateFormat(
@@ -264,8 +266,12 @@ const TimeSheet = () => {
                                       <Col span={6} className="card-left-content">
                                         <Text className="time-hours">
                                           {listItem?.duration?.slice(0, -3)}
+                                          {/* {listItem?.duration === '00:00:00'
+                                            ? getDuration(listItem.start_time, listItem.end_time)
+                                            : listItem?.duration?.slice(0, -3)} */}
                                         </Text>
                                         <Button
+                                          disabled
                                           size="large"
                                           icon={<ClockCircleOutlined />}
                                           onClick={() => {
@@ -281,39 +287,10 @@ const TimeSheet = () => {
                                         </Button>
                                       </Col>
                                     )}
-                                    {/* 
-                                      {listItem.duration === null || listItem.end_time === null ? (
-                                        <Button
-                                          size="large"
-                                          icon={<ClockCircleOutlined />}
-                                          onClick={() => {
-                                            const values = {
-                                              start_time: new Date().toISOString(),
-                                              project: listItem?.project?.id,
-                                              task: listItem?.task.id,
-                                            };
-                                            // restartTimer(values)
-                                          }}
-                                        >
-                                          Start
-                                        </Button>
-                                      ) : (
-                                        <Button
-                                          size="large"
-                                          type="primary"
-                                          icon={<HistoryOutlined spin />}
-                                          onClick={() => {
-                                            const values = {
-                                              end_time: new Date().toISOString(),
-                                            };
-                                            stopTimer(listItem.id, values);
-                                          }}
-                                        >
-                                          Stop
-                                        </Button>
-                                      )} */}
                                   </Row>
-                                ) : null}
+                                ) : (
+                                  <Empty />
+                                )}
                               </Col>
                             </Row>
                           );
