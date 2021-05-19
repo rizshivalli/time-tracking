@@ -31,7 +31,7 @@ const AddNewMember = () => {
     <ProGridContainer>
       <ProTitle size={2}>New Person</ProTitle>
       <ProTitle size={4}>
-        We’ll email this person an invitation to your TimeTracking account.
+        We will email this person an invitation to your TimeTracking account.
       </ProTitle>
       <ProDivider />
       <ProForm
