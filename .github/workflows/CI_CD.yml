@@ -42,7 +42,7 @@ jobs:
             git reset --hard origin/master &&s
             git pull origin master &&
             echo "pulling Latest code and Installing new packages" && 
-            yarn &&
+            yarn install &&
             yarn build  && echo "Build complete, Deleting old build files..." && 
             sudo rm -r /var/www/simplifi.ml/html/* &&
             echo "Copying New build files..." && 
