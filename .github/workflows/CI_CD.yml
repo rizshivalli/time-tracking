@@ -36,11 +36,11 @@ jobs:
 
             cd /home/ubuntu/frontend/time-tracking/ &&
             echo "I am in ec2" &&
-            git checkout main &&
-            echo "Check out to main branch" &&
+            git checkout master &&
+            echo "Check out to master branch" &&
             git fetch --all &&
-            git reset --hard origin/main &&s
-            git pull origin main &&
+            git reset --hard origin/master &&s
+            git pull origin master &&
             echo "pulling Latest code and Installing new packages" && 
             yarn &&
             yarn build  && echo "Build complete, Deleting old build files..." && 
