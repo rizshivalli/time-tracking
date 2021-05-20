@@ -2,9 +2,9 @@ name: CI/CD TimeTracking
 
 on:
   push:
-    branches: [main]
+    branches: [master]
   pull_request:
-    branches: [main]
+    branches: [master]
 
 jobs:
   #First we will see the application build or not , then we will deploy in EC2
