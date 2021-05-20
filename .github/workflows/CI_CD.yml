@@ -1,0 +1,51 @@
+name: CI/CD TimeTracking
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  #First we will see the application build or not , then we will deploy in EC2
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build Application
+        run: echo "building application"
+
+  Deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Deploy in EC2
+        env:
+          PRIVATE_KEY: ${{ secrets.AWS_PRIVATE_KEY  }}
+          HOSTNAME: ${{ secrets.HOSTNAME  }}
+          USER_NAME: ${{ secrets.USER_NAME  }}
+
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 400 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
+
+            #Now we have got the access of EC2 and we will start the deploy .
+
+            cd /home/ubuntu/frontend/time-tracking/ &&
+            echo "I am in ec2" &&
+            git checkout main &&
+            echo "Check out to main branch" &&
+            git fetch --all &&
+            git reset --hard origin/main &&s
+            git pull origin main &&
+            echo "pulling Latest code and Installing new packages" && 
+            yarn &&
+            yarn build  && echo "Build complete, Deleting old build files..." && 
+            sudo rm -r /var/www/simplifi.ml/html/* &&
+            echo "Copying New build files..." && 
+            sudo  scp -r ./dist/* /var/www/simplifi.ml/html &&           
+            echo "Task Complete !"
+          '
