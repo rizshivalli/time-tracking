@@ -39,7 +39,7 @@ jobs:
             git checkout master &&
             echo "Check out to master branch" &&
             git fetch --all &&
-            git reset --hard origin/master &&s
+            git reset --hard origin/master &&
             git pull origin master &&
             echo "pulling Latest code and Installing new packages" && 
             yarn install &&
