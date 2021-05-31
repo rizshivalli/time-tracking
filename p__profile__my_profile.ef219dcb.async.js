@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[27],{kz10:function(e,t,n){"use strict";n.r(t);var l=n("q1tI"),o=n.n(l),a=function(){return o.a.createElement("h1",null,"MyProfile")};t.default=a}}]);

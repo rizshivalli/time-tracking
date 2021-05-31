@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[28],{Mmsq:function(r,n,t){"use strict";t.r(n);var o=t("q1tI"),a=t.n(o),e=function(){return a.a.createElement("h1",null,"MyReports")};n.default=e}}]);
