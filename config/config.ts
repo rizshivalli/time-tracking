@@ -135,6 +135,12 @@ export default defineConfig({
                       hideInMenu: true,
                       authority: ['admin', 'owner', 'project_manager'],
                     },
+                    {
+                      name: 'archive',
+                      path: '/time/time-sheet/archive',
+                      component: './Time/TimeArchive',
+                      authority: ['admin', 'owner', 'project_manager'],
+                    },
                   ],
                 },
                 {

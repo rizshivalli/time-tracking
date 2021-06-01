@@ -20,6 +20,7 @@ import {
   message,
   Statistic,
   Empty,
+  Timeline,
 } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -56,7 +57,15 @@ const TimeSheet = () => {
   const [weekData, setWeekData] = useState<any[]>([]);
   const [listLoading, setListLoading] = useState<boolean>(false);
   const [weekTotal, setWeekTotal] = useState<string>('0');
+  const [weekStatus, setWeekStatus] = useState<string>('Not Submitted');
 
+  const checkWeekApprovalStatus = (time: any) => {
+    let status = 'unapproved';
+    if (time?.length > 0 && time[0]?.approval?.status) {
+      status = time[0]?.approval?.status;
+    }
+    setWeekStatus(status);
+  };
   const getWeekData = useCallback(
     async (key: string) => {
       const newDates = getStartAndEndOfWeek(key);
@@ -65,8 +74,8 @@ const TimeSheet = () => {
         .then((time) => {
           const total = calulateTotalWeekTime(time);
           setWeekTotal(total);
-
           setWeekData(time);
+          checkWeekApprovalStatus(time);
         })
         .catch((err) => {
           message.error(err);
@@ -124,6 +133,7 @@ const TimeSheet = () => {
   const submitWeek = async () => {
     const dates = getStartAndEndOfWeek(selectedTabKey);
     await submitWeekForApproval(dates);
+    getWeekData(selectedTabKey);
   };
 
   const getDuration = (startTime: string, endTime: string) => {
@@ -190,6 +200,12 @@ const TimeSheet = () => {
                 </ProSpace>
               </ProSpace>
             </div>
+            {!listLoading && (
+              <div>
+                <Timeline.Item color="green">{weekStatus}</Timeline.Item>
+              </div>
+            )}
+
             <Tabs
               type="card"
               defaultActiveKey={selectedTabKey}
@@ -199,19 +215,23 @@ const TimeSheet = () => {
               animated={true}
               onChange={callback}
             >
-              {datesToDisplay &&
+              {datesToDisplay?.length === 0 ? (
+                <Empty />
+              ) : (
                 datesToDisplay.map((item) => {
                   const { date, day, key } = item;
                   return (
                     <TabPane tab={`${day} ${date}`} key={key}>
                       <List
+                        // Footer
                         footer={
-                          weekData && weekData.length > 0 ? (
+                          !listLoading && weekData?.length !== 0 ? (
                             <div className="time-list-footer">
                               <Button
                                 onClick={() => {
                                   submitWeek();
                                 }}
+                                disabled={weekStatus !== 'unapproved' ? true : false}
                               >
                                 Submit Week for Approval
                               </Button>
@@ -288,9 +308,7 @@ const TimeSheet = () => {
                                       </Col>
                                     )}
                                   </Row>
-                                ) : (
-                                  <Empty />
-                                )}
+                                ) : null}
                               </Col>
                             </Row>
                           );
@@ -299,7 +317,8 @@ const TimeSheet = () => {
                       {/* TODO Total Time of the day */}
                     </TabPane>
                   );
-                })}
+                })
+              )}
             </Tabs>
           </div>
         </Col>

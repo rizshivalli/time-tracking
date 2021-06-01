@@ -65,7 +65,7 @@ const NewEntry: FC<NewEntryProps> = ({ selectedKey, visible, setVisibility, onSu
       visible={visible}
       destroyOnClose={true}
       onCancel={() => setVisibility(false)}
-      width={540}
+      width={580}
       footer={false}
     >
       <ProIntlProvider>
@@ -127,6 +127,7 @@ const NewEntry: FC<NewEntryProps> = ({ selectedKey, visible, setVisibility, onSu
           <ProForm.Group>
             <ProFormTextArea width="md" name="notes" label="Notes" />
             <ProFormTimePicker
+              rules={[{ required: true, message: 'Please enter the time!' }]}
               label="Select Time"
               name="duration"
               fieldProps={{
