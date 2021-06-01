@@ -143,27 +143,24 @@ const TimeSheet = () => {
     return totalDiffer;
   };
   const OperationsSlot = {
-    left: (
-      <Button
-        type="primary"
-        icon={<PlusOutlined />}
-        size="large"
-        onClick={() => {
-          setNewEntryModalVisible(true);
-        }}
-      >
-        New Entry
-      </Button>
-    ),
+    // left: (
+    //   <Button
+    //     type="primary"
+    //     icon={<PlusOutlined />}
+    //     size="large"
+    //     onClick={() => {
+    //       setNewEntryModalVisible(true);
+    //     }}
+    //   >
+    //     New Entry
+    //   </Button>
+    // ),
     right: <Tag icon={<ClockCircleOutlined />}>Week Total: {weekTotal && weekTotal}</Tag>,
   };
 
   return (
     <ProGridContainer>
       <Row>
-        <Col span={4}>
-          <Tabs tabBarExtraContent={OperationsSlot} />
-        </Col>
         <Col span={20}>
           <div className="card-container">
             <div className="top-widget">
@@ -213,9 +210,10 @@ const TimeSheet = () => {
               type="card"
               defaultActiveKey={selectedTabKey}
               activeKey={selectedTabKey}
-              size="middle"
+              size="small"
               animated={true}
               onChange={callback}
+              tabBarExtraContent={OperationsSlot}
             >
               {datesToDisplay?.length === 0 ? (
                 <Empty />
