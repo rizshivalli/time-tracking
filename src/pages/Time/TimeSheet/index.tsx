@@ -136,6 +136,12 @@ const TimeSheet = () => {
     getWeekData(selectedTabKey);
   };
 
+  const getDuration = (startTime: string, endTime: string) => {
+    const hourDiff = zeroPad(moment(endTime).diff(startTime, 'hours'));
+    const minDiffer = zeroPad(moment(endTime).diff(startTime, 'minutes'));
+    const totalDiffer = `${hourDiff}:${minDiffer}`;
+    return totalDiffer;
+  };
   const OperationsSlot = {
     // left: (
     //   <Button
