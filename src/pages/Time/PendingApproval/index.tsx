@@ -6,6 +6,7 @@ import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import { getPendingApprovals } from '../service';
 import { Link } from 'react-router-dom';
 import { humanize, createTableColumns } from '@/utils/generalUtils';
+import './index.less'
 
 const columns: ProColumns<any>[] = [
   {

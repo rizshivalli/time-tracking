@@ -161,7 +161,10 @@ const TimeSheet = () => {
   return (
     <ProGridContainer>
       <Row>
-        <Col span={24}>
+        <Col span={4}>
+          <Tabs tabBarExtraContent={OperationsSlot} />
+        </Col>
+        <Col span={20}>
           <div className="card-container">
             <div className="top-widget">
               <ProSpace size="large" align="start" className="top-widget-container">
@@ -211,7 +214,6 @@ const TimeSheet = () => {
               defaultActiveKey={selectedTabKey}
               activeKey={selectedTabKey}
               size="middle"
-              tabBarExtraContent={OperationsSlot}
               animated={true}
               onChange={callback}
             >
