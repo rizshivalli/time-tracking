@@ -122,9 +122,11 @@
   cursor: pointer;
 }
 .ant-tabs-extra-content {
-  padding: 16px 0px;
+  padding: 14px 0px;
   text-align: center;
   background: #f0f0f0;
+  position: absolute;
+  right: 0;
   border: 1px solid #73737324;
 }
 span.ant-tag {
@@ -179,9 +181,6 @@ span.ant-tag {
   }
 }
 @media (max-width: 1440px) {
-  .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab, .ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab {
-    padding: 15px 28px;
-  }
   .ant-tabs-tab-btn {
     font-size: 12px;
   }
@@ -195,21 +194,29 @@ span.ant-tag {
   .new_entry_wraps button.ant-btn.ant-btn-primary.ant-btn-icon-only.btn {
     width: 84%;
   }
+  .ant-tabs-extra-content {
+    padding: 13px 3px;
+  }
   .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab,
   .ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab {
-    padding: 5px 32px;
+    padding: 14px 32px;
   }
   .new_entry_wraps .entry_class_wraps {
     font-size: 18px;
   }
 }
+@media (max-width: 1366px) {
 
+}
 @media (max-width: 1024px) {
   h3.ant-typography, .ant-typography h3 {
     font-size: 17px;
   }
   .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab, .ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab {
     padding: 15px 28px;
+  }
+  .ant-tabs-extra-content {
+    padding: 13px 3px;
   }
   .ant-tabs-tab-btn {
     font-size: 12px;
@@ -226,7 +233,7 @@ span.ant-tag {
   }
   .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab,
   .ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab {
-    padding: 5px 6px;
+    padding: 15px 6px;
   }
   .new_entry_wraps .entry_class_wraps {
     margin-left: 1px;
@@ -241,6 +248,9 @@ span.ant-tag {
   .new_entry_wraps span.anticon.anticon-plus {
     font-size: 40px;
   }
+  .ant-tabs-extra-content {
+    padding: 10px 3px;
+  }
   .new_entry_wraps {
     text-align: left;
   }
@@ -249,7 +259,7 @@ span.ant-tag {
   }
   .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab,
   .ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab {
-    padding: 5px 5px;
+    padding: 14px 5px;
   }
   .new_entry_wraps .entry_class_wraps {
     margin-left: 1px;
