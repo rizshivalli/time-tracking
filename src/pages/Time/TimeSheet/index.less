@@ -92,7 +92,7 @@
 .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab,
 .ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab {
   margin: 0px;
-  padding: 15px 29px;
+  padding: 15px 33px;
   border: 1px solid #73737324;
 }
 .card-container > .ant-tabs-card .ant-tabs-tab,
@@ -178,16 +178,51 @@ span.ant-tag {
     padding: 15px 97px;
   }
 }
-
-@media (max-width: 1040px) {
-  .new_entry_wraps span.anticon.anticon-plus {
+@media (max-width: 1440px) {
+  .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab, .ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab {
+    padding: 15px 28px;
+  }
+  .ant-tabs-tab-btn {
+    font-size: 12px;
+  }
+  .newentrywraps span.anticon.anticon-plus {
     font-size: 40px;
   }
   .new_entry_wraps {
     text-align: left;
+    padding: 92px 0px;
   }
   .new_entry_wraps button.ant-btn.ant-btn-primary.ant-btn-icon-only.btn {
-    width: 70%;
+    width: 84%;
+  }
+  .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab,
+  .ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab {
+    padding: 5px 32px;
+  }
+  .new_entry_wraps .entry_class_wraps {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 1024px) {
+  h3.ant-typography, .ant-typography h3 {
+    font-size: 17px;
+  }
+  .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab, .ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab {
+    padding: 15px 28px;
+  }
+  .ant-tabs-tab-btn {
+    font-size: 12px;
+  }
+  .newentrywraps span.anticon.anticon-plus {
+    font-size: 40px;
+  }
+  .new_entry_wraps {
+    text-align: left;
+    padding: 110px 0px;
+  }
+  .new_entry_wraps button.ant-btn.ant-btn-primary.ant-btn-icon-only.btn {
+    width: 89%;
   }
   .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab,
   .ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab {
@@ -195,11 +230,14 @@ span.ant-tag {
   }
   .new_entry_wraps .entry_class_wraps {
     margin-left: 1px;
-    font-size: 17px;
+    font-size: 12px;
   }
 }
 
 @media (max-width: 768px) {
+  h3.ant-typography, .ant-typography h3 {
+    font-size: 17px;
+  }
   .new_entry_wraps span.anticon.anticon-plus {
     font-size: 40px;
   }
@@ -207,14 +245,17 @@ span.ant-tag {
     text-align: left;
   }
   .new_entry_wraps button.ant-btn.ant-btn-primary.ant-btn-icon-only.btn {
-    width: 70%;
+    width: 80%;
   }
   .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab,
   .ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab {
-    padding: 5px 6px;
+    padding: 5px 5px;
   }
   .new_entry_wraps .entry_class_wraps {
     margin-left: 1px;
-    font-size: 17px;
+    font-size: 10px;
+  }
+  .ant-tabs-tab-btn {
+    font-size: 10px;
   }
 }
