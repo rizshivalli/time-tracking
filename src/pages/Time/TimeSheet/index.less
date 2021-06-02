@@ -122,11 +122,11 @@
   cursor: pointer;
 }
 .ant-tabs-extra-content {
+  position: absolute;
+  right: 0;
   padding: 14px 0px;
   text-align: center;
   background: #f0f0f0;
-  position: absolute;
-  right: 0;
   border: 1px solid #73737324;
 }
 span.ant-tag {
@@ -188,8 +188,8 @@ span.ant-tag {
     font-size: 40px;
   }
   .new_entry_wraps {
-    text-align: left;
     padding: 92px 0px;
+    text-align: left;
   }
   .new_entry_wraps button.ant-btn.ant-btn-primary.ant-btn-icon-only.btn {
     width: 84%;
@@ -206,21 +206,24 @@ span.ant-tag {
   }
 }
 @media (max-width: 1370px) {
-  .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab, .ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab {
-    padding: 15px 28px;
+  .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab,
+  .ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab {
+    padding: 10px 23px;
   }
   .ant-tabs-extra-content {
-    padding: 13px 0px;
-}
-.new_entry_wraps span.anticon.anticon-plus {
-  font-size: 58px;
-}
+    padding: 10px 0px;
+  }
+  .new_entry_wraps span.anticon.anticon-plus {
+    font-size: 58px;
+  }
 }
 @media (max-width: 1024px) {
-  h3.ant-typography, .ant-typography h3 {
+  h3.ant-typography,
+  .ant-typography h3 {
     font-size: 17px;
   }
-  .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab, .ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab {
+  .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab,
+  .ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab {
     padding: 15px 28px;
   }
   .ant-tabs-extra-content {
@@ -233,8 +236,8 @@ span.ant-tag {
     font-size: 40px;
   }
   .new_entry_wraps {
-    text-align: left;
     padding: 110px 0px;
+    text-align: left;
   }
   .new_entry_wraps button.ant-btn.ant-btn-primary.ant-btn-icon-only.btn {
     width: 89%;
@@ -250,7 +253,8 @@ span.ant-tag {
 }
 
 @media (max-width: 768px) {
-  h3.ant-typography, .ant-typography h3 {
+  h3.ant-typography,
+  .ant-typography h3 {
     font-size: 17px;
   }
   .new_entry_wraps span.anticon.anticon-plus {
