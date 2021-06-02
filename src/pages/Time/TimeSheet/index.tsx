@@ -220,9 +220,20 @@ const TimeSheet = () => {
                 </ProSpace>
               </ProSpace>
             </div>
-            {!listLoading && (
-              <div>
-                <Timeline.Item color="green">{weekStatus}</Timeline.Item>
+            {/* Status Text */}
+            {!listLoading && weekStatus !== 'Not Submitted' && weekStatus !== 'unapproved' && (
+              <div
+                className="status-text"
+                style={{
+                  backgroundColor:
+                    weekStatus === 'Submitted for Approval'
+                      ? '#fadadd'
+                      : '#7998a3' && weekStatus === 'Approved'
+                      ? '#a9ffa9'
+                      : '#7998a3',
+                }}
+              >
+                {weekStatus}
               </div>
             )}
 
