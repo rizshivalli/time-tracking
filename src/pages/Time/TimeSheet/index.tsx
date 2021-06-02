@@ -164,21 +164,15 @@ const TimeSheet = () => {
         <Col span={2}>
           <div className="new_entry_wraps">
             <Button
+              size="large"
               className="btn"
               type="primary"
               onClick={() => {
                 setNewEntryModalVisible(true);
               }}
               icon={<PlusOutlined />}
-            ></Button>
-            <div
-              onClick={() => {
-                setNewEntryModalVisible(true);
-              }}
-              className="entry_class_wraps"
-            >
-              New Entry
-            </div>
+            />
+            <div className="entry_class_wraps">New Entry</div>
           </div>
         </Col>
         <Col span={21}>

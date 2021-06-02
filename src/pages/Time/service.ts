@@ -276,3 +276,20 @@ export async function addMultipleTeamMembers(params: any[]) {
     throw new Error(response.message);
   }
 }
+
+export async function getArchivedApprovals() {
+  const token = await getToken();
+  const organization = await getOrganization();
+  const params = { is_archived: true };
+  const response = await request('/strapi/approvals', {
+    method: 'GET',
+    headers: { Authorization: `Bearer ${token}`, orgid: organization },
+    data: { params },
+  });
+
+  if (response.statusCode === 200) {
+    return response.data;
+  } else {
+    throw new Error(response.message);
+  }
+}

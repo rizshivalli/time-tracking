@@ -1,6 +1,6 @@
 import { ProGridContainer, ProIntlProvider, ProSpace, ProTitle } from '@/common';
 import ProTable from '@ant-design/pro-table';
-import { Col, Row } from 'antd';
+import { Button, Col, Row } from 'antd';
 import React, { useRef } from 'react';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import { getPendingApprovals } from '../service';
@@ -12,11 +12,12 @@ const columns: ProColumns<any>[] = [
     dataIndex: 'id',
     valueType: 'indexBorder',
     width: 48,
+    hideInTable: true,
   },
   {
     title: 'Employee Name',
     dataIndex: 'user_name',
-    render: (text, value) => <Link to={`/time/time-sheet/approve/${value.id}`}>{text}</Link>,
+    // render: (text, value) => <Link to={`/time/time-sheet/approve/${value.id}`}>{text}</Link>,
   },
   {
     title: 'Date Range',
@@ -26,6 +27,20 @@ const columns: ProColumns<any>[] = [
     title: 'Submitted by',
     dataIndex: 'user_name',
     render: (text, value) => <div>{value?.submitted_by?.full_name}</div>,
+  },
+  {
+    title: '',
+    key: 'option',
+    width: 120,
+    valueType: 'option',
+    // @ts-ignore
+    render: (_, row, index, action) => [
+      <Link to={`/time/time-sheet/approve/${row.id}`}>
+        <Button key="a" onClick={() => {}}>
+          View TimeSheet
+        </Button>
+      </Link>,
+    ],
   },
 ];
 

@@ -75,6 +75,7 @@ const Unsubmitted = () => {
                 }}
                 dateFormatter="string"
                 toolBarRender={false}
+                rowSelection={{}}
               />
             </ProIntlProvider>
           </ProSpace>

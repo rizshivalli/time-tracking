@@ -1,11 +1,11 @@
 import { ProGridContainer, ProIntlProvider, ProSpace, ProTitle } from '@/common';
 import ProTable from '@ant-design/pro-table';
-import { Col, Row } from 'antd';
+import { Button, Col, Row } from 'antd';
 import React, { useRef } from 'react';
 import type { ProColumns } from '@ant-design/pro-table';
 import { Link } from 'react-router-dom';
 import type { ActionType } from '@ant-design/pro-table';
-import { getPendingApprovals } from '../service';
+import { getArchivedApprovals } from '../service';
 
 const columns: ProColumns<any>[] = [
   {
@@ -14,9 +14,9 @@ const columns: ProColumns<any>[] = [
     width: 48,
   },
   {
-    title: 'Employee Name',
+    title: 'Approved By',
     dataIndex: 'user_name',
-    render: (text, value) => <Link to={`/time/time-sheet/approve/${value.id}`}>{text}</Link>,
+    render: (text, value) => <div>{value?.approved_by?.full_name}</div>,
   },
   {
     title: 'Date Range',
@@ -26,6 +26,18 @@ const columns: ProColumns<any>[] = [
     title: 'Submitted by',
     dataIndex: 'user_name',
     render: (text, value) => <div>{value?.submitted_by?.full_name}</div>,
+  },
+  {
+    title: 'Operation',
+    key: 'option',
+    width: 120,
+    valueType: 'option',
+    // @ts-ignore
+    render: (_, row, index, action) => [
+      <Button key="a" onClick={() => {}}>
+        View TimeSheet
+      </Button>,
+    ],
   },
 ];
 
@@ -40,7 +52,7 @@ const TimeArchive = () => {
             <ProIntlProvider>
               <ProTable
                 request={async () => {
-                  const data = await getPendingApprovals();
+                  const data = await getArchivedApprovals();
                   return { data };
                 }}
                 columns={columns}
