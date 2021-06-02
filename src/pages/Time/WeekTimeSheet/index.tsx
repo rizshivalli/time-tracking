@@ -104,13 +104,15 @@ const getWeekFromSuntoSatForTable = (date: string) => {
 const TimeSheet = () => {
   const todayDate = getToday('MM-DD-YYYY');
   const getWeekdata = getWeekFromSuntoSatForTable(todayDate);
+  console.log('🚀 ~ file: index.tsx ~ line 107 ~ TimeSheet ~ getWeekdata', getWeekdata);
   const [period, setPeriod] = useState<string>('week');
   const [datesToDisplay, setDatesToDisplay] = useState<any[]>(getWeekdata);
   const [selectedTabKey, setSelectedTabKey] = useState<string>(todayDate);
   const [newEntryModalVisible, setNewEntryModalVisible] = useState<boolean>(false);
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
-  const actionRef = useRef<ActionType>();
+  const [approvalStatus, setApprovalStatus] = useState<string>();
   const [date, setDate] = useState<string>(todayDate);
+  const actionRef = useRef<ActionType>();
 
   const submitWeek = async () => {
     const dates = getStartAndEndOfWeek(selectedTabKey);
@@ -137,6 +139,7 @@ const TimeSheet = () => {
       setDatesToDisplay(() => {
         return thisWeekDates;
       });
+
       actionRef?.current?.reload();
     }
   };
@@ -199,7 +202,9 @@ const TimeSheet = () => {
                 columns={datesToDisplay && datesToDisplay}
                 request={async () => {
                   const data = await getAllWeekData(date);
-                  return { data };
+                  const { approval_status, time_records } = data;
+                  setApprovalStatus(approval_status);
+                  return { data: time_records, success: true };
                 }}
                 editable={{
                   type: 'multiple',

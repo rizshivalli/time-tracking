@@ -22,3 +22,7 @@ export const isAntDesignProOrDev = (): boolean => {
 };
 
 export const getPageQuery = () => parse(window.location.href.split('?')[1]);
+
+export const replaceKey = (obj, oldKey, newKey) => {
+  delete Object.assign(obj, { [newKey]: obj[oldKey] })[oldKey];
+};

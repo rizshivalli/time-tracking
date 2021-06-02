@@ -162,7 +162,7 @@ const TimeSheet = () => {
     <ProGridContainer>
       <Row>
         <Col span={2}>
-          <div className="newentrywraps">
+          <div className="new_entry_wraps">
             <Button
               className="btn"
               type="primary"
@@ -175,7 +175,7 @@ const TimeSheet = () => {
               onClick={() => {
                 setNewEntryModalVisible(true);
               }}
-              className="entryclasswraps"
+              className="entry_class_wraps"
             >
               New Entry
             </div>

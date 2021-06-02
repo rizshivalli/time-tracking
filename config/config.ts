@@ -136,6 +136,12 @@ export default defineConfig({
                       authority: ['admin', 'owner', 'project_manager'],
                     },
                     {
+                      name: 'un-submitted',
+                      path: '/time/time-sheet/unsubmitted',
+                      component: './Time/Unsubmitted',
+                      authority: ['admin', 'owner', 'project_manager'],
+                    },
+                    {
                       name: 'archive',
                       path: '/time/time-sheet/archive',
                       component: './Time/TimeArchive',
@@ -143,6 +149,7 @@ export default defineConfig({
                     },
                   ],
                 },
+
                 {
                   name: 'projects',
                   icon: 'FolderOutlined',
@@ -150,9 +157,16 @@ export default defineConfig({
                   component: './projects/ProjectList',
                 },
                 {
-                  path: '/project/:detail',
                   name: 'projects',
+                  icon: 'FolderOutlined',
+                  path: '/projects/details/:id',
                   component: './projects/ProjectList/ProjectDetails',
+                  hideInMenu: true,
+                },
+                {
+                  path: '/project/:id',
+                  name: 'projects',
+                  component: './projects/ProjectList/ProjectEdit',
                   hideInMenu: true,
                 },
                 {
