@@ -22,8 +22,9 @@ const ProjectList = () => {
       width: 48,
     },
     {
-      title: 'Task',
+      title: 'Project Name',
       dataIndex: 'name',
+      render: (text, row) => <Link to={`/projects/details/${row.id}`}>{row.name}</Link>,
     },
     {
       title: 'client',

@@ -161,7 +161,27 @@ const TimeSheet = () => {
   return (
     <ProGridContainer>
       <Row>
-        <Col span={20}>
+        <Col span={2}>
+          <div className="new_entry_wraps">
+            <Button
+              className="btn"
+              type="primary"
+              onClick={() => {
+                setNewEntryModalVisible(true);
+              }}
+              icon={<PlusOutlined />}
+            ></Button>
+            <div
+              onClick={() => {
+                setNewEntryModalVisible(true);
+              }}
+              className="entry_class_wraps"
+            >
+              New Entry
+            </div>
+          </div>
+        </Col>
+        <Col span={21}>
           <div className="card-container">
             <div className="top-widget">
               <ProSpace size="large" align="start" className="top-widget-container">
