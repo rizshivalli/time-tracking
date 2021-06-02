@@ -5,6 +5,8 @@ export default {
   'menu.time': 'Time',
   'menu.time.time-sheet': 'Timesheet',
   'menu.time.pending-approvals': 'Pending Approvals',
+  'menu.time.un-submitted': 'Unsubmitted',
+  'menu.time.archive': 'Archive',
   'menu.teams': 'Teams',
   'menu.projects': 'Projects',
   'menu.reports': 'Reports',
