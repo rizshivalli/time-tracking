@@ -33,6 +33,27 @@ const columns: ProColumns<any>[] = [
     render: (text, value) => <div>{value?.submitted_by?.full_name}</div>,
   },
 ];
+const data = [
+  {
+    key: '1',
+    name: 'John Brown',
+    age: 32,
+    address: 'New York No. 1 Lake Park',
+  },
+  {
+    key: '2',
+    name: 'Jim Green',
+    age: 42,
+    address: 'London No. 1 Lake Park',
+  },
+  {
+    key: '3',
+    name: 'Joe Black',
+    age: 32,
+    address: 'Sidney No. 1 Lake Park',
+  },
+];
+
 const beforeSearch = (params: any) => {
   console.log('🚀 ~ file: index.tsx ~ line 36 ~ beforeSearch ~ params', params);
   replaceKey(params, 'user_name', 'user_name_contains');
