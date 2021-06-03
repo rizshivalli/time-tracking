@@ -16,7 +16,6 @@ const NewEntry: FC<NewEntryProps> = ({ selectedKey, visible, setVisibility, onSu
   const [timeEntry, setTimeEntry] = useState<boolean>(false);
   const [taskOptions, setTaskOptions] = useState([]);
   const onDateChange = (date: any, dateString: string) => {
-    console.log(date, dateString);
     if (date) {
       setTimeEntry(true);
     } else {
@@ -26,15 +25,12 @@ const NewEntry: FC<NewEntryProps> = ({ selectedKey, visible, setVisibility, onSu
 
   const onTaskCreated = () => {
     if (onSuccess) {
-      onSuccess();
+      onSuccess(selectedKey);
     }
     setVisibility(false);
   };
 
   const handleFinish = useCallback(async (values) => {
-    console.log('🚀 ~ file: NewTask.tsx ~ line 25 ~ handleFinish ~ values', values);
-    // setPending(true);
-
     await createNewTimeRecord(values)
       .then((result) => {
         if (result) {
@@ -82,7 +78,7 @@ const NewEntry: FC<NewEntryProps> = ({ selectedKey, visible, setVisibility, onSu
               };
             }
             // const newValues = { selectedDate: selectedKey, ...values };
-            console.log('🚀 ~ file: NewEntry.tsx ~ line 91 ~ values', newValues);
+
             handleFinish(newValues);
             return Promise.resolve();
           }}
@@ -92,7 +88,8 @@ const NewEntry: FC<NewEntryProps> = ({ selectedKey, visible, setVisibility, onSu
           }}
           submitter={{
             searchConfig: {
-              submitText: `${timeEntry ? 'Save Entry' : 'Start Timer'}`,
+              submitText: `Save Entry`,
+              // submitText: `${timeEntry ? 'Save Entry' : 'Start Timer'}`,
               resetText: 'Close',
             },
           }}
@@ -107,8 +104,6 @@ const NewEntry: FC<NewEntryProps> = ({ selectedKey, visible, setVisibility, onSu
             }}
             fieldProps={{
               onChange: (value) => {
-                console.log('🚀 ~ file: NewEntry.tsx ~ line 103 ~ value', value);
-
                 getTasksForClient(value);
               },
             }}

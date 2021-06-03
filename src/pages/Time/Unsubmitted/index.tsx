@@ -5,7 +5,7 @@ import React, { useRef } from 'react';
 import type { ProColumns } from '@ant-design/pro-table';
 import { Link } from 'react-router-dom';
 import type { ActionType } from '@ant-design/pro-table';
-import { getPendingApprovals } from '../service';
+import { getUnsubmittedTimesheets } from '../service';
 import { replaceKey } from '@/utils/utils';
 import { getStartAndEndOfWeek, getRequiredDateFormat } from '@/utils/MomentHelpers';
 
@@ -58,7 +58,7 @@ const Unsubmitted = () => {
               <ProTable
                 beforeSearchSubmit={beforeSearch}
                 request={async () => {
-                  const data = await getPendingApprovals();
+                  const data = await getUnsubmittedTimesheets();
                   return { data };
                 }}
                 columns={columns}
@@ -75,7 +75,6 @@ const Unsubmitted = () => {
                 }}
                 dateFormatter="string"
                 toolBarRender={false}
-                rowSelection={{}}
               />
             </ProIntlProvider>
           </ProSpace>

@@ -25,6 +25,7 @@ import {
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getTimeRecords, stopTimeRecord, submitWeekForApproval } from '../service';
+
 import { NewEntryModal } from './components';
 import moment from 'moment';
 import './index.less';
@@ -67,7 +68,8 @@ const TimeSheet = () => {
     setWeekStatus(status);
   };
   const getWeekData = useCallback(
-    async (key: string) => {
+    async (key: string = selectedTabKey) => {
+      console.log('🚀 ~ file: index.tsx ~ line 71 ~ key', key);
       const newDates = getStartAndEndOfWeek(key);
       setListLoading(true);
       await getTimeRecords(newDates)
@@ -132,6 +134,8 @@ const TimeSheet = () => {
 
   const submitWeek = async () => {
     const dates = getStartAndEndOfWeek(selectedTabKey);
+    console.log('🚀 ~ file: index.tsx ~ line 172 ~ submitWeek ~ selectedTabKey', selectedTabKey);
+    console.log('🚀 ~ file: index.tsx ~ line 135 ~ submitWeek ~ dates', dates);
     await submitWeekForApproval(dates);
     getWeekData(selectedTabKey);
   };
@@ -348,12 +352,16 @@ const TimeSheet = () => {
           </div>
         </Col>
       </Row>
-      <NewEntryModal
-        selectedKey={selectedTabKey}
-        visible={newEntryModalVisible}
-        setVisibility={setNewEntryModalVisible}
-        onSuccess={getWeekData}
-      />
+      {newEntryModalVisible && (
+        <NewEntryModal
+          selectedKey={selectedTabKey}
+          visible={newEntryModalVisible}
+          setVisibility={setNewEntryModalVisible}
+          onSuccess={(key: string) => {
+            getWeekData(key);
+          }}
+        />
+      )}
     </ProGridContainer>
   );
 };
