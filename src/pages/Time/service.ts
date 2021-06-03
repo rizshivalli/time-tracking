@@ -2,6 +2,7 @@ import { getRequiredDateFormat } from '@/utils/MomentHelpers';
 import request from '@/utils/request';
 import { getOrganization, getToken } from '@/utils/token';
 import { message } from 'antd';
+import { response } from 'express';
 
 type identifier = string | number | undefined;
 
@@ -309,4 +310,11 @@ export async function getUnsubmittedTimesheets() {
   } else {
     throw new Error(response.message);
   }
+}
+
+export async function getRandomQuote() {
+  const response = await fetch('https://api.quotable.io/random');
+  const { statusCode, statusMessage, ...data } = await response.json();
+  if (!response.ok) throw new Error(`${statusCode} ${statusMessage}`);
+  return data;
 }

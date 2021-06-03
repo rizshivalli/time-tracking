@@ -3,7 +3,7 @@ import { InboxOutlined } from '@ant-design/icons';
 import { message, Typography, Upload } from 'antd';
 import React from 'react';
 import type { FC } from 'react';
-
+import { CSVLink } from 'react-csv';
 const { Text, Link } = Typography;
 const { Dragger } = Upload;
 
@@ -28,7 +28,40 @@ const props = {
     }
   },
 };
-
+const csvData = [
+  {
+    Client: 'Vance Refrigeration',
+    Project: 'Printer Paper Supply',
+    'Project Code': 'PRNT-VANCE',
+    'Start Date': '2015-01-01',
+    'End Date': '2015-03-04',
+    'Project Notes': 'Keeping their office machines stocked',
+  },
+  {
+    Client: 'Vance Refrigeration',
+    Project: 'High-Gloss Fliers',
+    'Project Code': 'GLOSS-VANCE',
+    'Start Date': '2015-01-01',
+    'End Date': '',
+    'Project Notes': 'Marketing material stock',
+  },
+  {
+    Client: 'Michael Scott Paper Company',
+    Project: 'Wholesale Deliveries',
+    'Project Code': 'DLVR-MSPC',
+    'Start Date': '',
+    'End Date': '',
+    'Project Notes': 'Internal warehouse shuffling',
+  },
+  {
+    Client: 'Michael Scott Paper Company',
+    Project: 'Tech Support',
+    'Project Code': '',
+    'Start Date': '',
+    'End Date': '',
+    'Project Notes': '',
+  },
+];
 const ImportProjects: FC<ImportProjectModalProps> = ({ visible, setVisibility }) => {
   return (
     <ProModal
@@ -47,9 +80,10 @@ const ImportProjects: FC<ImportProjectModalProps> = ({ visible, setVisibility })
           <Text>
             All headers are required exactly as written, but only the first two columns need to be
             filled in to import successfully. You can{' '}
-            <Link href="https://google.com" target="_blank">
+            <CSVLink filename={'projects.csv'} data={csvData}>
               download a sample CSV file here.
-            </Link>
+            </CSVLink>
+            download a sample CSV file here.
           </Text>
         </div>
         <Dragger {...props}>

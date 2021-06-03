@@ -1,4 +1,4 @@
-import { ProGridContainer, ProIntlProvider, ProSpace, ProTitle } from '@/common';
+import { ProGridContainer, ProIntlProvider, ProSpace, ProTitle, RandomQuote } from '@/common';
 import { getToday, getRequiredDateFormat, getStartAndEndOfWeek } from '@/utils/MomentHelpers';
 import { CheckOutlined, PlusOutlined } from '@ant-design/icons';
 import ProTable, { ActionType } from '@ant-design/pro-table';
@@ -198,6 +198,9 @@ const TimeSheet = () => {
             </div>
             <ProIntlProvider>
               <ProTable
+                locale={{
+                  emptyText: <RandomQuote />,
+                }}
                 actionRef={actionRef}
                 columns={datesToDisplay && datesToDisplay}
                 request={async () => {

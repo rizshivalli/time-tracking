@@ -1,4 +1,4 @@
-import { ProGridContainer, ProSpace, ProTitle } from '@/common';
+import { ProGridContainer, ProSpace, ProTitle, RandomQuote } from '@/common';
 import {
   getWeekFromSuntoSat,
   getToday,
@@ -22,7 +22,7 @@ import {
   Empty,
   Timeline,
 } from 'antd';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { Suspense, useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getTimeRecords, stopTimeRecord, submitWeekForApproval } from '../service';
 
@@ -126,7 +126,9 @@ const TimeSheet = () => {
     setPeriod(e.target.value);
   };
 
-  function callback(key: string) {
+  async function callback(key: string) {
+    // https://api.quotable.io/random
+
     setSelectedTabKey(() => {
       return key;
     });
@@ -252,6 +254,9 @@ const TimeSheet = () => {
                   return (
                     <TabPane tab={`${day} ${date}`} key={key}>
                       <List
+                        locale={{
+                          emptyText: <RandomQuote />,
+                        }}
                         // Footer
                         footer={
                           !listLoading && weekData?.length !== 0 ? (

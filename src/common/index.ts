@@ -6,6 +6,7 @@ import ProDivider from './AntDComponents/ProDivider';
 import ProText from './AntDComponents/ProText';
 import ProIntlProvider from './AntDComponents/ProIntlProvider';
 import ProSkeleton from './AntDComponents/ProSkeleton';
+import RandomQuote from './RandomQuote';
 
 // * Common Components
 
@@ -18,4 +19,5 @@ export {
   ProText,
   ProIntlProvider,
   ProSkeleton,
+  RandomQuote,
 };

@@ -1,4 +1,4 @@
-import { ProGridContainer, ProIntlProvider, ProSpace, ProTitle } from '@/common';
+import { ProGridContainer, ProIntlProvider, ProSpace, ProTitle, RandomQuote } from '@/common';
 import ProTable from '@ant-design/pro-table';
 import { Col, DatePicker, Row } from 'antd';
 import React, { useRef } from 'react';
@@ -57,6 +57,9 @@ const Unsubmitted = () => {
             <ProTitle size={3}>Unsubmitted</ProTitle>
             <ProIntlProvider>
               <ProTable
+                locale={{
+                  emptyText: <RandomQuote />,
+                }}
                 beforeSearchSubmit={beforeSearch}
                 request={async () => {
                   const data = await getUnsubmittedTimesheets();
