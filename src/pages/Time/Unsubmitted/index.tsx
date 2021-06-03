@@ -8,6 +8,7 @@ import type { ActionType } from '@ant-design/pro-table';
 import { getUnsubmittedTimesheets } from '../service';
 import { replaceKey } from '@/utils/utils';
 import { getStartAndEndOfWeek, getRequiredDateFormat } from '@/utils/MomentHelpers';
+import './index.less';
 
 const columns: ProColumns<any>[] = [
   {
