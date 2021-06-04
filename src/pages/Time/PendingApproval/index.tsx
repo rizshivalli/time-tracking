@@ -1,4 +1,4 @@
-import { ProGridContainer, ProIntlProvider, ProSpace, ProTitle } from '@/common';
+import { ProGridContainer, ProIntlProvider, ProSpace, ProTitle, RandomQuote } from '@/common';
 import ProTable from '@ant-design/pro-table';
 import { Button, Col, Row } from 'antd';
 import React, { useRef } from 'react';
@@ -55,6 +55,9 @@ const PendingApproval = () => {
             <ProTitle size={3}>Pending Approval</ProTitle>
             <ProIntlProvider>
               <ProTable
+                locale={{
+                  emptyText: <RandomQuote />,
+                }}
                 request={async () => {
                   const data = await getPendingApprovals();
                   return { data };
