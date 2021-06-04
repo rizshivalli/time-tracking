@@ -167,7 +167,9 @@ const TimeSheet = () => {
   <ProGridContainer>
     <Row>
       <Col span={24}>
-        <h1>Hello World!</h1>
+        <div className="">
+          <h1>Hello World!</h1>
+        </div>
       </Col>
     </Row>
   </ProGridContainer>;
