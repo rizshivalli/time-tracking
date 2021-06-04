@@ -107,12 +107,13 @@ export async function stopTimeRecord(id: identifier, params: any) {
   }
 }
 
-export async function getTimeRecords(dates: { start_date: string; end_date: string }) {
+export async function getTimeRecords(dates: { start_date: string; end_date: string }, params: any) {
   const token = await getToken();
   const organization = await getOrganization();
   const response = await request(
     `/strapi/time-records?date_gte=${dates.start_date}&date_lte=${dates.end_date}`,
     {
+      data: params,
       headers: { Authorization: `Bearer ${token}`, orgid: organization },
     },
   );

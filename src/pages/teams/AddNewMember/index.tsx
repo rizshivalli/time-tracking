@@ -4,7 +4,6 @@ import ProForm, { ProFormRadio, ProFormSelect, ProFormText } from '@ant-design/p
 import { Modal } from 'antd';
 import React, { useCallback } from 'react';
 import { createTeamMember } from '../service';
-import './index.less';
 
 const AddNewMember = () => {
   const [form] = ProForm.useForm();

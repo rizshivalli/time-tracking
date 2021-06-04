@@ -21,6 +21,7 @@ import {
   Statistic,
   Empty,
   Timeline,
+  Alert,
 } from 'antd';
 import React, { Suspense, useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -30,6 +31,7 @@ import { NewEntryModal } from './components';
 import moment from 'moment';
 import './index.less';
 import { zeroPad } from '@/utils/generalUtils';
+import { hasAccess } from '@/utils/token';
 
 const { TabPane } = Tabs;
 const { Option } = Select;
@@ -59,6 +61,7 @@ const TimeSheet = () => {
   const [listLoading, setListLoading] = useState<boolean>(false);
   const [weekTotal, setWeekTotal] = useState<string>('0');
   const [weekStatus, setWeekStatus] = useState<string>('Not Submitted');
+  const [editingEmployee, setEditingEmployee] = useState<string | null>(null);
 
   const checkWeekApprovalStatus = (time: any) => {
     let status = 'unapproved';
@@ -67,12 +70,14 @@ const TimeSheet = () => {
     }
     setWeekStatus(status);
   };
+
   const getWeekData = useCallback(
-    async (key: string = selectedTabKey) => {
-      console.log('🚀 ~ file: index.tsx ~ line 71 ~ key', key);
+    async (key: string = selectedTabKey, org_member_id: string | null = '23') => {
       const newDates = getStartAndEndOfWeek(key);
       setListLoading(true);
-      await getTimeRecords(newDates)
+
+      const params = org_member_id === null ? null : { org_member_id: org_member_id };
+      await getTimeRecords(newDates, params)
         .then((time) => {
           const total = calulateTotalWeekTime(time);
           setWeekTotal(total);
@@ -94,8 +99,14 @@ const TimeSheet = () => {
     getWeekData(selectedTabKey);
   };
 
+  const checkAccess = async () => {
+    const access = await hasAccess();
+    return access;
+  };
+
   useEffect(() => {
     getWeekData(selectedTabKey);
+    checkAccess();
   }, []);
 
   const onDateChange = (date: any, dateString: string) => {
@@ -148,6 +159,7 @@ const TimeSheet = () => {
     const totalDiffer = `${hourDiff}:${minDiffer}`;
     return totalDiffer;
   };
+
   const OperationsSlot = {
     // left: (
     //   <Button
@@ -163,16 +175,6 @@ const TimeSheet = () => {
     // ),
     right: <Tag icon={<ClockCircleOutlined />}>Week Total: {weekTotal && weekTotal}</Tag>,
   };
-
-  <ProGridContainer>
-    <Row>
-      <Col span={24}>
-        <div className="">
-          <h1>Hello World!</h1>
-        </div>
-      </Col>
-    </Row>
-  </ProGridContainer>;
 
   return (
     <ProGridContainer>
@@ -192,6 +194,7 @@ const TimeSheet = () => {
           </div>
         </Col>
         <Col span={21}>
+          <Alert message="You are now editing " type="info" showIcon />
           <div className="card-container">
             <div className="top-widget">
               <ProSpace size="large" align="start" className="top-widget-container">
@@ -217,7 +220,7 @@ const TimeSheet = () => {
                     </Link>
                   </Radio.Group>
                   <Select
-                    disabled
+                    disabled={!checkAccess}
                     showSearch
                     style={{ width: 200 }}
                     placeholder="Employee"
