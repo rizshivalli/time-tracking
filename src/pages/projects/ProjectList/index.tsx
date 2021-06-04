@@ -71,7 +71,7 @@ const ProjectList = () => {
           <ProSpace direction="vertical" style={{ width: '100%' }}>
             <ProSpace direction="horizontal">
               <Link to="/projects/new">
-                <Button className="left-button" icon={<PlusOutlined />}>
+                <Button type="primary" className="left-button" icon={<PlusOutlined />}>
                   Create New Project
                 </Button>
               </Link>

@@ -52,21 +52,17 @@ const TeamHome = () => {
   return (
     <ProGridContainer>
       <Row>
-        <div className="add_new">
-          <ProSpace>
-            <Link to="/people/new">
-              <Button icon={<PlusOutlined />} className="add_new_btn">
-                Add Person
-              </Button>
-            </Link>
-            <Button>Imports</Button>
-            <Button>Export</Button>
-          </ProSpace>
-        </div>
-      </Row>
-      <Row>
         <Col span={24}>
           <ProSpace direction="vertical" style={{ width: '100%' }}>
+            <ProSpace>
+              <Link to="/people/new">
+                <Button type="primary" icon={<PlusOutlined />}>
+                  Add Person
+                </Button>
+              </Link>
+              <Button>Imports</Button>
+              <Button>Export</Button>
+            </ProSpace>
             <ProDivider />
             <ProSpace size="large">
               <Statistic title="Total Hours" value={80.0} precision={2} />

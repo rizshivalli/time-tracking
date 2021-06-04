@@ -6,6 +6,7 @@ import type { ProColumns } from '@ant-design/pro-table';
 import { Link } from 'react-router-dom';
 import type { ActionType } from '@ant-design/pro-table';
 import { getArchivedApprovals } from '../service';
+import './index.less';
 
 const columns: ProColumns<any>[] = [
   {

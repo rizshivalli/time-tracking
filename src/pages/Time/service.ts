@@ -208,7 +208,7 @@ export async function submitWeekForApproval(params: { start_date: string; end_da
 export async function getPendingApprovals() {
   const token = await getToken();
   const organization = await getOrganization();
-  const response = await request('/strapi/approvals/pending', {
+  const response = await request('/strapi/approvals/type/pending', {
     method: 'GET',
     headers: { Authorization: `Bearer ${token}`, orgid: organization },
   });
@@ -281,7 +281,24 @@ export async function getArchivedApprovals() {
   const token = await getToken();
   const organization = await getOrganization();
   const params = { is_archived: true };
-  const response = await request('/strapi/approvals', {
+  const response = await request('/strapi/approvals/type/archived', {
+    method: 'GET',
+    headers: { Authorization: `Bearer ${token}`, orgid: organization },
+    data: { params },
+  });
+
+  if (response.statusCode === 200) {
+    return response.data;
+  } else {
+    throw new Error(response.message);
+  }
+}
+
+export async function getUnsubmittedTimesheets() {
+  const token = await getToken();
+  const organization = await getOrganization();
+  const params = { is_archived: true };
+  const response = await request('/strapi/approvals/type/unsubmitted', {
     method: 'GET',
     headers: { Authorization: `Bearer ${token}`, orgid: organization },
     data: { params },
