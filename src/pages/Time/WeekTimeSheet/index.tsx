@@ -209,6 +209,7 @@ const TimeSheet = () => {
                   setApprovalStatus(approval_status);
                   return { data: time_records, success: true };
                 }}
+                pagination={false}
                 editable={{
                   type: 'multiple',
                   editableKeys,
@@ -222,31 +223,34 @@ const TimeSheet = () => {
                   onChange: setEditableRowKeys,
                 }}
                 rowKey="id"
-                toolBarRender={() => [
-                  <Button
-                    size="large"
-                    key="2"
-                    type="primary"
-                    onClick={() => {
-                      submitWeek();
-                    }}
-                  >
-                    <CheckOutlined />
-                    Submit Week For Approval
-                  </Button>,
-                  <Button
-                    size="large"
-                    key="3"
-                    type="primary"
-                    onClick={() => {
-                      setNewEntryModalVisible(true);
-                    }}
-                  >
-                    <PlusOutlined />
-                    New Entry
-                  </Button>,
-                ]}
                 search={false}
+                footer={() => [
+                  <div>
+                    <Button
+                      size="large"
+                      key="3"
+                      type="primary"
+                      onClick={() => {
+                        setNewEntryModalVisible(true);
+                      }}
+                    >
+                      <PlusOutlined />
+                      New Entry
+                    </Button>
+
+                    <Button
+                      size="large"
+                      key="2"
+                      type="primary"
+                      onClick={() => {
+                        submitWeek();
+                      }}
+                    >
+                      <CheckOutlined />
+                      Submit Week For Approval
+                    </Button>
+                  </div>,
+                ]}
               />
             </ProIntlProvider>
           </div>
