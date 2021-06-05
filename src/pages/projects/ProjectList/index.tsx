@@ -40,7 +40,7 @@ const ProjectList = () => {
       dataIndex: 'notes',
     },
     {
-      title: 'Options',
+      title: '',
       width: 120,
       dataIndex: 'option',
       valueType: 'option',
@@ -111,9 +111,7 @@ const ProjectList = () => {
                   type: 'multiple',
                 }}
                 rowKey="id"
-                search={{
-                  labelWidth: 'auto',
-                }}
+                search={false}
                 pagination={{
                   pageSize: 5,
                 }}
@@ -134,24 +132,3 @@ const ProjectList = () => {
 };
 
 export default ProjectList;
-
-/* <table>
-            <tr>
-              <td>name</td>
-              <td>Project name</td>
-              <td>budget</td>
-              <td>costs</td>
-            </tr>
-
-            {data.map((item) => {
-              const { id, client_id, client_name, project_name, budget, costs } = item;
-              return (
-                <tr key={id}>
-                  <td>{client_name}</td>
-                  <td>{project_name}</td>
-                  <td>{budget}</td>
-                  <td>{costs}</td>
-                </tr>
-              );
-            })}
-          </table> */

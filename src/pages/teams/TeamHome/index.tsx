@@ -9,8 +9,6 @@ import { getTeamMembers } from '../service';
 import { ImportPeopleModal } from './components';
 import './index.less';
 
-const { Divider } = ProCard;
-
 const columns: ProColumns<any>[] = [
   {
     dataIndex: 'index',
@@ -84,9 +82,7 @@ const TeamHome = () => {
                 columns={columns}
                 actionRef={actionRef}
                 rowKey="id"
-                search={{
-                  labelWidth: 'auto',
-                }}
+                search={false}
                 pagination={{
                   pageSize: 25,
                 }}

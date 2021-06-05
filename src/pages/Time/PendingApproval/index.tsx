@@ -55,6 +55,7 @@ const PendingApproval = () => {
             <ProTitle size={3}>Pending Approval</ProTitle>
             <ProIntlProvider>
               <ProTable
+                search={false}
                 locale={{
                   emptyText: <RandomQuote />,
                 }}
@@ -68,9 +69,6 @@ const PendingApproval = () => {
                   type: 'multiple',
                 }}
                 rowKey="id"
-                search={{
-                  labelWidth: 'auto',
-                }}
                 pagination={{
                   pageSize: 5,
                 }}

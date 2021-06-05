@@ -65,9 +65,7 @@ const TimeArchive = () => {
                   type: 'multiple',
                 }}
                 rowKey="id"
-                search={{
-                  labelWidth: 'auto',
-                }}
+                search={false}
                 pagination={{
                   pageSize: 5,
                 }}
