@@ -1,8 +1,9 @@
 import { ProGridContainer, ProIntlProvider, ProSpace, ProTitle, RandomQuote } from '@/common';
 import ProTable from '@ant-design/pro-table';
-import { Button, Col, Row } from 'antd';
+import { Button, Col, Row, Menu, Dropdown, Input } from 'antd';
 import React, { useRef } from 'react';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
+import { DownOutlined, SearchOutlined } from '@ant-design/icons';
 import { getPendingApprovals } from '../service';
 import { Link } from 'react-router-dom';
 import './index.less';
@@ -43,7 +44,6 @@ const columns: ProColumns<any>[] = [
     ],
   },
 ];
-
 const PendingApproval = () => {
   const actionRef = useRef<ActionType>();
 
@@ -53,6 +53,40 @@ const PendingApproval = () => {
         <Col span={24}>
           <ProSpace direction="vertical" style={{ width: '100%' }}>
             <ProTitle size={3}>Pending Approval</ProTitle>
+            <Col span={6} className="left">
+              <Dropdown
+                overlay={
+                  <Menu>
+                    <Menu.Item key="1">Weeks</Menu.Item>
+                    <Menu.Item key="2">Projects</Menu.Item>
+                    <Menu.Item key="2">People</Menu.Item>
+                  </Menu>
+                }
+              >
+                <Button className="btn">
+                  Sorted By: Projects <DownOutlined />
+                </Button>
+              </Dropdown>
+            </Col>
+            <Col span={6} className="right">
+              <Dropdown
+                overlay={
+                  <Menu>
+                    <Menu.Item>
+                      <Input size="default size" placeholder="Search" prefix={<SearchOutlined />} />
+                    </Menu.Item>
+                    <Menu.Item key="1">Everyone</Menu.Item>
+                    <Menu.Item key="2">My Pinnted Teammates</Menu.Item>
+                    <Menu.Item key="3">My Pinned Projects</Menu.Item>
+                    <Menu.Item key="4">Sample Role</Menu.Item>
+                  </Menu>
+                }
+              >
+                <Button className="btn">
+                  Show: Everyone <DownOutlined />
+                </Button>
+              </Dropdown>
+            </Col>
             <ProIntlProvider>
               <ProTable
                 search={false}
@@ -76,6 +110,7 @@ const PendingApproval = () => {
                 toolBarRender={false}
               />
             </ProIntlProvider>
+            <Button type="primary">Approve Timesheets</Button>
           </ProSpace>
         </Col>
       </Row>

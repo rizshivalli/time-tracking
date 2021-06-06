@@ -1,10 +1,11 @@
 import { ProGridContainer, ProIntlProvider, ProSpace, ProTitle, RandomQuote } from '@/common';
 import ProTable from '@ant-design/pro-table';
-import { Col, DatePicker, Row } from 'antd';
+import { Col, DatePicker, Button, Menu, Row, Dropdown } from 'antd';
 import React, { useRef } from 'react';
 import type { ProColumns } from '@ant-design/pro-table';
 import { Link } from 'react-router-dom';
 import type { ActionType } from '@ant-design/pro-table';
+import { DownOutlined } from '@ant-design/icons';
 import { getUnsubmittedTimesheets } from '../service';
 import { replaceKey } from '@/utils/utils';
 import { getStartAndEndOfWeek, getRequiredDateFormat } from '@/utils/MomentHelpers';
@@ -55,6 +56,24 @@ const Unsubmitted = () => {
         <Col span={24}>
           <ProSpace direction="vertical" style={{ width: '100%' }}>
             <ProTitle size={3}>Unsubmitted</ProTitle>
+            <Col span={6}>
+              <Dropdown
+                overlay={
+                  <Menu>
+                    <Menu.Item key="1">07 jun 2021 - 13 jun 2021</Menu.Item>
+                    <Menu.Item key="2">This Week</Menu.Item>
+                    <Menu.Item key="2">24 May 2021 - 30 May 2021</Menu.Item>
+                    <Menu.Item key="2">17 May 2021 - 23 May 2021</Menu.Item>
+                    <Menu.Item key="2">10 May 2021 - 16 May 2021</Menu.Item>
+                    <Menu.Item key="2">- Shows All Weeks -</Menu.Item>
+                  </Menu>
+                }
+              >
+                <Button className="btn">
+                  This Week <DownOutlined />
+                </Button>
+              </Dropdown>
+            </Col>
             <ProIntlProvider>
               <ProTable
                 locale={{
@@ -80,6 +99,12 @@ const Unsubmitted = () => {
               />
             </ProIntlProvider>
           </ProSpace>
+        </Col>
+        <Col span={24}>
+          <Button type="primary" size="medium">
+            {' '}
+            Send Email Remainder
+          </Button>
         </Col>
       </Row>
     </ProGridContainer>

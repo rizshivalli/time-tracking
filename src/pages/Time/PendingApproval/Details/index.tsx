@@ -53,47 +53,49 @@ const ApprovalDetails = (props: any) => {
     <ProGridContainer>
       <Row>
         <Col span={24}>
+          <div>Hello World</div>
+        </Col>
+      </Row>
+      <Row>
+        <Col span={24}>
           {' '}
           <ProIntlProvider>
             <ProTable
-              headerTitle={
-                !loading &&
-                ` Approve ${humanize(data?.user_name)}'s Timesheet for ${data.date_range} `
-              }
               loading={loading}
               actionRef={actionRef}
               // @ts-ignore
               columns={createTablekey(data?.time_records)}
               dataSource={data?.time_records}
               rowKey="id"
-              toolBarRender={() => [
-                <Button
-                  size="large"
-                  key="2"
-                  type="primary"
-                  onClick={async () => {
-                    setLoading(true);
-                    await approveTimesheet(id)
-                      .then(() => {
-                        actionRef?.current?.reload();
-                      })
-                      .finally(() => {
-                        setLoading(false);
-                      });
-                  }}
-                  disabled={loading || data?.status === 'Approved'}
-                >
-                  <CheckOutlined />
-                  {data?.status !== 'Approved' ? `Approve Timesheet` : `Approved Timesheet`}
-                </Button>,
-                <Button size="large" key="3" type="primary" onClick={() => {}} disabled={loading}>
-                  <MailOutlined />
-                  Email {data?.user_name}
-                </Button>,
-              ]}
               search={false}
             />
           </ProIntlProvider>
+        </Col>
+        <Col span={24}>
+          <Button
+            size="large"
+            key="2"
+            type="primary"
+            onClick={async () => {
+              setLoading(true);
+              await approveTimesheet(id)
+                .then(() => {
+                  actionRef?.current?.reload();
+                })
+                .finally(() => {
+                  setLoading(false);
+                });
+            }}
+            disabled={loading || data?.status === 'Approved'}
+          >
+            <CheckOutlined />
+            {data?.status !== 'Approved' ? `Approve Timesheet` : `Approved Timesheet`}
+          </Button>
+          ,
+          <Button size="large" key="3" type="primary" onClick={() => {}} disabled={loading}>
+            <MailOutlined />
+            Email {data?.user_name}
+          </Button>
         </Col>
       </Row>
     </ProGridContainer>
