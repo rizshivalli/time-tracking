@@ -39,7 +39,8 @@ const ApprovalDetails = (props: any) => {
         setData(data);
       })
       .catch((error) => {
-        message.error(error);
+        setData([]);
+        message.error(error.message);
       })
       .finally(() => {
         setLoading(false);
