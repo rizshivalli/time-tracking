@@ -1,8 +1,14 @@
 import { ProDivider, ProGridContainer, ProIntlProvider, ProSpace } from '@/common';
-import { PlusOutlined } from '@ant-design/icons';
+import {
+  PlusOutlined,
+  LeftOutlined,
+  RightOutlined,
+  DownOutlined,
+  SearchOutlined,
+} from '@ant-design/icons';
 import ProCard from '@ant-design/pro-card';
 import ProTable, { ActionType, ProColumns } from '@ant-design/pro-table';
-import { Button, Col, Row, Statistic } from 'antd';
+import { Button, Col, Row, Statistic, Progress, Menu, Dropdown, Input } from 'antd';
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { getTeamMembers } from '../service';
@@ -61,14 +67,67 @@ const TeamHome = () => {
               <Button>Imports</Button>
               <Button>Export</Button>
             </ProSpace>
-            <ProDivider />
-            <ProSpace size="large">
-              <Statistic title="Total Hours" value={80.0} precision={2} />
-              <ProDivider type="vertical" />
-              <Statistic title="Team Capacity" value={210.0} precision={2} />
-              <ProDivider type="vertical" />
-            </ProSpace>
-            <ProDivider />
+          </ProSpace>
+        </Col>
+        <ProDivider />
+        <Col span={24} className="left">
+          <Button size="default size" icon={<LeftOutlined />}></Button>
+          <Button size="default size" icon={<RightOutlined />}></Button>
+          <p>
+            <strong>This Week :</strong> 07 – 13 Jun 2021
+          </p>
+          <div>
+            <Dropdown
+              overlay={
+                <Menu>
+                  <Menu.Item>
+                    <Input size="default size" placeholder="Search" prefix={<SearchOutlined />} />
+                  </Menu.Item>
+                  <Menu.Item key="1">Everyone</Menu.Item>
+                  <Menu.Item key="2">My Pins</Menu.Item>
+                  <Menu.Item key="2">Sample Roles</Menu.Item>
+                </Menu>
+              }
+            >
+              <Button className="btn">
+                Everyone <DownOutlined />
+              </Button>
+            </Dropdown>
+          </div>
+        </Col>
+        <ProDivider />
+        <Col span={4}>
+          <ProSpace size="large">
+            <Statistic title="Total Hours" value={80.0} precision={2} />
+            <ProDivider type="vertical" />
+          </ProSpace>
+        </Col>
+        <Col span={4}>
+          <ProSpace size="large">
+            <Statistic title="Team Capacity" value={210.0} precision={2} />
+            <ProDivider type="vertical" />
+          </ProSpace>
+        </Col>
+        <Col span={6}>
+          <div className="left_text">
+            <p className="green_box"></p>
+            <p>
+              Billable <strong> 0:00</strong>
+            </p>
+          </div>
+          <div className="left_text">
+            <p className="skyblue_box"></p>
+            <p>
+              Non-Billable <strong>0:00</strong>
+            </p>
+          </div>
+        </Col>
+        <Col span={10}>
+          <Progress percent={60} success={{ percent: 30 }} />
+        </Col>
+        <ProDivider />
+        <Col span={24}>
+          <ProSpace direction="vertical" style={{ width: '100%' }}>
             <ProIntlProvider>
               <ProTable
                 request={async (params = {}) => {

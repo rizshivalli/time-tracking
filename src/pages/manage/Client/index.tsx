@@ -3,9 +3,10 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Button, Col, message, Row } from 'antd';
 import ProList from '@ant-design/pro-list';
 import { NewClientModal } from './components';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, DownOutlined } from '@ant-design/icons';
 import { getClients } from './service';
 import { Link } from 'react-router-dom';
+import './index.less';
 
 const ManageClient = () => {
   const [newClientModal, setNewClientModalVisibility] = useState<boolean>(false);
@@ -39,11 +40,17 @@ const ManageClient = () => {
             <ProSpace>
               <Button
                 type="primary"
-                size="large"
+                size="medium"
                 onClick={() => setNewClientModalVisibility(true)}
                 icon={<PlusOutlined />}
               >
                 New Client
+              </Button>
+              <Button className="btncom" size="medium" icon={<PlusOutlined />}>
+                Add Contact
+              </Button>
+              <Button className="btncom" size="medium">
+                Import/Export {<DownOutlined />}
               </Button>
             </ProSpace>
             <ProDivider />

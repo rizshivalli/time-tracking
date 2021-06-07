@@ -1,11 +1,12 @@
 import { ProDivider, ProGridContainer, ProSpace } from '@/common';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Button, Col, message, Row } from 'antd';
+import { Button, Col, message, Row, Menu, Dropdown } from 'antd';
 import ProList from '@ant-design/pro-list';
 import { NewTaskModal } from './components';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, DownOutlined } from '@ant-design/icons';
 import { getCommonTasks, deleteCommonTask } from './service';
 import DeleteAlert from '@/common/DeleteAlert';
+import './index.less';
 
 const dataSource = [
   {
@@ -31,9 +32,10 @@ const ManageTasks = () => {
   const [newTaskModalVisble, setNewTaskModalVisibility] = useState<boolean>(false);
   const [commonTasks, setCommonTasks] = useState([]);
   const [deleteAlert, setDeleteAlert] = useState<any>({ visible: false, id: null });
-  const hideDeleteModal = useCallback(() => setDeleteAlert({ visible: false, id: null }), [
-    deleteAlert,
-  ]);
+  const hideDeleteModal = useCallback(
+    () => setDeleteAlert({ visible: false, id: null }),
+    [deleteAlert],
+  );
 
   const getCommonTasksFromServer = useCallback(async () => {
     setCommonLoading(true);
@@ -62,12 +64,24 @@ const ManageTasks = () => {
             <ProSpace>
               <Button
                 type="primary"
-                size="large"
+                size="medium"
                 onClick={() => setNewTaskModalVisibility(true)}
                 icon={<PlusOutlined />}
               >
                 New Task
-              </Button>{' '}
+              </Button>
+              <Dropdown
+                overlay={
+                  <Menu>
+                    <Menu.Item key="1">Export to Excel</Menu.Item>
+                    <Menu.Item key="2">Export to CSV</Menu.Item>
+                  </Menu>
+                }
+              >
+                <Button className="btn">
+                  Export <DownOutlined />
+                </Button>
+              </Dropdown>
             </ProSpace>
             <ProDivider />
             <ProList<{ id: string; name: string }>
