@@ -1,8 +1,8 @@
 import { ProDivider, ProGridContainer, ProIntlProvider, ProSpace } from '@/common';
-import { DownOutlined, PlusOutlined } from '@ant-design/icons';
+import { DownOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
-import { Button, Col, Dropdown, Menu, Row } from 'antd';
+import { Button, Col, Dropdown, Menu, Row, Input } from 'antd';
 import React, { useRef, useState } from 'react';
 import ExportProjectsModal from './components/ExportProjectsModal';
 import ImportProjects from './components/ImportProjects';
@@ -67,7 +67,7 @@ const ProjectList = () => {
   return (
     <ProGridContainer>
       <Row>
-        <Col span={24}>
+        <Col span={16}>
           <ProSpace direction="vertical" style={{ width: '100%' }}>
             <ProSpace direction="horizontal">
               <Link to="/projects/new">
@@ -92,6 +92,21 @@ const ProjectList = () => {
                 Export
               </Button>
             </ProSpace>
+          </ProSpace>
+        </Col>
+        <Col span={8}>
+          <ProSpace direction="vertical" style={{ width: '100%' }}>
+            <Input
+              type="Search"
+              size="medium"
+              prefix={<SearchOutlined />}
+              placeholder="Search by client or project name"
+              style={{ width: 300 }}
+            />
+          </ProSpace>
+        </Col>
+        <Col span={24}>
+          <ProSpace direction="vertical" style={{ width: '100%' }}>
             <ProDivider />
             <ProIntlProvider>
               <ProTable
