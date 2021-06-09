@@ -2,9 +2,9 @@ import { ProDivider, ProGridContainer } from '@/common';
 import { Col, Row, Modal, Input, Button, Menu, Dropdown, Progress, Tabs } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { LeftOutlined, SearchOutlined, EditOutlined, DownOutlined } from '@ant-design/icons';
-import { getProjectsById, getTeamMates, editProjectsById } from '../../service';
+import { getProjectsById } from '../../service';
 import './index.less';
-import ProTable from '@ant-design/pro-table';
+import { LineChart } from '@/common/Charts';
 
 const ProjectDetails = (props: any) => {
   const [id] = useState<string>(props?.match?.params?.id);
@@ -42,7 +42,7 @@ const ProjectDetails = (props: any) => {
         <Col span={18} className="text-right">
           <Input
             type="Search"
-            size="medium"
+            size="middle"
             prefix={<SearchOutlined />}
             placeholder="Search by client or project name"
             style={{ width: 300 }}
@@ -65,7 +65,7 @@ const ProjectDetails = (props: any) => {
           </p>
         </Col>
         <Col span={6}>
-          <Button size="medium" className="btn">
+          <Button size="middle" className="btn">
             <EditOutlined /> Edit Projects
           </Button>
           <Dropdown
@@ -85,6 +85,9 @@ const ProjectDetails = (props: any) => {
         </Col>
       </Row>
       <Row>
+        <Col span={24}>
+          <LineChart />
+        </Col>
         <Col span={6}>
           <div className="Bar_Chart_Card">
             <div className="Box_Content">Total Hours</div>
