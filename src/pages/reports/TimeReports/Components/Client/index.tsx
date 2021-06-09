@@ -1,12 +1,12 @@
 import { ProGridContainer } from '@/common';
 import React from 'react';
 
-const TeamReports = () => {
+const ClientsReports = () => {
   return (
     <ProGridContainer>
-      <h1>Team reports</h1>
+      <h1>ClientsReports</h1>
     </ProGridContainer>
   );
 };
 
-export default TeamReports;
+export default ClientsReports;

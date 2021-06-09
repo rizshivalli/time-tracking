@@ -69,7 +69,7 @@ const Unsubmitted = () => {
                   </Menu>
                 }
               >
-                <Button className="btn">
+                <Button>
                   This Week <DownOutlined />
                 </Button>
               </Dropdown>
@@ -101,7 +101,7 @@ const Unsubmitted = () => {
           </ProSpace>
         </Col>
         <Col span={24}>
-          <Button type="primary" size="middle" className="send_email_btn">
+          <Button type="primary" size="middle">
             {' '}
             Send Email Remainder
           </Button>

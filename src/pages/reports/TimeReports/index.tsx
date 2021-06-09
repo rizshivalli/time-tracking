@@ -3,9 +3,10 @@ import React from 'react';
 import { Col, Row, Dropdown, Menu, Button, Progress, Checkbox, Tooltip, Tabs } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import './index.less';
+import { ProjectsReports, TeamsReports, TasksReports, ClientsReports } from './Components';
 
 const { TabPane } = Tabs;
-const ClientReports = () => {
+const TimeReports = () => {
   return (
     <ProGridContainer>
       <Row>
@@ -80,16 +81,16 @@ const ClientReports = () => {
           <div className="Task_Projects_Tabs">
             <Tabs defaultActiveKey="1">
               <TabPane tab="Clients" key="1">
-                Clients of Tab Pane 1
+                <ClientsReports />
               </TabPane>
               <TabPane tab="Projects" key="2">
-                Projects of Tab Pane 2
+                <ProjectsReports />
               </TabPane>
               <TabPane tab="Task" key="3">
-                Task of Tab Pane 3
+                <TasksReports />
               </TabPane>
               <TabPane tab="Team" key="4">
-                Team of Tab Pane 4
+                <TeamsReports />
               </TabPane>
             </Tabs>
           </div>
@@ -99,4 +100,4 @@ const ClientReports = () => {
   );
 };
 
-export default ClientReports;
+export default TimeReports;

@@ -198,17 +198,17 @@ export default defineConfig({
                   routes: [
                     {
                       path: '/',
-                      redirect: '/reports/clients',
+                      redirect: '/reports/time',
                     },
                     {
                       name: 'time',
-                      path: '/reports/clients',
-                      component: './reports/Clients',
+                      path: '/reports/time',
+                      component: './reports/TimeReports',
                     },
                     {
                       name: 'time-detailed',
-                      path: '/reports/tasks',
-                      component: './reports/Tasks',
+                      path: '/reports/time-detailed',
+                      component: './reports/TimeDetailedReports',
                     },
                     // {
                     //   name: 'projects',
