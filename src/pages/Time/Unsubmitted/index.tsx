@@ -101,7 +101,7 @@ const Unsubmitted = () => {
           </ProSpace>
         </Col>
         <Col span={24}>
-          <Button type="primary" size="medium">
+          <Button type="primary" size="middle" className="send_email_btn">
             {' '}
             Send Email Remainder
           </Button>

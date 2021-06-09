@@ -66,7 +66,7 @@ const ProjectDetails = (props: any) => {
           </p>
         </Col>
         <Col span={6}>
-          <Button size="middle" className="btn">
+          <Button size="middle" className="Projects_btns">
             <EditOutlined /> Edit Projects
           </Button>
           <Dropdown
@@ -79,7 +79,7 @@ const ProjectDetails = (props: any) => {
               </Menu>
             }
           >
-            <Button className="btn">
+            <Button size="middle" className="Projects_btns">
               Action <DownOutlined />
             </Button>
           </Dropdown>
@@ -154,7 +154,7 @@ const ProjectDetails = (props: any) => {
       <ProDivider></ProDivider>
       <Row>
         <Col span={24}>
-          <div>
+          <div className="Projects_Tabs">
             <Tabs defaultActiveKey="1" centered>
               <TabPane tab="Tasks" key="1">
                 <TeamsTab />

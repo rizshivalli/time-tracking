@@ -56,14 +56,14 @@ const ApprovalDetails = (props: any) => {
       <Row>
         <Col span={24} className="heading">
           <div className="head_title">
-            <h1>Approve [SAMPLE] Kiran’s Timesheet for 24 – 30 May 2021</h1>
-            <p>[SAMPLE] Client A (Fixed Fee Project)</p>
+            <p className="sub_title">Approve [SAMPLE] Kiran’s Timesheet for 24 – 30 May 2021</p>
+            <span>[SAMPLE] Client A (Fixed Fee Project)</span>
           </div>
         </Col>
         <Col span={6}>
           <div className="paragraphs">
-            <p>Hours Tracked</p>
-            <h2>6:40</h2>
+            <span>Hours Tracked</span>
+            <p className="paragraphs_title">6:40</p>
           </div>
         </Col>
         <Col span={4} className="progress_bar">
@@ -71,7 +71,7 @@ const ApprovalDetails = (props: any) => {
         </Col>
         <Col span={8} className="Circle_Wraps">
           <div className="left_text">
-            <p className="Billable_Hourse">Billable Hours</p>
+            <span className="Billable_Hourse">Billable Hours</span>
           </div>
           <div className="left_text">
             <p className="green_box"></p>
@@ -88,8 +88,8 @@ const ApprovalDetails = (props: any) => {
         </Col>
         <Col span={6}>
           <div className="paragraphs">
-            <p>Expenses</p>
-            <h2>$0.00</h2>
+            <span>Expenses</span>
+            <p className="paragraphs_title">$0.00</p>
           </div>
         </Col>
       </Row>
@@ -97,7 +97,7 @@ const ApprovalDetails = (props: any) => {
         <Col span={24}>
           {' '}
           <ProIntlProvider>
-            <h2>Pending Hours</h2>
+            <p className="pending_hours">Pending Hours</p>
             <ProTable
               loading={loading}
               actionRef={actionRef}
