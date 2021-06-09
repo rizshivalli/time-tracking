@@ -11,6 +11,8 @@ export default {
   'menu.projects': 'Projects',
   'menu.reports': 'Reports',
   'menu.reports.client': 'Client',
+  'menu.reports.time': 'Time',
+  'menu.reports.time-detailed': 'Detailed Time',
   'menu.reports.task': 'Task',
   'menu.reports.projects': 'Project',
   'menu.reports.teams': 'Teams',

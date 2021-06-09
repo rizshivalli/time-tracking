@@ -201,25 +201,25 @@ export default defineConfig({
                       redirect: '/reports/clients',
                     },
                     {
-                      name: 'client',
+                      name: 'time',
                       path: '/reports/clients',
                       component: './reports/Clients',
                     },
                     {
-                      name: 'task',
+                      name: 'time-detailed',
                       path: '/reports/tasks',
                       component: './reports/Tasks',
                     },
-                    {
-                      name: 'projects',
-                      path: '/reports/projects',
-                      component: './reports/Projects',
-                    },
-                    {
-                      name: 'teams',
-                      path: '/reports/teams',
-                      component: './reports/Teams',
-                    },
+                    // {
+                    //   name: 'projects',
+                    //   path: '/reports/projects',
+                    //   component: './reports/Projects',
+                    // },
+                    // {
+                    //   name: 'teams',
+                    //   path: '/reports/teams',
+                    //   component: './reports/Teams',
+                    // },
                   ],
                 },
                 {
