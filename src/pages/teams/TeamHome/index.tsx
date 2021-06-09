@@ -6,7 +6,6 @@ import {
   DownOutlined,
   SearchOutlined,
 } from '@ant-design/icons';
-import ProCard from '@ant-design/pro-card';
 import ProTable, { ActionType, ProColumns } from '@ant-design/pro-table';
 import { Button, Col, Row, Statistic, Progress, Menu, Dropdown, Input } from 'antd';
 import React, { useRef } from 'react';
@@ -71,8 +70,8 @@ const TeamHome = () => {
         </Col>
         <ProDivider />
         <Col span={24} className="left">
-          <Button size="default size" icon={<LeftOutlined />}></Button>
-          <Button size="default size" icon={<RightOutlined />}></Button>
+          <Button icon={<LeftOutlined />}></Button>
+          <Button icon={<RightOutlined />}></Button>
           <p>
             <strong>This Week :</strong> 07 – 13 Jun 2021
           </p>
@@ -81,7 +80,7 @@ const TeamHome = () => {
               overlay={
                 <Menu>
                   <Menu.Item>
-                    <Input size="default size" placeholder="Search" prefix={<SearchOutlined />} />
+                    <Input placeholder="Search" prefix={<SearchOutlined />} />
                   </Menu.Item>
                   <Menu.Item key="1">Everyone</Menu.Item>
                   <Menu.Item key="2">My Pins</Menu.Item>

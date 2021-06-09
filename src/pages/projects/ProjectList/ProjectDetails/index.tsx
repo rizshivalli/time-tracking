@@ -5,6 +5,7 @@ import { LeftOutlined, SearchOutlined, EditOutlined, DownOutlined } from '@ant-d
 import { getProjectsById } from '../../service';
 import './index.less';
 import { LineChart } from '@/common/Charts';
+import { TeamsTab, TasksTab } from './components';
 
 const ProjectDetails = (props: any) => {
   const [id] = useState<string>(props?.match?.params?.id);
@@ -156,17 +157,10 @@ const ProjectDetails = (props: any) => {
           <div>
             <Tabs defaultActiveKey="1" centered>
               <TabPane tab="Tasks" key="1">
-                <p>
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vel debitis ex ut porro
-                  temporibus, similique fugit totam, illum, ea optio ducimus aspernatur sit facilis
-                  assumenda laudantium error amet dolore laboriosam?
-                </p>
+                <TeamsTab />
               </TabPane>
               <TabPane tab="Team" key="2">
-                Content of Tab Pane 2
-              </TabPane>
-              <TabPane tab="Invoices" key="3">
-                Content of Tab Pane 3
+                <TasksTab />
               </TabPane>
             </Tabs>
           </div>

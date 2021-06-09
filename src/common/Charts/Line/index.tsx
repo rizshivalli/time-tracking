@@ -1,7 +1,8 @@
+// @ts-nocheck
+
 import React, { useState } from 'react';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
-import { getRequiredDateFormat } from '@/utils/MomentHelpers';
 
 const LineChart = ({ data }: any) => {
   //   const { xAxis, thisYear, lastYear } = data;
