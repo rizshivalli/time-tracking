@@ -11,7 +11,7 @@ const TimeReports = () => {
     <ProGridContainer>
       <Row>
         <Col span="24" className="AllTime">
-          <p>All Time</p>
+          <p className="Main_title">All Time</p>
           <div className="Dropdown">
             <Dropdown
               overlay={
@@ -26,7 +26,7 @@ const TimeReports = () => {
                 </Menu>
               }
             >
-              <Button>
+              <Button className="All_TIme_btns">
                 All Time <DownOutlined />
               </Button>
             </Dropdown>
