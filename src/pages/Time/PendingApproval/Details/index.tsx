@@ -60,13 +60,13 @@ const ApprovalDetails = (props: any) => {
             <span>[SAMPLE] Client A (Fixed Fee Project)</span>
           </div>
         </Col>
-        <Col span={6}>
+        <Col span={5}>
           <div className="paragraphs">
             <span>Hours Tracked</span>
             <p className="paragraphs_title">6:40</p>
           </div>
         </Col>
-        <Col span={4} className="progress_bar">
+        <Col span={6} className="progress_bar">
           <Progress type="circle" percent={99} width={80} />
         </Col>
         <Col span={8} className="Circle_Wraps">
@@ -86,7 +86,7 @@ const ApprovalDetails = (props: any) => {
             </p>
           </div>
         </Col>
-        <Col span={6}>
+        <Col span={5}>
           <div className="paragraphs">
             <span>Expenses</span>
             <p className="paragraphs_title">$0.00</p>

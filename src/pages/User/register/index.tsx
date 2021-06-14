@@ -1,10 +1,12 @@
-import { Form, Button, Input, Popover, Progress, message } from 'antd';
+import { Form, Button, Input, Popover, Progress, message, Row } from 'antd';
+import Col from 'antd/es/grid/col';
 import type { FC } from 'react';
 import React, { useState, useEffect } from 'react';
 import type { Dispatch } from 'umi';
 import { Link, connect, history, FormattedMessage, useIntl } from 'umi';
 import type { StateType } from './model';
 import styles from './style.less';
+import './style.less';
 
 const FormItem = Form.Item;
 
@@ -153,139 +155,149 @@ const Register: FC<RegisterProps> = ({ submitting, dispatch, userAndregister }) 
   };
 
   return (
-    <div className={styles.main}>
-      <h3>
-        <FormattedMessage id="userandregister.register.register" />
-      </h3>
-      <Form form={form} name="UserRegister" onFinish={onFinish}>
-        <FormItem
-          name="first_name"
-          rules={[
-            {
-              required: true,
-              message: 'First Name required',
-            },
-          ]}
-        >
-          <Input size="large" placeholder="First Name" />
-        </FormItem>
-        <FormItem
-          name="last_name"
-          rules={[
-            {
-              required: true,
-              message: 'Last Name required',
-            },
-          ]}
-        >
-          <Input size="large" placeholder="Last Name" />
-        </FormItem>
-        <FormItem
-          name="organisationName"
-          rules={[
-            {
-              required: true,
-              message: 'Company required',
-            },
-          ]}
-        >
-          <Input size="large" placeholder="Company" />
-        </FormItem>
+    <Row>
+      <Col span={24}>
+        <div className="register_box_Container">
+          <div className={styles.main}>
+            <h3>
+              <FormattedMessage id="userandregister.register.register" />
+            </h3>
+            <Form form={form} name="UserRegister" onFinish={onFinish}>
+              <FormItem
+                name="first_name"
+                rules={[
+                  {
+                    required: true,
+                    message: 'First Name required',
+                  },
+                ]}
+              >
+                <Input size="large" placeholder="First Name" />
+              </FormItem>
+              <FormItem
+                name="last_name"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Last Name required',
+                  },
+                ]}
+              >
+                <Input size="large" placeholder="Last Name" />
+              </FormItem>
+              <FormItem
+                name="organisationName"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Company required',
+                  },
+                ]}
+              >
+                <Input size="large" placeholder="Company" />
+              </FormItem>
 
-        <FormItem
-          name="email"
-          rules={[
-            {
-              required: true,
-              message: intl.formatMessage({ id: 'userandregister.email.required' }),
-            },
-            {
-              type: 'email',
-              message: intl.formatMessage({ id: 'userandregister.email.wrong-format' }),
-            },
-          ]}
-        >
-          <Input
-            size="large"
-            placeholder={intl.formatMessage({ id: 'userandregister.email.placeholder' })}
-          />
-        </FormItem>
-        <Popover
-          getPopupContainer={(node) => {
-            if (node && node.parentNode) {
-              return node.parentNode as HTMLElement;
-            }
-            return node;
-          }}
-          content={
-            visible && (
-              <div style={{ padding: '4px 0' }}>
-                {passwordStatusMap[getPasswordStatus()]}
-                {renderPasswordProgress()}
-                <div style={{ marginTop: 10 }}>
-                  <FormattedMessage id="userandregister.strength.msg" />
-                </div>
-              </div>
-            )
-          }
-          overlayStyle={{ width: 240 }}
-          placement="right"
-          visible={visible}
-        >
-          <FormItem
-            name="password"
-            className={
-              form.getFieldValue('password') &&
-              form.getFieldValue('password').length > 0 &&
-              styles.password
-            }
-            rules={[
-              {
-                validator: checkPassword,
-              },
-            ]}
-          >
-            <Input
-              size="large"
-              type="password"
-              placeholder={intl.formatMessage({ id: 'userandregister.password.placeholder' })}
-            />
-          </FormItem>
-        </Popover>
-        <FormItem
-          name="confirm_password"
-          rules={[
-            {
-              required: true,
-              message: intl.formatMessage({ id: 'userandregister.confirm-password.required' }),
-            },
-            {
-              validator: checkConfirm,
-            },
-          ]}
-        >
-          <Input
-            size="large"
-            type="password"
-            placeholder={intl.formatMessage({ id: 'userandregister.confirm-password.placeholder' })}
-          />
-        </FormItem>
-        <FormItem>
-          <Button
-            size="large"
-            loading={submitting}
-            className={styles.submit}
-            type="primary"
-            htmlType="submit"
-          >
-            <FormattedMessage id="userandregister.register.register" />
-          </Button>
-          <Link className={styles.login} to="/user/login">
-            <FormattedMessage id="userandregister.register.sign-in" />
-          </Link>
-        </FormItem>
-      </Form>
-    </div>
+              <FormItem
+                name="email"
+                rules={[
+                  {
+                    required: true,
+                    message: intl.formatMessage({ id: 'userandregister.email.required' }),
+                  },
+                  {
+                    type: 'email',
+                    message: intl.formatMessage({ id: 'userandregister.email.wrong-format' }),
+                  },
+                ]}
+              >
+                <Input
+                  size="large"
+                  placeholder={intl.formatMessage({ id: 'userandregister.email.placeholder' })}
+                />
+              </FormItem>
+              <Popover
+                getPopupContainer={(node) => {
+                  if (node && node.parentNode) {
+                    return node.parentNode as HTMLElement;
+                  }
+                  return node;
+                }}
+                content={
+                  visible && (
+                    <div style={{ padding: '4px 0' }}>
+                      {passwordStatusMap[getPasswordStatus()]}
+                      {renderPasswordProgress()}
+                      <div style={{ marginTop: 10 }}>
+                        <FormattedMessage id="userandregister.strength.msg" />
+                      </div>
+                    </div>
+                  )
+                }
+                overlayStyle={{ width: 240 }}
+                placement="right"
+                visible={visible}
+              >
+                <FormItem
+                  name="password"
+                  className={
+                    form.getFieldValue('password') &&
+                    form.getFieldValue('password').length > 0 &&
+                    styles.password
+                  }
+                  rules={[
+                    {
+                      validator: checkPassword,
+                    },
+                  ]}
+                >
+                  <Input
+                    size="large"
+                    type="password"
+                    placeholder={intl.formatMessage({ id: 'userandregister.password.placeholder' })}
+                  />
+                </FormItem>
+              </Popover>
+              <FormItem
+                name="confirm_password"
+                rules={[
+                  {
+                    required: true,
+                    message: intl.formatMessage({
+                      id: 'userandregister.confirm-password.required',
+                    }),
+                  },
+                  {
+                    validator: checkConfirm,
+                  },
+                ]}
+              >
+                <Input
+                  size="large"
+                  type="password"
+                  placeholder={intl.formatMessage({
+                    id: 'userandregister.confirm-password.placeholder',
+                  })}
+                />
+              </FormItem>
+              <FormItem>
+                <Button
+                  size="large"
+                  loading={submitting}
+                  className={styles.submit}
+                  type="primary"
+                  htmlType="submit"
+                >
+                  <FormattedMessage id="userandregister.register.register" />
+                </Button>
+                <Link className={styles.login} to="/user/login">
+                  <FormattedMessage id="userandregister.register.sign-in" />
+                </Link>
+              </FormItem>
+            </Form>
+          </div>
+        </div>
+      </Col>
+    </Row>
   );
 };
 export default connect(

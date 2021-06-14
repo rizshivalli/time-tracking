@@ -108,7 +108,7 @@
   border: 1px solid #b6b6b6;
 }
 .new_entry_wraps {
-  padding: 89px 0px;
+  padding: 105px 0px;
   text-align: center;
 }
 .new_entry_wraps button.ant-btn.ant-btn-primary.ant-btn-icon-only.btn {
@@ -123,7 +123,7 @@
 }
 .new_entry_wraps .entry_class_wraps {
   cursor: pointer;
-  font-size: 13px;
+  font-size: 11px;
 }
 .ant-tabs-extra-content {
   position: absolute;
@@ -177,6 +177,10 @@ span.ant-tag {
 .ant-timeline-item {
   padding-bottom: 1px !important;
 }
+
+.card-container .top-widget {
+  padding: 10px 0px!important;
+}
 @media (min-width: 2560px) {
   .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab,
   .ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab {
@@ -193,38 +197,12 @@ span.ant-tag {
   .newentrywraps span.anticon.anticon-plus {
     font-size: 40px;
   }
-  .new_entry_wraps {
-    padding: 92px 0px;
-    text-align: left;
-  }
-  .new_entry_wraps button.ant-btn.ant-btn-primary.ant-btn-icon-only.btn {
-    width: 84%;
-  }
   .ant-tabs-extra-content {
     padding: 13px 3px;
   }
   .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab,
   .ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab {
     padding: 14px 32px;
-  }
-  .new_entry_wraps .entry_class_wraps {
-    font-size: 15px;
-    margin-left:10px;
-  }
-}
-@media (max-width: 1370px) {
-  .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab,
-  .ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab {
-    padding: 10px 23px;
-  }
-  .ant-tabs-extra-content {
-    padding: 10px 0px;
-  }
-  .new_entry_wraps span.anticon.anticon-plus {
-    font-size: 58px;
-  }
-  .entry_class_wraps {
-    font-size: 15px;
   }
 }
 @media (max-width: 1024px) {
@@ -246,19 +224,17 @@ span.ant-tag {
     font-size: 40px;
   }
   .new_entry_wraps {
-    padding: 110px 0px;
-    text-align: left;
+    padding: 94px 0px;
   }
   .new_entry_wraps button.ant-btn.ant-btn-primary.ant-btn-icon-only.btn {
-    width: 89%;
+    width: 80%;
   }
   .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab,
   .ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab {
     padding: 15px 6px;
   }
   .new_entry_wraps .entry_class_wraps {
-    margin-left: 1px;
-    font-size: 12px;
+    font-size: 11px;
   }
 }
 
@@ -275,6 +251,7 @@ span.ant-tag {
   }
   .new_entry_wraps {
     text-align: left;
+    padding: 123px 0px;
   }
   .new_entry_wraps button.ant-btn.ant-btn-primary.ant-btn-icon-only.btn {
     width: 80%;
@@ -289,5 +266,89 @@ span.ant-tag {
   }
   .ant-tabs-tab-btn {
     font-size: 10px;
+  }
+}
+
+@media (max-width: 569px) {
+  .card-container .top-widget {
+    display: block;
+    position: relative;
+    overflow: hidden;
+  }
+  h3.ant-typography, .ant-typography h3 {
+    font-size: 23px;
+  }
+  .card-container .ant-select{
+    width: 110px!important;
+  }
+  .new_entry_wraps span.anticon.anticon-plus {
+    font-size: 20px;
+  }
+  .new_entry_wraps {
+    text-align: left;
+    margin-left: -15px;
+    padding: 163px 0px;
+  }
+  .new_entry_wraps .entry_class_wraps {
+    margin-top: 2px;
+    font-size: 7px;
+  }
+}
+
+@media (max-width: 768px) {
+  .card-container .ant-select{
+    width: 118px!important;
+  }
+  .ant-space.ant-space-horizontal.ant-space-align-end.top-widget-container {
+    gap: 9px!important;
+  }
+  label.ant-radio-button-wrapper {
+    padding: 0px 21px;
+    font-size: 11px;
+  }
+}
+@media (max-width: 530px) {
+  .card-container .ant-select{
+    width: 90px!important;
+  }
+  .card-container .ant-picker {
+    width: 97px;
+  }
+  .ant-space.ant-space-horizontal.ant-space-align-end.top-widget-container {
+    gap: 9px!important;
+  }
+  label.ant-radio-button-wrapper {
+    padding: 0px 21px;
+    font-size: 11px;
+  }
+}
+@media (max-width: 376px) {
+  .card-container .ant-select{
+    width: 90px!important;
+  }
+  .card-container .ant-picker {
+    width: 97px;
+  }
+  .ant-space.ant-space-horizontal.ant-space-align-end.top-widget-container {
+    gap: 9px!important;
+  }
+  label.ant-radio-button-wrapper {
+    padding: 0px 12px;
+    font-size: 11px;
+  }
+}
+@media (max-width: 320px) {
+  .card-container .ant-select{
+    width: 90px!important;
+  }
+  .card-container .ant-picker {
+    width: 65px;
+  }
+  .ant-space.ant-space-horizontal.ant-space-align-end.top-widget-container {
+    gap: 9px!important;
+  }
+  label.ant-radio-button-wrapper {
+    padding: 0px 7px;
+    font-size: 11px;
   }
 }

@@ -2,13 +2,14 @@ import { ProGridContainer } from '@/common';
 import { Col, Row, Input, Form, Checkbox, Button, Select, Dropdown, Menu } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import React from 'react';
+import './index.less';
 
 const TaskReports = () => {
   return (
     <ProGridContainer>
       <Row>
-        <Col span={10}>
-          <div className="form">
+        <Col span={24}>
+          <div className="form_box">
             <Form name="basic" initialValues={{ remember: true }}>
               <Form.Item label="TimeFrame">
                 <Dropdown
@@ -38,22 +39,22 @@ const TaskReports = () => {
                 <Checkbox>Include archived items in filters</Checkbox>
               </Form.Item>
               <Form.Item label="Clients">
-                <Select>
+                <Select placeholder="All Clients">
                   <Select.Option value="demo">Demo</Select.Option>
                 </Select>
               </Form.Item>
-              <Form.Item label="Project">
-                <Select>
+              <Form.Item label="Projects">
+                <Select placeholder="All Projects">
                   <Select.Option value="demo">Demo</Select.Option>
                 </Select>
               </Form.Item>
-              <Form.Item label="Task">
-                <Select>
+              <Form.Item label="Tasks">
+                <Select placeholder="All Tasks">
                   <Select.Option value="demo">Demo</Select.Option>
                 </Select>
               </Form.Item>
               <Form.Item label="Team">
-                <Select>
+                <Select placeholder="All Teams">
                   <Select.Option value="demo">Demo</Select.Option>
                 </Select>
               </Form.Item>

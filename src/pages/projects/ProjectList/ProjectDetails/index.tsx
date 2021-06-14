@@ -35,18 +35,18 @@ const ProjectDetails = (props: any) => {
   return (
     <ProGridContainer>
       <Row>
-        <Col span={6}>
+        <Col span={8}>
           <div className="back_to_Project">
             <LeftOutlined /> Back to Projects
           </div>
         </Col>
-        <Col span={18} className="text-right">
+        <Col span={6}></Col>
+        <Col span={10} className="text-right">
           <Input
             type="Search"
             size="middle"
             prefix={<SearchOutlined />}
             placeholder="Search by client or project name"
-            style={{ width: 300 }}
           />
         </Col>
       </Row>
@@ -89,7 +89,7 @@ const ProjectDetails = (props: any) => {
         <Col span={24}>
           <LineChart />
         </Col>
-        <Col span={6}>
+        <Col span={6} className="Projects_Cards">
           <div className="Bar_Chart_Card">
             <div className="Box_Content">Total Hours</div>
             <div className="Main-Text">135.87</div>
@@ -103,7 +103,7 @@ const ProjectDetails = (props: any) => {
             </div>
           </div>
         </Col>
-        <Col span={6}>
+        <Col span={6} className="Projects_Cards">
           {' '}
           <div className="Bar_Chart_Card">
             <div className="Box_Content">Budget Remaining (9%)</div>
@@ -117,7 +117,7 @@ const ProjectDetails = (props: any) => {
             </div>
           </div>
         </Col>
-        <Col span={6}>
+        <Col span={6} className="Projects_Cards">
           {' '}
           <div className="Bar_Chart_Card">
             <div className="Box_Content">Internal Costs</div>
@@ -134,7 +134,7 @@ const ProjectDetails = (props: any) => {
             </div>
           </div>{' '}
         </Col>
-        <Col span={6}>
+        <Col span={6} className="Projects_Cards">
           {' '}
           <div className="Bar_Chart_Card">
             <div className="Box_Content">Uninvoiced Amount</div>

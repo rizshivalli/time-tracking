@@ -193,7 +193,7 @@ const TimeSheet = () => {
             <div className="entry_class_wraps">New Entry</div>
           </div>
         </Col>
-        <Col span={21}>
+        <Col span={22}>
           <Alert message="You are now editing " type="info" showIcon />
           <div className="card-container">
             <div className="top-widget">

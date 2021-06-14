@@ -10,15 +10,30 @@
 .ant-table-tbody > tr > td {
   padding: 5px 20px !important;
 }
-.ant-col.ant-col-6.right {
-  position: absolute;
-  top: 51px;
-  right: 0;
-  float: right;
+Button.sorted_projects{
+  background: linear-gradient(#fff, #f0f0f0);
 }
-button.ant-btn.ant-dropdown-trigger {
+Button.Everyone_Btns{
   background: linear-gradient(#fff, #f0f0f0);
 }
 .ant-table-pagination.ant-pagination {
   margin: 16px 20px !important;
+}
+.ant-col.ant-col-24.pending_sorted_Btns{
+  display:flex;
+  justify-content:space-between;
+}
+@media (max-width: 376px){
+  .ant-col.ant-col-24.pending_sorted_Btns{
+    display:flex;
+    justify-content:space-between;
+  }
+}
+@media (max-width: 320px){
+  .ant-col.ant-col-24.pending_sorted_Btns{
+    display:block;
+  }
+  Button.sorted_projects{
+    margin-bottom: 10px;
+  }
 }

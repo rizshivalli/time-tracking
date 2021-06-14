@@ -71,7 +71,7 @@ const ProjectList = () => {
           <ProSpace direction="vertical" style={{ width: '100%' }}>
             <ProSpace direction="horizontal">
               <Link to="/projects/new">
-                <Button type="primary" className="left-button" icon={<PlusOutlined />}>
+                <Button type="primary" icon={<PlusOutlined />}>
                   Create New Project
                 </Button>
               </Link>
@@ -98,10 +98,9 @@ const ProjectList = () => {
           <ProSpace direction="vertical" style={{ width: '100%' }}>
             <Input
               type="Search"
-              size="medium"
+              size="middle"
               prefix={<SearchOutlined />}
               placeholder="Search by client or project name"
-              style={{ width: 300 }}
             />
           </ProSpace>
         </Col>

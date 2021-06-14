@@ -38,20 +38,22 @@ const ManageClient = () => {
         <Col span={24}>
           <ProSpace direction="vertical" style={{ width: '100%' }}>
             <ProSpace>
-              <Button
-                type="primary"
-                size="medium"
-                onClick={() => setNewClientModalVisibility(true)}
-                icon={<PlusOutlined />}
-              >
-                New Client
-              </Button>
-              <Button className="btncom" size="medium" icon={<PlusOutlined />}>
-                Add Contact
-              </Button>
-              <Button className="btncom" size="medium">
-                Import/Export {<DownOutlined />}
-              </Button>
+              <div className="buttons_wraps">
+                <Button
+                  type="primary"
+                  size="middle"
+                  onClick={() => setNewClientModalVisibility(true)}
+                  icon={<PlusOutlined />}
+                >
+                  New Client
+                </Button>
+                <Button className="btncom" size="middle" icon={<PlusOutlined />}>
+                  Add Contact
+                </Button>
+                <Button className="btncom" size="middle">
+                  Import/Export {<DownOutlined />}
+                </Button>
+              </div>
             </ProSpace>
             <ProDivider />
             <ProIntlProvider>

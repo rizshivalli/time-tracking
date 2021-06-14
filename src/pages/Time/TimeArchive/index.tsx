@@ -56,7 +56,7 @@ const TimeArchive = () => {
                 overlay={
                   <Menu>
                     <Menu.Item>
-                      <Input size="default size" placeholder="Search" prefix={<SearchOutlined />} />
+                      <Input size="middle" placeholder="Search" prefix={<SearchOutlined />} />
                     </Menu.Item>
                     <Menu.Item key="1">[SAMPLE] Hiromi Hourglass</Menu.Item>
                     <Menu.Item key="2">[SAMPLE] Kiran Kronological</Menu.Item>
@@ -67,7 +67,7 @@ const TimeArchive = () => {
                   </Menu>
                 }
               >
-                <Button className="btn">
+                <Button className="Show_everyone_btn">
                   Show: Everyone <DownOutlined />
                 </Button>
               </Dropdown>

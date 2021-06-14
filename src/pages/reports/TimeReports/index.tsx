@@ -10,7 +10,7 @@ const TimeReports = () => {
   return (
     <ProGridContainer>
       <Row>
-        <Col span="24" className="AllTime">
+        <Col span={24} className="AllTime">
           <p className="Main_title">All Time</p>
           <div className="Dropdown">
             <Dropdown
@@ -32,17 +32,21 @@ const TimeReports = () => {
             </Dropdown>
           </div>
         </Col>
-        <ProDivider></ProDivider>
-        <Col span={4}>
+      </Row>
+      <ProDivider></ProDivider>
+      <Row className="Report_rowmap">
+        <Col span={4} className="Report_Head_Content">
           <div className="paragraphs">
             <p className="head_title">Hours Tracked</p>
             <p className="amount_title">570.81</p>
           </div>
         </Col>
-        <Col span={3} className="progress_bar">
-          <Progress type="circle" percent={67} width={80} />
+        <Col span={4}>
+          <div className="progress_bar">
+            <Progress type="circle" percent={67} width={80} />
+          </div>
         </Col>
-        <Col span={6} className="Circle_Wraps">
+        <Col span={6} className="Report_Head_Content">
           <div className="left_text">
             <p className="head_title">Billable Hours</p>
           </div>
@@ -59,7 +63,7 @@ const TimeReports = () => {
             </p>
           </div>
         </Col>
-        <Col span={6}>
+        <Col span={5} className="Report_Head_Content">
           <p className="head_title">Billable Amount</p>
           <p className="amount_title">$38,563.00</p>
           <div className="project_fee">
@@ -69,10 +73,10 @@ const TimeReports = () => {
             </Tooltip>
           </div>
         </Col>
-        <Col span={5}>
+        <Col span={5} className="Report_Head_Content">
           <p className="head_title">Uninvoiced Amount</p>
           <p className="amount_title">$38,617.00</p>
-          <p>Excludes fixed fee projects</p>
+          <p className="excludes">Excludes fixed fee projects</p>
         </Col>
       </Row>
       <ProDivider></ProDivider>

@@ -22,7 +22,7 @@ p.skyblue_box {
     padding: 9px 9px;
     background: #b4f9ca;
 }
-.ant-col.ant-col-3.progress_bar {
+.progress_bar {
     padding: 0px 9px;
     text-align: right;
 }
@@ -53,10 +53,6 @@ p.head_title {
     border-radius: 20px;
     cursor: pointer;
 }
-
-
-
-
 .Task_Projects_Tabs .ant-tabs-content.ant-tabs-content-top {
     padding: 30px 10px;
     background-color: white;
@@ -83,4 +79,49 @@ p.head_title {
 }
 .Task_Projects_Tabs .ant-tabs-tab {
     padding: 10px 20px;
+}
+.ant-row.Report_rowmap {
+    display: flex;
+}
+
+@media (max-width: 1024px) {
+    .ant-col.ant-col-5.Report_Head_Content {
+        padding: 0px 2px;
+    }
+    p.amount_title {
+      font-size: 22px;
+    }
+}
+
+@media (max-width: 768px) {
+    .ant-col.ant-col-5.Report_Head_Content {
+        padding: 0px 3px;
+    }
+    .left_text p {
+        font-size: 12px;
+    }
+    p.amount_title {
+        font-size: 17px;
+    }
+    p.excludes {
+        font-size: 10px;
+    }
+    .ant-checkbox + span {
+        padding-left: 4px;
+        font-size: 10px;
+    }
+}
+@media (max-width: 526px) {
+    .ant-row.Report_rowmap {
+        display: block;
+    }
+    .ant-col.ant-col-4.Report_Head_Content {
+        display: contents;
+    }
+    .ant-col.ant-col-6.Report_Head_Content {
+        display: contents;
+    }
+    .ant-col.ant-col-5.Report_Head_Content {
+        display: contents;
+    }
 }

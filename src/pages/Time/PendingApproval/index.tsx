@@ -53,7 +53,7 @@ const PendingApproval = () => {
         <Col span={24}>
           <ProSpace direction="vertical" style={{ width: '100%' }}>
             <ProTitle size={3}>Pending Approval</ProTitle>
-            <Col span={6} className="left">
+            <Col span={24} className="pending_sorted_Btns">
               <Dropdown
                 overlay={
                   <Menu>
@@ -63,17 +63,15 @@ const PendingApproval = () => {
                   </Menu>
                 }
               >
-                <Button className="btn">
+                <Button className="sorted_projects">
                   Sorted By: Projects <DownOutlined />
                 </Button>
               </Dropdown>
-            </Col>
-            <Col span={6} className="right">
               <Dropdown
                 overlay={
                   <Menu>
                     <Menu.Item>
-                      <Input size="default size" placeholder="Search" prefix={<SearchOutlined />} />
+                      <Input size="middle" placeholder="Search" prefix={<SearchOutlined />} />
                     </Menu.Item>
                     <Menu.Item key="1">Everyone</Menu.Item>
                     <Menu.Item key="2">My Pinnted Teammates</Menu.Item>
@@ -82,7 +80,7 @@ const PendingApproval = () => {
                   </Menu>
                 }
               >
-                <Button className="btn">
+                <Button className="Everyone_Btns">
                   Show: Everyone <DownOutlined />
                 </Button>
               </Dropdown>

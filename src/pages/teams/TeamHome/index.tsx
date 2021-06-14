@@ -94,20 +94,22 @@ const TeamHome = () => {
             </Dropdown>
           </div>
         </Col>
-        <ProDivider />
-        <Col span={4}>
+      </Row>
+      <ProDivider />
+      <Row className="list_row">
+        <Col span={4} className="List_Cards_Wraps">
           <ProSpace size="large">
             <Statistic title="Total Hours" value={80.0} precision={2} />
             <ProDivider type="vertical" />
           </ProSpace>
         </Col>
-        <Col span={4}>
+        <Col span={4} className="List_Cards_Wraps">
           <ProSpace size="large">
             <Statistic title="Team Capacity" value={210.0} precision={2} />
             <ProDivider type="vertical" />
           </ProSpace>
         </Col>
-        <Col span={6}>
+        <Col span={7} className="List_Cards_Wraps">
           <div className="left_text">
             <p className="green_box"></p>
             <p>
@@ -121,10 +123,12 @@ const TeamHome = () => {
             </p>
           </div>
         </Col>
-        <Col span={10}>
+        <Col span={9} className="List_Cards_Wraps">
           <Progress percent={60} success={{ percent: 30 }} />
         </Col>
-        <ProDivider />
+      </Row>
+      <ProDivider />
+      <Row>
         <Col span={24}>
           <ProSpace direction="vertical" style={{ width: '100%' }}>
             <ProIntlProvider>

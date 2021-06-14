@@ -230,6 +230,7 @@ const TimeSheet = () => {
                       size="large"
                       key="3"
                       type="primary"
+                      className="Weektime_Btns"
                       onClick={() => {
                         setNewEntryModalVisible(true);
                       }}
@@ -242,6 +243,7 @@ const TimeSheet = () => {
                       size="large"
                       key="2"
                       type="primary"
+                      className="Weektime_Btns"
                       onClick={() => {
                         submitWeek();
                       }}

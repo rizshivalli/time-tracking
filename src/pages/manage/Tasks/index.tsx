@@ -64,7 +64,7 @@ const ManageTasks = () => {
             <ProSpace>
               <Button
                 type="primary"
-                size="medium"
+                size="middle"
                 onClick={() => setNewTaskModalVisibility(true)}
                 icon={<PlusOutlined />}
               >
@@ -78,7 +78,7 @@ const ManageTasks = () => {
                   </Menu>
                 }
               >
-                <Button className="btn">
+                <Button className="Export_Wraps_btn">
                   Export <DownOutlined />
                 </Button>
               </Dropdown>
