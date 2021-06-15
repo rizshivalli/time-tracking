@@ -13,12 +13,53 @@ Button.Weektime_Btns{
   margin-left: 12px;
   margin-bottom: 15px;
 }
+.Week_Time_Sheet_container .ant-card-body {
+  padding: 0!important;
+}
+@media (max-width: 768px) {
+  .Week_Time_Sheet_container .top-widget {
+    padding: 10px 0px!important;
+  }
+  .Week_Time_Sheet_container .ant-select{
+    width: 116px!important;
+  }
+  .ant-space.ant-space-horizontal.ant-space-align-end.top-widget-container {
+    gap:8px!important;
+  }
+}
 @media (max-width: 569px) {
-  .card-container.top-widget {
+  .Week_Time_Sheet_container .top-widget {
     padding: 10px 0px!important;
     display:block;
   }
-  .card-container.ant-select{
-    width: 132px;
+  .Week_Time_Sheet_container .ant-select{
+    width: 132px!important;
+  }
+  label.ant-radio-button-wrapper {
+    padding: 0px 8px;
+    font-size: 11px;
   }
 }
+@media (max-width: 376px){
+.Week_Time_Sheet_container .ant-select {
+    width: 124px!important;
+  }
+  .ant-space.ant-space-horizontal.ant-space-align-end.top-widget-container {
+    gap:8px!important;
+  }
+  .ant-picker {
+    width: 104px!important;
+  }
+}
+
+@media (max-width: 320px){
+  .Week_Time_Sheet_container .ant-select {
+      width: 106px!important;
+    }
+    .ant-space.ant-space-horizontal.ant-space-align-end.top-widget-container {
+      gap:8px!important;
+    }
+    .ant-picker {
+      width: 58px!important;
+    }
+  }

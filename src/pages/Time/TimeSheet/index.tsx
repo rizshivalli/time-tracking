@@ -195,7 +195,7 @@ const TimeSheet = () => {
         </Col>
         <Col span={22}>
           <Alert message="You are now editing " type="info" showIcon />
-          <div className="card-container">
+          <div className="Time_Sheet-container">
             <div className="top-widget">
               <ProSpace size="large" align="start" className="top-widget-container">
                 <ProSpace>
