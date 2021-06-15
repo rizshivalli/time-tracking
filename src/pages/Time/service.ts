@@ -184,17 +184,14 @@ export async function addWeekRows(params: any) {
   }
 }
 
-export async function submitWeekForApproval(params: { start_date: string; end_date: string }) {
+export async function submitWeekForApproval(id: identifier) {
   const hide = message.loading('Submitting week for approval...', 0);
   const token = await getToken();
   const organization = await getOrganization();
-  const response = await request(
-    `/strapi/approvals/submit-for-approval?start_date=${params.start_date}&end_date=${params.end_date}`,
-    {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${token}`, orgid: organization },
-    },
-  );
+  const response = await request(`/strapi/approvals/submit-for-approval?id=${id}`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}`, orgid: organization },
+  });
   if (response.statusCode === 200) {
     hide();
     message.success('Submitted for approval');
@@ -202,6 +199,7 @@ export async function submitWeekForApproval(params: { start_date: string; end_da
   } else {
     hide();
     message.error(response.message);
+    return [];
     throw new Error(response.message);
   }
 }

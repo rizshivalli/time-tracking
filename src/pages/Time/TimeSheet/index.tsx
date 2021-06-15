@@ -146,10 +146,8 @@ const TimeSheet = () => {
   }
 
   const submitWeek = async () => {
-    const dates = getStartAndEndOfWeek(selectedTabKey);
-    console.log('🚀 ~ file: index.tsx ~ line 172 ~ submitWeek ~ selectedTabKey', selectedTabKey);
-    console.log('🚀 ~ file: index.tsx ~ line 135 ~ submitWeek ~ dates', dates);
-    await submitWeekForApproval(dates);
+    const approval_id = weekData[0]?.approval?.id;
+    await submitWeekForApproval(approval_id);
     getWeekData(selectedTabKey);
   };
 
@@ -249,7 +247,7 @@ const TimeSheet = () => {
                 {weekStatus}
               </div>
             )}
-
+            {console.log('🚀 ~ file: index.tsx ~ line 236 ~ TimeSheet ~ weekStatus', weekStatus)}
             <Tabs
               type="card"
               defaultActiveKey={selectedTabKey}
@@ -278,7 +276,11 @@ const TimeSheet = () => {
                                 onClick={() => {
                                   submitWeek();
                                 }}
-                                disabled={weekStatus !== 'unapproved' ? true : false}
+                                disabled={
+                                  weekStatus !== 'Not Submitted' && weekStatus !== 'unapproved'
+                                    ? true
+                                    : false
+                                }
                               >
                                 Submit Week for Approval
                               </Button>

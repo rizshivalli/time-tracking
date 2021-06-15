@@ -76,9 +76,9 @@ const getWeekFromSuntoSatForTable = (date: string) => {
       editable: false,
     },
     {
-      title: 'Operation',
+      title: '',
       key: 'option',
-      width: 120,
+      width: 100,
       valueType: 'option',
       // @ts-ignore
       render: (_, row, index, action) => [
@@ -90,9 +90,6 @@ const getWeekFromSuntoSatForTable = (date: string) => {
         >
           Edit
         </a>,
-        // <a key="a" onClick={() => {}}>
-        //   Delete
-        // </a>,
       ],
     },
   ];
@@ -104,19 +101,20 @@ const getWeekFromSuntoSatForTable = (date: string) => {
 const TimeSheet = () => {
   const todayDate = getToday('MM-DD-YYYY');
   const getWeekdata = getWeekFromSuntoSatForTable(todayDate);
-  console.log('🚀 ~ file: index.tsx ~ line 107 ~ TimeSheet ~ getWeekdata', getWeekdata);
   const [period, setPeriod] = useState<string>('week');
   const [datesToDisplay, setDatesToDisplay] = useState<any[]>(getWeekdata);
   const [selectedTabKey, setSelectedTabKey] = useState<string>(todayDate);
   const [newEntryModalVisible, setNewEntryModalVisible] = useState<boolean>(false);
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
   const [approvalStatus, setApprovalStatus] = useState<string>();
+  const [approvalId, setApprovalId] = useState<string>();
   const [date, setDate] = useState<string>(todayDate);
   const actionRef = useRef<ActionType>();
 
   const submitWeek = async () => {
-    const dates = getStartAndEndOfWeek(selectedTabKey);
-    await submitWeekForApproval(dates);
+    console.log('🚀 ~ file: index.tsx ~ line 120 ~ submitWeek ~ approvalId', approvalId);
+
+    await submitWeekForApproval(approvalId);
   };
 
   const onDateChange = (date: any, dateString: string) => {
@@ -198,6 +196,7 @@ const TimeSheet = () => {
             </div>
             <ProIntlProvider>
               <ProTable
+                options={false}
                 locale={{
                   emptyText: <RandomQuote />,
                 }}
@@ -205,7 +204,8 @@ const TimeSheet = () => {
                 columns={datesToDisplay && datesToDisplay}
                 request={async () => {
                   const data = await getAllWeekData(date);
-                  const { approval_status, time_records } = data;
+                  const { approval_id, approval_status, time_records } = data;
+                  setApprovalId(approval_id);
                   setApprovalStatus(approval_status);
                   return { data: time_records, success: true };
                 }}
