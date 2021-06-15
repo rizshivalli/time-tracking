@@ -206,20 +206,29 @@ export default defineConfig({
                       component: './reports/TimeReports',
                     },
                     {
-                      name: 'time-detailed',
-                      path: '/reports/time-detailed',
-                      component: './reports/TimeDetailedReports',
+                      name: 'time',
+                      path: '/reports/time/client/details',
+                      component: './reports/TimeReports/ClientDetails',
+                      hideInMenu: true,
                     },
-                    // {
-                    //   name: 'projects',
-                    //   path: '/reports/projects',
-                    //   component: './reports/Projects',
-                    // },
-                    // {
-                    //   name: 'teams',
-                    //   path: '/reports/teams',
-                    //   component: './reports/Teams',
-                    // },
+                    {
+                      name: 'time',
+                      path: '/reports/time/project/details',
+                      component: './reports/TimeReports/ProjectDetails',
+                      hideInMenu: true,
+                    },
+                    {
+                      name: 'time',
+                      path: '/reports/time/task/details',
+                      component: './reports/TimeReports/TaskDetails',
+                      hideInMenu: true,
+                    },
+                    {
+                      name: 'time',
+                      path: '/reports/time/team/details',
+                      component: './reports/TimeReports/TeamDetails',
+                      hideInMenu: true,
+                    },
                   ],
                 },
                 {

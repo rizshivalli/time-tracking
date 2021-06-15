@@ -4,6 +4,7 @@ import { Col, Row, Button, Dropdown, Menu, Checkbox } from 'antd';
 import { DownOutlined, FormOutlined } from '@ant-design/icons';
 import React, { useRef } from 'react';
 import './index.less';
+import { Link } from 'react-router-dom';
 
 const columns: ProColumns<any>[] = [
   {
@@ -14,6 +15,7 @@ const columns: ProColumns<any>[] = [
   {
     title: 'Name',
     dataIndex: 'full_name',
+    render: (text, row) => <Link to={`/reports/time/client/details`}>{row.full_name}</Link>,
   },
   {
     title: 'Capacity',
