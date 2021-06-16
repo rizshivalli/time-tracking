@@ -1,5 +1,5 @@
-import { ProGridContainer, ProIntlProvider } from '@/common';
-import { Button, Col, message, Row, Progress } from 'antd';
+import { ProGridContainer, ProIntlProvider, RandomQuote } from '@/common';
+import { Button, Col, message, Row, Progress, Skeleton } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { getPendingApprovalByID, approveTimesheet } from '../../service';
 import { humanize, createTableColumns } from '@/utils/generalUtils';
@@ -53,97 +53,105 @@ const ApprovalDetails = (props: any) => {
 
   return (
     <ProGridContainer>
-      <Row>
-        <Col span={24} className="heading">
-          <div className="head_title">
-            <p className="sub_title">Approve [SAMPLE] Kiran’s Timesheet for 24 – 30 May 2021</p>
-            <span>[SAMPLE] Client A (Fixed Fee Project)</span>
-          </div>
-        </Col>
-        <Col span={5}>
-          <div className="paragraphs">
-            <span>Hours Tracked</span>
-            <p className="paragraphs_title">6:40</p>
-          </div>
-        </Col>
-        <Col span={6} className="progress_bar">
-          <Progress type="circle" percent={99} width={80} />
-        </Col>
-        <Col span={8} className="Circle_Wraps">
-          <div className="left_text">
-            <span className="Billable_Hourse">Billable Hours</span>
-          </div>
-          <div className="left_text">
-            <p className="green_box"></p>
-            <p>
-              <strong> 6:40 Billable</strong>
-            </p>
-          </div>
-          <div className="left_text">
-            <p className="skyblue_box"></p>
-            <p>
-              <strong> 0:00 Non-Billable</strong>
-            </p>
-          </div>
-        </Col>
-        <Col span={5}>
-          <div className="paragraphs">
-            <span>Expenses</span>
-            <p className="paragraphs_title">$0.00</p>
-          </div>
-        </Col>
-      </Row>
-      <Row>
-        <Col span={24}>
-          {' '}
-          <ProIntlProvider>
-            <p className="pending_hours">Pending Hours</p>
-            <ProTable
-              loading={loading}
-              actionRef={actionRef}
-              // @ts-ignore
-              columns={createTablekey(data?.time_records)}
-              dataSource={data?.time_records}
-              rowKey="id"
-              search={false}
-            />
-          </ProIntlProvider>
-        </Col>
-        <Col span={24}>
-          <Button
-            className="Approvel_button"
-            size="large"
-            key="2"
-            type="primary"
-            onClick={async () => {
-              setLoading(true);
-              await approveTimesheet(id)
-                .then(() => {
-                  actionRef?.current?.reload();
-                })
-                .finally(() => {
-                  setLoading(false);
-                });
-            }}
-            disabled={loading || data?.status === 'Approved'}
-          >
-            <CheckOutlined />
-            {data?.status !== 'Approved' ? `Approve Timesheet` : `Approved Timesheet`}
-          </Button>
-          ,
-          <Button
-            className="Approvel_button"
-            size="large"
-            key="3"
-            type="primary"
-            onClick={() => {}}
-            disabled={loading}
-          >
-            <MailOutlined />
-            Email {data?.user_name}
-          </Button>
-        </Col>
-      </Row>
+      <Skeleton loading={loading} active avatar>
+        {data.length !== 0 && (
+          <Row>
+            <Col span={24} className="heading">
+              <div className="head_title">
+                <p className="sub_title">{`Approve [SAMPLE] ${data?.user_name}’s Timesheet for ${data?.date_range}`}</p>
+                <span>[SAMPLE] Client A (Fixed Fee Project)</span>
+              </div>
+            </Col>
+            <Col span={5}>
+              <div className="paragraphs">
+                <span>Hours Tracked</span>
+                <p className="paragraphs_title">{data?.total_hours}</p>
+              </div>
+            </Col>
+            <Col span={6} className="progress_bar">
+              <Progress type="circle" percent={99} width={80} />
+            </Col>
+            <Col span={8} className="Circle_Wraps">
+              <div className="left_text">
+                <span className="Billable_Hourse">Billable Hours</span>
+              </div>
+              <div className="left_text">
+                <p className="green_box"></p>
+                <p>
+                  <strong> 6:40 Billable</strong>
+                </p>
+              </div>
+              <div className="left_text">
+                <p className="skyblue_box"></p>
+                <p>
+                  <strong> 0:00 Non-Billable</strong>
+                </p>
+              </div>
+            </Col>
+            <Col span={5}>
+              <div className="paragraphs">
+                <span>Expenses</span>
+                <p className="paragraphs_title">$0.00</p>
+              </div>
+            </Col>
+          </Row>
+        )}
+        <Row>
+          <Col span={24}>
+            <ProIntlProvider>
+              <p className="pending_hours">Pending Hours</p>
+              <ProTable
+                locale={{
+                  emptyText: <RandomQuote />,
+                }}
+                options={false}
+                loading={loading}
+                actionRef={actionRef}
+                // @ts-ignore
+                columns={createTablekey(data?.time_records)}
+                dataSource={data?.time_records}
+                rowKey="id"
+                search={false}
+                pagination={false}
+              />
+            </ProIntlProvider>
+          </Col>
+          <Col span={24}>
+            <Button
+              className="Approvel_button"
+              size="large"
+              key="2"
+              type="primary"
+              onClick={async () => {
+                setLoading(true);
+                await approveTimesheet(id)
+                  .then(() => {
+                    actionRef?.current?.reload();
+                  })
+                  .finally(() => {
+                    setLoading(false);
+                  });
+              }}
+              disabled={loading || data?.status === 'Approved'}
+            >
+              <CheckOutlined />
+              {data?.status !== 'Approved' ? `Approve Timesheet` : `Approved Timesheet`}
+            </Button>
+            ,
+            <Button
+              className="Approvel_button"
+              size="large"
+              key="3"
+              type="primary"
+              onClick={() => {}}
+              disabled={loading}
+            >
+              <MailOutlined />
+              Email {data?.user_name}
+            </Button>
+          </Col>
+        </Row>
+      </Skeleton>
     </ProGridContainer>
   );
 };

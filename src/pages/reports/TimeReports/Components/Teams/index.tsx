@@ -4,7 +4,7 @@ import { Col, Row, Button, Dropdown, Menu, Checkbox } from 'antd';
 import { DownOutlined, FormOutlined } from '@ant-design/icons';
 import React, { useRef } from 'react';
 import './index.less';
-import { Link } from 'react-router-dom';
+import { Link } from 'umi';
 
 const columns: ProColumns<any>[] = [
   {
@@ -66,13 +66,6 @@ const TeamsReports = () => {
         <Col span={24}>
           <ProIntlProvider>
             <ProTable
-              //   request={async (params = {}) => {
-              //     const data = await getTeamMembers();
-
-              //     return {
-              //       data,
-              //     };
-              //   }}
               dataSource={data}
               columns={columns}
               actionRef={actionRef}

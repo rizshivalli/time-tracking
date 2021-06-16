@@ -1,7 +1,10 @@
 import { ProIntlProvider } from '@/common';
-import ProTable, { ActionType, ProColumns } from '@ant-design/pro-table';
+import ProTable from '@ant-design/pro-table';
 import { Col, Row } from 'antd';
 import React, { useRef } from 'react';
+
+import type { ActionType, ProColumns } from '@ant-design/pro-table';
+import type { FC } from 'react';
 
 const columns: ProColumns<any>[] = [
   {
@@ -10,55 +13,28 @@ const columns: ProColumns<any>[] = [
     width: 48,
   },
   {
-    title: 'Name',
-    dataIndex: 'full_name',
+    title: 'Task Name',
+    dataIndex: 'name',
   },
   {
-    title: 'Capacity',
-    dataIndex: 'capacity',
-  },
-  {
-    title: 'Designation',
-    dataIndex: 'designation',
-  },
-  {
-    title: 'Work Email',
-    dataIndex: 'email',
-  },
-  {
-    title: 'Total Hours',
-    dataIndex: 'total_hours',
-    valueType: (item) => ({
-      type: 'progress',
-      status: item.status,
-    }),
-  },
-  {
-    title: 'Total Capacity',
-    dataIndex: 'total_capacity',
+    title: 'Total hours',
+    dataIndex: 'total_time',
+    render: (text, row) => <div>{211}</div>,
   },
 ];
 
-const data = [
-  { full_name: 'rizwan', total_hours: 8, total_capacity: 35 },
-  { full_name: 'ahmed', total_hours: 2, total_capacity: 35 },
-  { full_name: 'jane', total_hours: 4, total_capacity: 35 },
-];
+interface TeamsTabsProps {
+  data: any[];
+}
 
-const TeamsTab = () => {
+const TeamsTab: FC<TeamsTabsProps> = ({ data }) => {
   const actionRef = useRef<ActionType>();
   return (
     <Row>
       <Col span={24}>
         <ProIntlProvider>
           <ProTable
-            //   request={async (params = {}) => {
-            //     const data = await getTeamMembers();
-
-            //     return {
-            //       data,
-            //     };
-            //   }}
+            options={false}
             dataSource={data}
             columns={columns}
             actionRef={actionRef}

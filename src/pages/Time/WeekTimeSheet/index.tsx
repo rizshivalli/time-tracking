@@ -1,7 +1,8 @@
 import { ProGridContainer, ProIntlProvider, ProSpace, ProTitle, RandomQuote } from '@/common';
 import { getToday, getRequiredDateFormat, getStartAndEndOfWeek } from '@/utils/MomentHelpers';
-import { CheckOutlined, PlusOutlined } from '@ant-design/icons';
+import { CheckOutlined, DownOutlined, PlusOutlined } from '@ant-design/icons';
 import ProTable, { ActionType } from '@ant-design/pro-table';
+import { Dropdown, Menu } from 'antd';
 import { Button, Col, DatePicker, Row, Radio, Select } from 'antd';
 import moment from 'moment';
 import React, { useCallback, useRef, useState } from 'react';
@@ -211,9 +212,10 @@ const TimeSheet = () => {
                 }}
                 pagination={false}
                 editable={{
-                  type: 'multiple',
+                  type: 'single',
                   editableKeys,
                   deletePopconfirmMessage: 'Delete This week entry?',
+                  onlyOneLineEditorAlertMessage: 'You can only edit one task at a time',
                   onSave: async (key, row) => {
                     const data = await updateWeekRecords(row);
                     if (data === 200) {
@@ -258,12 +260,14 @@ const TimeSheet = () => {
           </div>
         </Col>
       </Row>
-      <NewEntryModal
-        selectedKey={selectedTabKey}
-        visible={newEntryModalVisible}
-        setVisibility={setNewEntryModalVisible}
-        onSuccess={actionRef?.current?.reload()}
-      />
+      {newEntryModalVisible && (
+        <NewEntryModal
+          selectedKey={selectedTabKey}
+          visible={newEntryModalVisible}
+          setVisibility={setNewEntryModalVisible}
+          onSuccess={actionRef?.current?.reload()}
+        />
+      )}
     </ProGridContainer>
   );
 };

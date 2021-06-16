@@ -59,7 +59,7 @@ const PendingApproval = () => {
                   <Menu>
                     <Menu.Item key="1">Weeks</Menu.Item>
                     <Menu.Item key="2">Projects</Menu.Item>
-                    <Menu.Item key="2">People</Menu.Item>
+                    <Menu.Item key="3">People</Menu.Item>
                   </Menu>
                 }
               >

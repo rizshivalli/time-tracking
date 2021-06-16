@@ -88,13 +88,6 @@ const TasksReports = () => {
         <Col span={24}>
           <ProIntlProvider>
             <ProTable
-              //   request={async (params = {}) => {
-              //     const data = await getTeamMembers();
-
-              //     return {
-              //       data,
-              //     };
-              //   }}
               dataSource={data}
               columns={columns}
               actionRef={actionRef}

@@ -20,18 +20,14 @@ import {
   message,
   Statistic,
   Empty,
-  Timeline,
   Alert,
 } from 'antd';
-import React, { Suspense, useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getTimeRecords, stopTimeRecord, submitWeekForApproval } from '../service';
-
 import { NewEntryModal } from './components';
-import moment from 'moment';
-import './index.less';
-import { zeroPad } from '@/utils/generalUtils';
 import { hasAccess } from '@/utils/token';
+import './index.less';
 
 const { TabPane } = Tabs;
 const { Option } = Select;
@@ -138,8 +134,6 @@ const TimeSheet = () => {
   };
 
   async function callback(key: string) {
-    // https://api.quotable.io/random
-
     setSelectedTabKey(() => {
       return key;
     });
@@ -151,26 +145,7 @@ const TimeSheet = () => {
     getWeekData(selectedTabKey);
   };
 
-  const getDuration = (startTime: string, endTime: string) => {
-    const hourDiff = zeroPad(moment(endTime).diff(startTime, 'hours'));
-    const minDiffer = zeroPad(moment(endTime).diff(startTime, 'minutes'));
-    const totalDiffer = `${hourDiff}:${minDiffer}`;
-    return totalDiffer;
-  };
-
   const OperationsSlot = {
-    // left: (
-    //   <Button
-    //     type="primary"
-    //     icon={<PlusOutlined />}
-    //     size="large"
-    //     onClick={() => {
-    //       setNewEntryModalVisible(true);
-    //     }}
-    //   >
-    //     New Entry
-    //   </Button>
-    // ),
     right: <Tag icon={<ClockCircleOutlined />}>Week Total: {weekTotal && weekTotal}</Tag>,
   };
 
@@ -247,7 +222,6 @@ const TimeSheet = () => {
                 {weekStatus}
               </div>
             )}
-            {console.log('🚀 ~ file: index.tsx ~ line 236 ~ TimeSheet ~ weekStatus', weekStatus)}
             <Tabs
               type="card"
               defaultActiveKey={selectedTabKey}
@@ -269,24 +243,7 @@ const TimeSheet = () => {
                           emptyText: <RandomQuote />,
                         }}
                         // Footer
-                        footer={
-                          !listLoading && weekData?.length !== 0 ? (
-                            <div className="time-list-footer">
-                              <Button
-                                onClick={() => {
-                                  submitWeek();
-                                }}
-                                disabled={
-                                  weekStatus !== 'Not Submitted' && weekStatus !== 'unapproved'
-                                    ? true
-                                    : false
-                                }
-                              >
-                                Submit Week for Approval
-                              </Button>
-                            </div>
-                          ) : null
-                        }
+                        footer={false}
                         size="small"
                         loading={listLoading}
                         dataSource={weekData}
@@ -363,12 +320,25 @@ const TimeSheet = () => {
                           );
                         }}
                       />
-                      {/* TODO Total Time of the day */}
                     </TabPane>
                   );
                 })
               )}
             </Tabs>
+            {!listLoading && weekData?.length !== 0 ? (
+              <div className="time-list-footer">
+                <Button
+                  onClick={() => {
+                    submitWeek();
+                  }}
+                  disabled={
+                    weekStatus !== 'Not Submitted' && weekStatus !== 'unapproved' ? true : false
+                  }
+                >
+                  Submit Week for Approval
+                </Button>
+              </div>
+            ) : null}
           </div>
         </Col>
       </Row>

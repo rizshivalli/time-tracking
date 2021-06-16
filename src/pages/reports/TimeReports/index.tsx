@@ -1,9 +1,9 @@
-import { ProDivider, ProGridContainer } from '@/common';
 import React from 'react';
+import { ProDivider, ProGridContainer } from '@/common';
 import { Col, Row, Dropdown, Menu, Button, Progress, Checkbox, Tooltip, Tabs } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
-import './index.less';
 import { ProjectsReports, TeamsReports, TasksReports, ClientsReports } from './Components';
+import './index.less';
 
 const { TabPane } = Tabs;
 const TimeReports = () => {
@@ -33,7 +33,7 @@ const TimeReports = () => {
           </div>
         </Col>
       </Row>
-      <ProDivider></ProDivider>
+      <ProDivider />
       <Row className="Report_rowmap">
         <Col span={4} className="Report_Head_Content">
           <div className="paragraphs">
@@ -79,7 +79,7 @@ const TimeReports = () => {
           <p className="excludes">Excludes fixed fee projects</p>
         </Col>
       </Row>
-      <ProDivider></ProDivider>
+      <ProDivider />
       <Row>
         <Col span={24}>
           <div className="Task_Projects_Tabs">

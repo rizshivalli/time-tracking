@@ -71,6 +71,20 @@ export async function getProjectsById(id: identifier) {
   }
 }
 
+export async function getProjectSummaryById(id: identifier) {
+  const token = await getToken();
+  const organization = await getOrganization();
+  const response = await request(`/strapi/projects/summary/${id}`, {
+    method: 'GET',
+    headers: { Authorization: `Bearer ${token}`, orgid: organization },
+  });
+  if (response.statusCode === 200) {
+    return response.data;
+  } else {
+    throw new Error(response.message);
+  }
+}
+
 export async function editProjectsById(id: identifier, params: any) {
   const token = await getToken();
   const organization = await getOrganization();
