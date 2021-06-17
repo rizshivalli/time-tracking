@@ -1,6 +1,6 @@
 import { ProDivider, ProGridContainer, ProIntlProvider, ProSpace } from '@/common';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Button, Col, message, Row } from 'antd';
+import { Button, Col, message, Row, Dropdown, Menu } from 'antd';
 import ProList from '@ant-design/pro-list';
 import { NewClientModal } from './components';
 import { PlusOutlined, DownOutlined } from '@ant-design/icons';
@@ -53,9 +53,23 @@ const ManageClient = () => {
                 <Button className="btncom" size="middle" icon={<PlusOutlined />}>
                   Add Contact
                 </Button>
-                <Button className="btncom" size="middle">
-                  Import/Export {<DownOutlined />}
-                </Button>
+                <Dropdown
+                  overlay={
+                    <Menu>
+                      <Menu.Item key="1">Import Client From CSV</Menu.Item>
+                      <Menu.Item key="2">Import Contacts From CSV</Menu.Item>
+                      <div className="divider"></div>
+                      <Menu.Item key="3">Export Client to Excel</Menu.Item>
+                      <Menu.Item key="4">Export Client to CSV</Menu.Item>
+                      <Menu.Item key="5">Export Contacts to Excel</Menu.Item>
+                      <Menu.Item key="6">Export Contacts to CSV</Menu.Item>
+                    </Menu>
+                  }
+                >
+                  <Button className="btncom">
+                    Import/Export <DownOutlined />
+                  </Button>
+                </Dropdown>
               </div>
             </ProSpace>
             <ProDivider />

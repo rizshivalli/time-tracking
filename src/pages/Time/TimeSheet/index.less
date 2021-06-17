@@ -1,5 +1,22 @@
 @import '~antd/es/style/themes/default.less'; // Mention this in every .less file
-
+.Timesheet_Note_Wraps{
+  background: #fffce9;
+  border: 1px solid #d5ca0f;
+  padding: 10px 0px;
+}
+.Timesheet_Note_Wraps .Time_content_icons {
+  float: left;
+  padding: 10px 30px;
+  font-size: 29px;
+}
+.Timesheet_Note_Wraps p.Time_content_para {
+  font-weight: 600;
+  margin: 0;
+  font-size: 24px;
+}
+.changes_content{
+  margin:0;
+}
 .Time_Sheet-container p {
   margin: 0; /* no unit */
 }
@@ -48,7 +65,6 @@
   background: #141414;
   border-color: #141414;
 }
-
 .top-widget {
   display: flex;
   justify-content: space-between;
@@ -58,31 +74,34 @@
     place-items: center;
   }
 }
-
 .card-left-content {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   .time-hours {
     padding-right: 25px;
-    font-weight: bold;
+    font-weight: 600;
     font-size: 18px;
   }
 }
-
 .time-client-name {
-  font-weight: bold;
-  font-size: 18px;
+  margin-bottom: 3px;
+}
+.time-client-name p{
+  font-size: 16px;
+}
+.time-client-name small {
+  color: #888;
+  margin-bottom:5px;
+  font-size: 14px;
 }
 .time-project-name {
   font-size: 12px;
 }
-
 .time-card-content {
   padding: 0px 0; /* no unit */
-  border-bottom: 1px solid #797979;
+  border-bottom: 1px solid #79797970;
 }
-
 .time-list-footer {
   padding-top: 10px;
   display: flex;
@@ -148,7 +167,6 @@ span.ant-tag {
 .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
   color: black !important;
 }
-
 .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
   color: #545454;
   background-color: #dedede;
@@ -162,7 +180,6 @@ span.ant-tag {
   outline: none;
   opacity: 0.5px;
 }
-
 .status-text {
   width: 100%;
   margin: 0;
@@ -178,10 +195,16 @@ span.ant-tag {
 .ant-timeline-item {
   padding-bottom: 1px !important;
 }
-
 .Time_Sheet-container .top-widget {
   padding: 10px 0px!important;
 }
+.EditWraps_Btns{
+  width: 28px;
+  background: linear-gradient(#fff, #f0f0f0);
+  height: auto;
+  margin-left: 10px;
+}
+
 @media (min-width: 2560px) {
   .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab,
   .ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab {

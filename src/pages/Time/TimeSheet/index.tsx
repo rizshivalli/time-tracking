@@ -5,7 +5,13 @@ import {
   getStartAndEndOfWeek,
   getRequiredDateFormat,
 } from '@/utils/MomentHelpers';
-import { PlusOutlined, ClockCircleOutlined, HistoryOutlined } from '@ant-design/icons';
+import {
+  PlusOutlined,
+  ClockCircleOutlined,
+  HistoryOutlined,
+  EditOutlined,
+  PicLeftOutlined,
+} from '@ant-design/icons';
 import {
   Button,
   Col,
@@ -167,7 +173,16 @@ const TimeSheet = () => {
           </div>
         </Col>
         <Col span={22}>
-          <Alert message="You are now editing " type="info" showIcon />
+          <div className="Timesheet_Note_Wraps">
+            <div className="Time_content_icons">
+              <PicLeftOutlined />
+            </div>
+            <p className="Time_content_para">[SAMPLE] Kiran Kronological’s Timesheet</p>
+            <p className="changes_content">
+              All changes will save to this user’s timesheet.
+              <a href=""> Resume editing your own timesheet</a>
+            </p>
+          </div>
           <div className="Time_Sheet-container">
             <div className="top-widget">
               <ProSpace size="large" align="start" className="top-widget-container">
@@ -256,11 +271,11 @@ const TimeSheet = () => {
                                     <Col span={18}>
                                       <ProSpace direction="vertical">
                                         <Text className="time-client-name">
-                                          {`[${
-                                            listItem?.project?.project_code
-                                              ? listItem?.project?.project_code
-                                              : listItem?.project?.name
-                                          }]${listItem?.task.name}`}
+                                          <p>
+                                            <strong>[SAMPLE] Non-Billable Project</strong> ([SAMPLE]
+                                            Client A)
+                                          </p>
+                                          <small>Programming – This is a sample time entry.</small>
                                         </Text>
                                       </ProSpace>
                                     </Col>
@@ -310,6 +325,9 @@ const TimeSheet = () => {
                                           }}
                                         >
                                           Start
+                                        </Button>
+                                        <Button className="EditWraps_Btns" size="small">
+                                          <EditOutlined />
                                         </Button>
                                       </Col>
                                     )}
