@@ -87,13 +87,14 @@ const TeamHome = () => {
                   </Button>
                 </Link>
                 <Button
+                  className="Team_BtnsWrpas"
                   onClick={() => {
                     setImportModalVisibility(true);
                   }}
                 >
                   Imports
                 </Button>
-                <Button>Export</Button>
+                <Button className="Team_BtnsWrpas">Export</Button>
               </ProSpace>
             </ProSpace>
           </Col>
