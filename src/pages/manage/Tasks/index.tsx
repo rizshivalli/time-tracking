@@ -60,6 +60,9 @@ const ManageTasks = () => {
     <ProGridContainer>
       <Row>
         <Col span={24}>
+          <div className="manage_tasks_title">Manage Tasks</div>
+        </Col>
+        <Col span={24}>
           <ProSpace direction="vertical" style={{ width: '100%' }}>
             <ProSpace>
               <Button

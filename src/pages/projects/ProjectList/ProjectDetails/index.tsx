@@ -68,8 +68,8 @@ const ProjectDetails = (props: any) => {
                   regardless of how much time it takes for you and your team to complete it.
                 </p>
               </Col>
-              <Col span={6}>
-                <Button size="middle" className="Projects_btns">
+              <Col span={6} className="projects_Detsils_btnwraps">
+                <Button size="middle">
                   <Link to={`/project/${id}`}>
                     <EditOutlined /> Edit Project
                   </Link>
@@ -84,7 +84,7 @@ const ProjectDetails = (props: any) => {
                     </Menu>
                   }
                 >
-                  <Button size="middle" className="Projects_btns">
+                  <Button size="middle">
                     Action <DownOutlined />
                   </Button>
                 </Dropdown>

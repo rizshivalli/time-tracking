@@ -36,6 +36,9 @@ const ManageClient = () => {
     <ProGridContainer>
       <Row>
         <Col span={24}>
+          <div className="manage_title">Manage Clients</div>
+        </Col>
+        <Col span={24}>
           <ProSpace direction="vertical" style={{ width: '100%' }}>
             <ProSpace>
               <div className="buttons_wraps">

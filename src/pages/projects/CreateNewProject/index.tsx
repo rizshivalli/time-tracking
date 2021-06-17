@@ -14,6 +14,7 @@ import { Modal } from 'antd';
 import React, { useCallback, useState } from 'react';
 import { createProject, getTeamMates } from '../service';
 import SendInviteModal from './components/SendInviteModal';
+import './index.less';
 
 const CreateNewProject = () => {
   const [isClientNew, setClientNew] = useState<boolean>(false);
@@ -110,6 +111,7 @@ const CreateNewProject = () => {
             {'or'}{' '}
             {!isClientNew ? (
               <Button
+                className="New_Clinets_wraps"
                 icon={<PlusOutlined />}
                 onClick={() => {
                   setClientNew(true);

@@ -45,8 +45,8 @@ const ClientTime = () => {
       <Row className="Report_rowmap">
         <Col span={4} className="Report_Head_Content">
           <div className="paragraphs">
-            <p className="head_title">Hours Tracked</p>
-            <p className="amount_title">262.45</p>
+            <div className="head_title">Hours Tracked</div>
+            <div className="amount_title">262.45</div>
           </div>
         </Col>
         <Col span={4}>
@@ -56,7 +56,7 @@ const ClientTime = () => {
         </Col>
         <Col span={6} className="Report_Head_Content">
           <div className="left_text">
-            <p className="head_title">Billable Hours</p>
+            <div className="head_title">Billable Hours</div>
           </div>
           <div className="left_text">
             <p className="green_box"></p>
@@ -72,8 +72,8 @@ const ClientTime = () => {
           </div>
         </Col>
         <Col span={5} className="Report_Head_Content">
-          <p className="head_title">Billable Amount</p>
-          <p className="amount_title">$0.00</p>
+          <div className="head_title">Billable Amount</div>
+          <div className="amount_title">$0.00</div>
           <div className="project_fee">
             <Checkbox> Include fixed fee projects</Checkbox>
             <Tooltip title="Billable Amounts for fixed fee projects are based on hourly rates. This means the Billable Amount may not match the invoiced amount.">
@@ -82,8 +82,8 @@ const ClientTime = () => {
           </div>
         </Col>
         <Col span={5} className="Report_Head_Content">
-          <p className="head_title">Uninvoiced Amount</p>
-          <p className="amount_title">$0.00</p>
+          <div className="head_title">Uninvoiced Amount</div>
+          <div className="amount_title">$0.00</div>
           <p className="excludes">Excludes fixed fee projects</p>
         </Col>
       </Row>
