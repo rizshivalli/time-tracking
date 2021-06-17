@@ -85,8 +85,8 @@ const TeamHome = () => {
                     Add Person
                   </Button>
                 </Link>
-                <Button>Imports</Button>
-                <Button>Export</Button>
+                <Button className="Team_BtnsWrpas">Imports</Button>
+                <Button className="Team_BtnsWrpas">Export</Button>
               </ProSpace>
             </ProSpace>
           </Col>
