@@ -54,6 +54,7 @@ const TeamHome = () => {
   const actionRef = useRef<ActionType>();
   const [data, setData] = useState<any[]>();
   const [loading, setLoading] = useState<boolean>(false);
+  const [importModalVisible, setImportModalVisibility] = useState<boolean>(false);
 
   const fetchData = async () => {
     setLoading(true);
@@ -85,8 +86,19 @@ const TeamHome = () => {
                     Add Person
                   </Button>
                 </Link>
+<<<<<<< Updated upstream
                 <Button className="Team_BtnsWrpas">Imports</Button>
                 <Button className="Team_BtnsWrpas">Export</Button>
+=======
+                <Button
+                  onClick={() => {
+                    setImportModalVisibility(true);
+                  }}
+                >
+                  Imports
+                </Button>
+                <Button>Export</Button>
+>>>>>>> Stashed changes
               </ProSpace>
             </ProSpace>
           </Col>
@@ -173,7 +185,7 @@ const TeamHome = () => {
             </ProSpace>
           </Col>
         </Row>
-        <ImportPeopleModal />
+        <ImportPeopleModal visible={importModalVisible} setVisibility={setImportModalVisibility} />
       </Skeleton>
     </ProGridContainer>
   );

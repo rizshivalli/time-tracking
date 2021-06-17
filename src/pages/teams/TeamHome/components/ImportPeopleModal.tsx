@@ -33,43 +33,66 @@ interface ImportProjectModalProps {
 // };
 const csvData = [
   {
-    Client: 'Vance Refrigeration',
-    Project: 'Printer Paper Supply',
-    'Project Code': 'PRNT-VANCE',
-    'Start Date': '2015-01-01',
-    'End Date': '2015-03-04',
-    'Project Notes': 'Keeping their office machines stocked',
+    'First Name': 'Michael',
+    'Last Name': 'Scott',
+    Email: 'michael@dundermifflin.net',
+    Roles: 'Founder|CEO|Management',
+    'Billable Rate': null,
+    'Cost Rate': 50.25,
+    Admin: 'yes',
+    Employee: 'yes',
+    Capacity: 35,
   },
   {
-    Client: 'Vance Refrigeration',
-    Project: 'High-Gloss Fliers',
-    'Project Code': 'GLOSS-VANCE',
-    'Start Date': '2015-01-01',
-    'End Date': '',
-    'Project Notes': 'Marketing material stock',
+    'First Name': 'Dwight',
+    'Last Name': 'Schrute',
+    Email: 'dwight@dundermifflin.net',
+    Roles: 'Sales',
+    'Billable Rate': null,
+    'Cost Rate': 30,
+    Admin: '',
+    Employee: 'no',
+    Capacity: 40,
   },
   {
-    Client: 'Michael Scott Paper Company',
-    Project: 'Wholesale Deliveries',
-    'Project Code': 'DLVR-MSPC',
-    'Start Date': '',
-    'End Date': '',
-    'Project Notes': 'Internal warehouse shuffling',
+    'First Name': 'Andy',
+    'Last Name': 'Bernard',
+    Email: 'andy@dundermifflin.net',
+    Roles: 'Sales',
+    'Billable Rate': 100,
+    'Cost Rate': 30,
+    Admin: '',
+    Employee: 'yes',
+    Capacity: 37.5,
   },
   {
-    Client: 'Michael Scott Paper Company',
-    Project: 'Tech Support',
-    'Project Code': '',
-    'Start Date': '',
-    'End Date': '',
-    'Project Notes': '',
+    'First Name': 'Toby',
+    'Last Name': 'Flenderson',
+    Email: 'toby@dundermifflin.net',
+    Roles: 'Human Resources',
+    'Billable Rate': 120,
+    'Cost Rate': null,
+    Admin: 'yes',
+    Employee: 'yes',
+    Capacity: null,
+  },
+  {
+    'First Name': 'Ryan',
+    'Last Name': 'Howard',
+    Email: 'ryan@dundermifflin.net',
+    Roles: 'Temp',
+    'Billable Rate': 25,
+    'Cost Rate': null,
+    Admin: '',
+    Employee: 'no',
+    Capacity: null,
   },
 ];
 
 const ImportPeopleModal: FC<ImportProjectModalProps> = ({ visible, setVisibility }) => {
   const props = {
     name: 'files',
-    action: '/strapi/projects/import',
+    action: '/strapi/organisation-members/import',
     headers: {
       Authorization: `Bearer ${token}`,
       'X-Requested-With': null,
@@ -88,25 +111,38 @@ const ImportPeopleModal: FC<ImportProjectModalProps> = ({ visible, setVisibility
 
   return (
     <ProModal
-      title="Import Projects"
+      title="Import People"
       visible={visible}
       destroyOnClose
       onCancel={() => setVisibility(false)}
-      okText="Upload and Import Projects"
+      okText="Upload and Import People"
     >
       <ProSpace direction="vertical">
-        <Text>Create a CSV file with six columns in this order</Text>
+        <Text>Create a CSV file with nine columns in this order:</Text>
         <Text strong={true}>
-          Client, Project, Project Code, Start Date, End Date, Project Notes
+          First Name, Last Name, Email, Roles, Billable Rate, Cost Rate, Admin, Employee, Capacity
         </Text>
         <div>
+          <ul>
+            <li>The first three columns are required</li>
+            <li>Separate unique roles with the | symbol.</li>
+            <li>
+              Don’t enter currency symbols for rates. We’ll use your account’s default currency.
+            </li>
+            <li>
+              In the Admin and Employee columns, write “yes” or leave blank to import the person as
+              a Regular User or contractor, respectively.
+            </li>
+            <li>
+              Importing existing teammates will replace any existing rates, roles, capacity, and
+              permissions or employee/contractor status.
+            </li>
+          </ul>
           <Text>
-            All headers are required exactly as written, but only the first two columns need to be
-            filled in to import successfully. You can{' '}
-            <CSVLink filename={'projects.csv'} data={csvData}>
-              download a sample CSV file here.
+            Don’t forget to include the header row spelled exactly as you see above! Here is{' '}
+            <CSVLink filename={'people_sample.csv'} data={csvData}>
+              a sample CSV.
             </CSVLink>
-            download a sample CSV file here.
           </Text>
         </div>
         <Dragger {...props}>
@@ -114,10 +150,6 @@ const ImportPeopleModal: FC<ImportProjectModalProps> = ({ visible, setVisibility
             <InboxOutlined />
           </p>
           <p className="ant-upload-text">Click or drag file to this area to upload</p>
-          <p className="ant-upload-hint">
-            Support for a single or bulk upload. Strictly prohibit from uploading company data or
-            other band files
-          </p>
         </Dragger>
       </ProSpace>
     </ProModal>
