@@ -4,30 +4,33 @@ import { message, Typography, Upload } from 'antd';
 import React from 'react';
 import type { FC } from 'react';
 import { CSVLink } from 'react-csv';
+import { getOrganization, getToken } from '@/utils/token';
+
 const { Text, Link } = Typography;
 const { Dragger } = Upload;
-
+const token = getToken();
+const organization = getOrganization();
 interface ImportProjectModalProps {
   visible: boolean;
   setVisibility: any;
 }
 
-const props = {
-  name: 'file',
-  multiple: true,
-  action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-  onChange(info: any) {
-    const { status } = info.file;
-    if (status !== 'uploading') {
-      console.log(info.file, info.fileList);
-    }
-    if (status === 'done') {
-      message.success(`${info.file.name} file uploaded successfully.`);
-    } else if (status === 'error') {
-      message.error(`${info.file.name} file upload failed.`);
-    }
-  },
-};
+// const props = {
+//   name: 'file',
+//   multiple: true,
+//   action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+//   onChange(info: any) {
+//     const { status } = info.file;
+//     if (status !== 'uploading') {
+//       console.log(info.file, info.fileList);
+//     }
+//     if (status === 'done') {
+//       message.success(`${info.file.name} file uploaded successfully.`);
+//     } else if (status === 'error') {
+//       message.error(`${info.file.name} file upload failed.`);
+//     }
+//   },
+// };
 const csvData = [
   {
     Client: 'Vance Refrigeration',
@@ -62,7 +65,27 @@ const csvData = [
     'Project Notes': '',
   },
 ];
+
 const ImportProjects: FC<ImportProjectModalProps> = ({ visible, setVisibility }) => {
+  const props = {
+    name: 'files',
+    action: '/strapi/projects/import',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'X-Requested-With': null,
+      orgid: organization,
+    },
+    onChange(info: any) {
+      if (info.file.status !== 'uploading') {
+      }
+      if (info.file.status === 'done') {
+        message.success(`${info.file.name} file uploaded successfully`);
+      } else if (info.file.status === 'error') {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+  };
+
   return (
     <ProModal
       title="Import Projects"

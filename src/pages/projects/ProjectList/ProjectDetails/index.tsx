@@ -97,14 +97,14 @@ const ProjectDetails = (props: any) => {
               <Col span={6} className="Projects_Cards">
                 <div className="Bar_Chart_Card">
                   <div className="Box_Content">Total Hours</div>
-                  <div className="Main-Text">{`${data?.total_time?.hours}.${data?.total_time?.minutes}`}</div>
+                  <div className="Main-Text">{data?.total_time}</div>
                   <div className="inline_box">
                     <div className="Box_Content">Billable Hours</div>
                     <div className="Box-price">0</div>
                   </div>
                   <div className="inline_box">
                     <div className="Box_Content">Non-Billable Hours</div>
-                    <div className="Box-price">{`${data?.total_time?.hours}.${data?.total_time?.minutes}`}</div>
+                    <div className="Box-price">{data?.total_time}</div>
                   </div>
                 </div>
               </Col>

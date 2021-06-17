@@ -19,7 +19,6 @@ const columns: ProColumns<any>[] = [
   {
     title: 'Total hours',
     dataIndex: 'total_time',
-    render: (text, row) => <div>{211}</div>,
   },
 ];
 

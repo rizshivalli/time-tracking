@@ -1,8 +1,7 @@
 import { ProGridContainer, ProIntlProvider, ProSpace, ProTitle, RandomQuote } from '@/common';
 import { getToday, getRequiredDateFormat, getStartAndEndOfWeek } from '@/utils/MomentHelpers';
-import { CheckOutlined, DownOutlined, PlusOutlined } from '@ant-design/icons';
+import { CheckOutlined, PlusOutlined } from '@ant-design/icons';
 import ProTable, { ActionType } from '@ant-design/pro-table';
-import { Dropdown, Menu } from 'antd';
 import { Button, Col, DatePicker, Row, Radio, Select } from 'antd';
 import moment from 'moment';
 import React, { useCallback, useRef, useState } from 'react';
@@ -24,7 +23,6 @@ const getWeekFromSuntoSatForTable = (date: string) => {
     weekDates.push({
       title: getRequiredDateFormat(moment(date).day(i), 'DD-MMM'),
       dataIndex: getRequiredDateFormat(moment(date).day(i), 'MM-DD-YYYY'),
-      // day: getRequiredDateFormat(moment(date).day(i), 'ddd'),
       key: getRequiredDateFormat(moment(date).day(i), 'MM-DD-YYYY'),
     });
   }
@@ -33,14 +31,15 @@ const getWeekFromSuntoSatForTable = (date: string) => {
     {
       title: 'Task Name',
       dataIndex: 'task_name',
-      // @ts-ignore
-      render: (text, value) => <div>{`[${value?.project_name}] ${text}`}</div>,
+      key: 'task_name',
+      render: (text: string, value: any) => <div>{`[${value?.project_name}] ${text}`}</div>,
       editable: false,
     },
 
     {
       title: 'project_id',
       dataIndex: 'project_id',
+      key: 'project_id',
       hideInTable: true,
       // hideInForm: true,
       // @ts-ignore
@@ -51,6 +50,7 @@ const getWeekFromSuntoSatForTable = (date: string) => {
     {
       title: 'project_name',
       dataIndex: 'project_name',
+      key: 'project_name',
       hideInTable: true,
       // hideInForm: true,
       // @ts-ignore
@@ -59,6 +59,7 @@ const getWeekFromSuntoSatForTable = (date: string) => {
     {
       title: 'task_id',
       dataIndex: 'task_id',
+      key: 'task_id',
       hideInTable: true,
       // hideInForm: true,
       // @ts-ignore
@@ -72,6 +73,7 @@ const getWeekFromSuntoSatForTable = (date: string) => {
     {
       title: 'Total Hours',
       dataIndex: 'duration',
+      key: 'duration',
       // hideInForm: true,
       // @ts-ignore
       editable: false,
@@ -107,14 +109,12 @@ const TimeSheet = () => {
   const [selectedTabKey, setSelectedTabKey] = useState<string>(todayDate);
   const [newEntryModalVisible, setNewEntryModalVisible] = useState<boolean>(false);
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
-  const [approvalStatus, setApprovalStatus] = useState<string>();
+  const [approvalStatus, setApprovalStatus] = useState<string>('Not Submitted');
   const [approvalId, setApprovalId] = useState<string>();
   const [date, setDate] = useState<string>(todayDate);
   const actionRef = useRef<ActionType>();
 
   const submitWeek = async () => {
-    console.log('🚀 ~ file: index.tsx ~ line 120 ~ submitWeek ~ approvalId', approvalId);
-
     await submitWeekForApproval(approvalId);
   };
 
@@ -196,6 +196,22 @@ const TimeSheet = () => {
               </ProSpace>
             </div>
             <ProIntlProvider>
+              {/* Status Text */}
+              {approvalStatus !== 'Not Submitted' && approvalStatus !== 'unapproved' && (
+                <div
+                  className="status-text"
+                  style={{
+                    backgroundColor:
+                      approvalStatus === 'Submitted for Approval'
+                        ? '#fadadd'
+                        : '#7998a3' && approvalStatus === 'Approved'
+                        ? '#a9ffa9'
+                        : '#7998a3',
+                  }}
+                >
+                  {approvalStatus}
+                </div>
+              )}
               <ProTable
                 options={false}
                 locale={{
@@ -206,8 +222,15 @@ const TimeSheet = () => {
                 request={async () => {
                   const data = await getAllWeekData(date);
                   const { approval_id, approval_status, time_records } = data;
+                  console.log(
+                    '🚀 ~ file: index.tsx ~ line 225 ~ request={ ~ approval_status',
+                    approval_status,
+                  );
                   setApprovalId(approval_id);
-                  setApprovalStatus(approval_status);
+                  if (approval_status) {
+                    setApprovalStatus(approval_status);
+                  }
+
                   return { data: time_records, success: true };
                 }}
                 pagination={false}
@@ -224,7 +247,7 @@ const TimeSheet = () => {
                   },
                   onChange: setEditableRowKeys,
                 }}
-                rowKey="id"
+                rowKey="key"
                 search={false}
                 footer={() => [
                   <div>

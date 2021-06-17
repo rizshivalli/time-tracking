@@ -99,3 +99,13 @@ export async function editProjectsById(id: identifier, params: any) {
     throw new Error(response.message);
   }
 }
+
+export async function importProjectCSV(params: any) {
+  const token = await getToken();
+  const organization = await getOrganization();
+  return request('/strapi/projects/import', {
+    headers: { Authorization: `Bearer ${token}`, orgid: organization },
+    method: 'POST',
+    data: { ...params },
+  });
+}
