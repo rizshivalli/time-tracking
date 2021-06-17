@@ -86,19 +86,15 @@ const TeamHome = () => {
                     Add Person
                   </Button>
                 </Link>
-<<<<<<< Updated upstream
-                <Button className="Team_BtnsWrpas">Imports</Button>
-                <Button className="Team_BtnsWrpas">Export</Button>
-=======
                 <Button
+                  className="Team_BtnsWrpas"
                   onClick={() => {
                     setImportModalVisibility(true);
                   }}
                 >
                   Imports
                 </Button>
-                <Button>Export</Button>
->>>>>>> Stashed changes
+                <Button className="Team_BtnsWrpas">Export</Button>
               </ProSpace>
             </ProSpace>
           </Col>
