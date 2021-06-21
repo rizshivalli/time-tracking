@@ -87,9 +87,7 @@ const TimeArchive = () => {
                 }}
                 rowKey="id"
                 search={false}
-                pagination={{
-                  pageSize: 5,
-                }}
+                pagination={false}
                 dateFormatter="string"
                 toolBarRender={false}
               />

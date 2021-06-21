@@ -81,7 +81,7 @@ export async function createNewTimeRecord(params: any) {
     return response.data;
   } else {
     hide();
-    message.error(response.message);
+    message.error(`${response.message}, Please try Again`);
     throw new Error(response.message);
   }
 }
@@ -101,7 +101,7 @@ export async function stopTimeRecord(id: identifier, params: any) {
     return response.data;
   } else {
     hide();
-    message.error(response.message);
+    message.error(`${response.message}, Please try Again`);
     throw new Error(response.message);
   }
 }
@@ -112,7 +112,7 @@ export async function getTimeRecords(dates: { start_date: string; end_date: stri
   const response = await request(
     `/strapi/time-records?date_gte=${dates.start_date}&date_lte=${dates.end_date}`,
     {
-      data: params,
+      params,
       headers: { Authorization: `Bearer ${token}`, orgid: organization },
     },
   );
@@ -123,7 +123,8 @@ export async function getTimeRecords(dates: { start_date: string; end_date: stri
   }
 }
 
-export async function getWeekTimeRecords(start_date: string, end_date: string) {
+export async function getWeekTimeRecords(start_date: string, end_date: string, params: any) {
+  console.log('🚀 ~ file: service.ts ~ line 127 ~ getWeekTimeRecords ~ params', params);
   const token = await getToken();
   const organization = await getOrganization();
   const response = await request(
@@ -133,6 +134,7 @@ export async function getWeekTimeRecords(start_date: string, end_date: string) {
     )}&end_date=${getRequiredDateFormat(end_date, 'YYYY-MM-DD')}`,
     {
       headers: { Authorization: `Bearer ${token}`, orgid: organization },
+      params,
     },
   );
   if (response.statusCode === 200) {
@@ -157,7 +159,7 @@ export async function updateWeekRecords(params: any) {
     return response.statusCode;
   } else {
     hide();
-    message.error(response.message);
+    message.error(`${response.message}, Please try Again`);
     throw new Error(response.message);
   }
 }
@@ -178,7 +180,7 @@ export async function addWeekRows(params: any) {
     return response.statusCode;
   } else {
     hide();
-    message.error(response.message);
+    message.error(`${response.message}, Please try Again`);
     throw new Error(response.message);
   }
 }
@@ -197,9 +199,8 @@ export async function submitWeekForApproval(id: identifier) {
     return response.data;
   } else {
     hide();
-    message.error(response.message);
+    message.error(`${response.message}, Please try Again`);
     return [];
-    throw new Error(response.message);
   }
 }
 
@@ -215,7 +216,8 @@ export async function getPendingApprovals() {
   if (response.statusCode === 200) {
     return response.data;
   } else {
-    throw new Error(response.message);
+    message.error(`${response.message}, Please try Again`);
+    return [];
   }
 }
 
@@ -250,14 +252,12 @@ export async function approveTimesheet(id: identifier) {
         return response.data;
       } else {
         hide();
-        message.error(response.message);
-        throw new Error(response.message);
+        message.error(`${response.message}, Please try Again`);
       }
     })
     .catch((error) => {
       hide();
-      message.error(error.message);
-      throw new Error(error.message);
+      message.error(`${error.message}, Please try Again`);
     });
 }
 
@@ -315,4 +315,25 @@ export async function getRandomQuote() {
   const { statusCode, statusMessage, ...data } = await response.json();
   if (!response.ok) throw new Error(`${statusCode} ${statusMessage}`);
   return data;
+}
+
+export async function getTeamMembers() {
+  const token = await getToken();
+  const organization = await getOrganization();
+  const response = await request('/strapi/organisation-members', {
+    method: 'GET',
+    headers: { Authorization: `Bearer ${token}`, orgid: organization },
+  });
+
+  if (response.statusCode === 200) {
+    const newData = response.data.map((resp: any) => ({
+      label: resp.full_name,
+      value: resp.id,
+    }));
+
+    return newData;
+  } else {
+    message.error(`${response.message}, Please try Again`);
+    return [];
+  }
 }

@@ -1,6 +1,6 @@
-import { ProGridContainer, ProIntlProvider } from '@/common';
+import { ProGridContainer, ProIntlProvider, RandomQuote } from '@/common';
 import ProTable, { ActionType, ProColumns } from '@ant-design/pro-table';
-import { Col, Row, Button, Dropdown, Menu, Checkbox } from 'antd';
+import { Col, Row, Button, Dropdown, Menu } from 'antd';
 import { DownOutlined, FormOutlined } from '@ant-design/icons';
 import React, { useRef } from 'react';
 import './index.less';
@@ -66,6 +66,9 @@ const TeamsReports = () => {
         <Col span={24}>
           <ProIntlProvider>
             <ProTable
+              locale={{
+                emptyText: <RandomQuote />,
+              }}
               dataSource={data}
               columns={columns}
               actionRef={actionRef}

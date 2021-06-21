@@ -5,7 +5,7 @@ import React, { useRef } from 'react';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import { DownOutlined, SearchOutlined } from '@ant-design/icons';
 import { getPendingApprovals } from '../service';
-import { Link } from 'react-router-dom';
+import { Link } from 'umi';
 import './index.less';
 
 const columns: ProColumns<any>[] = [
@@ -18,7 +18,6 @@ const columns: ProColumns<any>[] = [
   {
     title: 'Employee Name',
     dataIndex: 'user_name',
-    // render: (text, value) => <Link to={`/time/time-sheet/approve/${value.id}`}>{text}</Link>,
   },
   {
     title: 'Date Range',
@@ -44,6 +43,7 @@ const columns: ProColumns<any>[] = [
     ],
   },
 ];
+
 const PendingApproval = () => {
   const actionRef = useRef<ActionType>();
 
@@ -87,6 +87,7 @@ const PendingApproval = () => {
             </Col>
             <ProIntlProvider>
               <ProTable
+                pagination={false}
                 search={false}
                 locale={{
                   emptyText: <RandomQuote />,
@@ -101,9 +102,6 @@ const PendingApproval = () => {
                   type: 'multiple',
                 }}
                 rowKey="id"
-                pagination={{
-                  pageSize: 5,
-                }}
                 dateFormatter="string"
                 toolBarRender={false}
               />

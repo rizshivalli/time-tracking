@@ -7,31 +7,16 @@ import { CSVLink } from 'react-csv';
 import { getOrganization, getToken } from '@/utils/token';
 import './index.less';
 
-const { Text, Link } = Typography;
+const { Text } = Typography;
 const { Dragger } = Upload;
 const token = getToken();
 const organization = getOrganization();
 interface ImportProjectModalProps {
   visible: boolean;
   setVisibility: any;
+  onSuccess: any;
 }
 
-// const props = {
-//   name: 'file',
-//   multiple: true,
-//   action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-//   onChange(info: any) {
-//     const { status } = info.file;
-//     if (status !== 'uploading') {
-//       console.log(info.file, info.fileList);
-//     }
-//     if (status === 'done') {
-//       message.success(`${info.file.name} file uploaded successfully.`);
-//     } else if (status === 'error') {
-//       message.error(`${info.file.name} file upload failed.`);
-//     }
-//   },
-// };
 const csvData = [
   {
     'First Name': 'Michael',
@@ -90,9 +75,9 @@ const csvData = [
   },
 ];
 
-const ImportPeopleModal: FC<ImportProjectModalProps> = ({ visible, setVisibility }) => {
+const ImportPeopleModal: FC<ImportProjectModalProps> = ({ visible, setVisibility, onSuccess }) => {
   const props = {
-    name: 'files',
+    name: 'file',
     action: '/strapi/organisation-members/import',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -118,6 +103,10 @@ const ImportPeopleModal: FC<ImportProjectModalProps> = ({ visible, setVisibility
         destroyOnClose
         onCancel={() => setVisibility(false)}
         okText="Upload and Import People"
+        onOk={() => {
+          onSuccess;
+          setVisibility(false);
+        }}
       >
         <ProSpace direction="vertical">
           <Text>Create a CSV file with nine columns in this order:</Text>
@@ -147,6 +136,7 @@ const ImportPeopleModal: FC<ImportProjectModalProps> = ({ visible, setVisibility
               </CSVLink>
             </Text>
           </div>
+          {/* @ts-ignore */}
           <Dragger {...props}>
             <p className="ant-upload-drag-icon">
               <InboxOutlined />

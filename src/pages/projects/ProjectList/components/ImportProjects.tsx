@@ -6,13 +6,14 @@ import type { FC } from 'react';
 import { CSVLink } from 'react-csv';
 import { getOrganization, getToken } from '@/utils/token';
 
-const { Text, Link } = Typography;
+const { Text } = Typography;
 const { Dragger } = Upload;
 const token = getToken();
 const organization = getOrganization();
 interface ImportProjectModalProps {
   visible: boolean;
   setVisibility: any;
+  onSuccess: any;
 }
 
 // const props = {
@@ -66,13 +67,13 @@ const csvData = [
   },
 ];
 
-const ImportProjects: FC<ImportProjectModalProps> = ({ visible, setVisibility }) => {
+const ImportProjects: FC<ImportProjectModalProps> = ({ visible, setVisibility, onSuccess }) => {
   const props = {
-    name: 'files',
+    name: 'file',
     action: '/strapi/projects/import',
     headers: {
       Authorization: `Bearer ${token}`,
-      'X-Requested-With': null,
+      // 'X-Requested-With': null,
       orgid: organization,
     },
     onChange(info: any) {
@@ -93,6 +94,9 @@ const ImportProjects: FC<ImportProjectModalProps> = ({ visible, setVisibility })
       destroyOnClose
       onCancel={() => setVisibility(false)}
       okText="Upload and Import Projects"
+      onOk={() => {
+        onSuccess();
+      }}
     >
       <ProSpace direction="vertical">
         <Text>Create a CSV file with six columns in this order</Text>

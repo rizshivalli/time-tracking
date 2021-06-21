@@ -1,18 +1,28 @@
 import { ProGridContainer, ProIntlProvider, ProSpace, ProTitle, RandomQuote } from '@/common';
+import { identifier } from '@/pages/manage/Client/service';
 import { getToday, getRequiredDateFormat, getStartAndEndOfWeek } from '@/utils/MomentHelpers';
-import { CheckOutlined, PlusOutlined } from '@ant-design/icons';
+import { hasAccess } from '@/utils/token';
+import { CheckOutlined, PlusOutlined, PicLeftOutlined } from '@ant-design/icons';
 import ProTable, { ActionType } from '@ant-design/pro-table';
 import { Button, Col, DatePicker, Row, Radio, Select } from 'antd';
 import moment from 'moment';
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState, useEffect } from 'react';
 import { Link } from 'umi';
-import { getWeekTimeRecords, updateWeekRecords, submitWeekForApproval } from '../service';
+import {
+  getWeekTimeRecords,
+  updateWeekRecords,
+  submitWeekForApproval,
+  getTeamMembers,
+} from '../service';
 import { NewEntryModal } from './components';
 import './index.less';
 
-const { Option } = Select;
-
 const today = getToday('dddd, DD MMM');
+
+const checkAccess = async () => {
+  const access = await hasAccess();
+  return access;
+};
 
 // const thisWeekDates = getWeekFromSuntoSat(fullDate);
 
@@ -112,11 +122,36 @@ const TimeSheet = () => {
   const [approvalStatus, setApprovalStatus] = useState<string>('Not Submitted');
   const [approvalId, setApprovalId] = useState<string>();
   const [date, setDate] = useState<string>(todayDate);
+  const [employeeData, setEmployeeData] = useState<any[]>([]);
+  const [editingEmployee, setEditingEmployee] = useState<any | null>(null);
+
   const actionRef = useRef<ActionType>();
 
   const submitWeek = async () => {
     await submitWeekForApproval(approvalId);
   };
+
+  const getEmployeeList = async () => {
+    const data = await getTeamMembers();
+    setEmployeeData(data);
+  };
+
+  useEffect(() => {
+    checkAccess();
+    getEmployeeList();
+  }, []);
+
+  function handleEmployeeChange(value: identifier, option: any) {
+    if (value) {
+      // getAllWeekData(date, value);
+      //  getWeekData(selectedTabKey, value);
+      setEditingEmployee(option);
+      actionRef.current?.reload();
+    } else {
+      setEditingEmployee(null);
+      actionRef.current?.reload();
+    }
+  }
 
   const onDateChange = (date: any, dateString: string) => {
     if (date) {
@@ -147,16 +182,39 @@ const TimeSheet = () => {
     setPeriod(e.target.value);
   };
 
-  const getAllWeekData = useCallback(async (date: string) => {
-    const dates = getStartAndEndOfWeek(date);
-    const weekData = await getWeekTimeRecords(dates.start_date, dates.end_date);
-    return weekData;
-  }, []);
+  const getAllWeekData = useCallback(
+    async (date: string, org_member_id: string | number | null = editingEmployee?.value) => {
+      const params = org_member_id === null ? null : { org_member_id: org_member_id };
+      const dates = getStartAndEndOfWeek(date);
+      const weekData = await getWeekTimeRecords(dates.start_date, dates.end_date, params);
+      return weekData;
+    },
+    [editingEmployee],
+  );
 
   return (
     <ProGridContainer>
       <Row>
         <Col span={24}>
+          {editingEmployee && (
+            <div className="Timesheet_Note_Wraps">
+              <div className="Time_content_icons">
+                <PicLeftOutlined />
+              </div>
+              <p className="Time_content_para">{`${editingEmployee.label}’s Timesheet`}</p>
+              <p className="changes_content">
+                All changes will save to this user’s timesheet.
+                <a
+                  onClick={() => {
+                    handleEmployeeChange(undefined, null);
+                  }}
+                >
+                  {' '}
+                  Resume editing your own timesheet
+                </a>
+              </p>
+            </div>
+          )}
           <div className="Week_Time_Sheet_container">
             <div className="top-widget">
               <ProSpace size="large" align="start" className="top-widget-container">
@@ -183,15 +241,20 @@ const TimeSheet = () => {
                     <Radio.Button value="week">Week</Radio.Button>
                   </Radio.Group>
                   <Select
+                    allowClear
+                    disabled={!checkAccess}
                     showSearch
                     style={{ width: 200 }}
                     placeholder="Employee"
                     optionFilterProp="children"
-                  >
-                    <Option value="jack">Jack</Option>
-                    <Option value="lucy">Lucy</Option>
-                    <Option value="tom">Tom</Option>
-                  </Select>
+                    options={employeeData}
+                    // @ts-ignore
+                    onChange={handleEmployeeChange}
+                    filterOption={(input, option) => {
+                      // @ts-ignore
+                      return option?.label?.toLowerCase()?.indexOf(input?.toLowerCase()) >= 0;
+                    }}
+                  />
                 </ProSpace>
               </ProSpace>
             </div>
@@ -222,10 +285,7 @@ const TimeSheet = () => {
                 request={async () => {
                   const data = await getAllWeekData(date);
                   const { approval_id, approval_status, time_records } = data;
-                  console.log(
-                    '🚀 ~ file: index.tsx ~ line 225 ~ request={ ~ approval_status',
-                    approval_status,
-                  );
+
                   setApprovalId(approval_id);
                   if (approval_status) {
                     setApprovalStatus(approval_status);
@@ -240,7 +300,12 @@ const TimeSheet = () => {
                   deletePopconfirmMessage: 'Delete This week entry?',
                   onlyOneLineEditorAlertMessage: 'You can only edit one task at a time',
                   onSave: async (key, row) => {
-                    const data = await updateWeekRecords(row);
+                    const params =
+                      editingEmployee.value === null
+                        ? null
+                        : { org_member_id: editingEmployee.value };
+                    // const newVal = { org_member_id: employee ? employee?.value : null };
+                    const data = await updateWeekRecords({ ...row, ...params });
                     if (data === 200) {
                       actionRef?.current?.reload();
                     }
@@ -289,6 +354,7 @@ const TimeSheet = () => {
           visible={newEntryModalVisible}
           setVisibility={setNewEntryModalVisible}
           onSuccess={actionRef?.current?.reload()}
+          employee={editingEmployee}
         />
       )}
     </ProGridContainer>

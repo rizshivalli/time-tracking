@@ -16,25 +16,37 @@ const columns: ProColumns<any>[] = [
     dataIndex: 'id',
     valueType: 'indexBorder',
     width: 48,
+    hideInTable: true,
   },
   {
     title: 'Employee Name',
     dataIndex: 'user_name',
-    render: (text, value) => <Link to={`/time/time-sheet/approve/${value.id}`}>{text}</Link>,
   },
   {
     title: 'Date Range',
     dataIndex: 'date_range',
-    renderFormItem: (item, props) => {
-      return <DatePicker picker="week" {...props} bordered={true} format="YYYY-MM-DD" />;
-    },
   },
   {
     title: 'Submitted by',
     dataIndex: 'user_name',
     render: (text, value) => <div>{value?.submitted_by?.full_name}</div>,
   },
+  {
+    title: '',
+    key: 'option',
+    width: 120,
+    valueType: 'option',
+    // @ts-ignore
+    render: (_, row, index, action) => [
+      <Link to={`/time/time-sheet/unsubmitted/${row.id}`}>
+        <Button key="a" onClick={() => {}}>
+          View TimeSheet
+        </Button>
+      </Link>,
+    ],
+  },
 ];
+
 const beforeSearch = (params: any) => {
   console.log('🚀 ~ file: index.tsx ~ line 36 ~ beforeSearch ~ params', params);
   replaceKey(params, 'user_name', 'user_name_contains');
@@ -91,9 +103,7 @@ const Unsubmitted = () => {
                 }}
                 rowKey="id"
                 search={false}
-                pagination={{
-                  pageSize: 5,
-                }}
+                pagination={false}
                 dateFormatter="string"
                 toolBarRender={false}
               />

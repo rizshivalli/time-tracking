@@ -10,8 +10,16 @@ interface NewEntryProps {
   visible: boolean;
   setVisibility: any;
   onSuccess: any;
+  employee: any;
 }
-const NewEntry: FC<NewEntryProps> = ({ selectedKey, visible, setVisibility, onSuccess }) => {
+const NewEntry: FC<NewEntryProps> = ({
+  selectedKey,
+  visible,
+  setVisibility,
+  onSuccess,
+  employee,
+}) => {
+  console.log('🚀 ~ file: NewEntry.tsx ~ line 22 ~ employee', employee);
   const [form] = ProForm.useForm();
   const [timeEntry, setTimeEntry] = useState<boolean>(false);
   const [taskOptions, setTaskOptions] = useState([]);
@@ -31,7 +39,11 @@ const NewEntry: FC<NewEntryProps> = ({ selectedKey, visible, setVisibility, onSu
   };
 
   const handleFinish = useCallback(async (values) => {
-    await createNewTimeRecord(values)
+    const newVal = { organisation_member: employee ? employee?.value : null };
+    await createNewTimeRecord({
+      ...values,
+      ...newVal,
+    })
       .then((result) => {
         if (result) {
           Modal.success({

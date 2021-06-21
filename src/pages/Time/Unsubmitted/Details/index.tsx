@@ -58,8 +58,8 @@ const ApprovalDetails = (props: any) => {
           <Row>
             <Col span={24} className="heading">
               <div className="head_title">
-                <p className="sub_title">{`Approve [SAMPLE] ${data?.user_name}’s Timesheet for ${data?.date_range}`}</p>
-                <span>[SAMPLE] Client A (Fixed Fee Project)</span>
+                <p className="sub_title">{`Unsubmitted ${data?.user_name}’s Timesheet for ${data?.date_range}`}</p>
+                {/* <span>[SAMPLE] Client A (Fixed Fee Project)</span> */}
               </div>
             </Col>
             <Col span={5}>
@@ -99,7 +99,7 @@ const ApprovalDetails = (props: any) => {
         <Row>
           <Col span={24}>
             <ProIntlProvider>
-              <p className="pending_hours">Pending Hours</p>
+              <p className="pending_hours">Unsubmitted Hours</p>
               <ProTable
                 locale={{
                   emptyText: <RandomQuote />,
@@ -116,7 +116,7 @@ const ApprovalDetails = (props: any) => {
               />
             </ProIntlProvider>
           </Col>
-          <Col span={24}>
+          {/* <Col span={24}>
             <Button
               className="Approvel_button"
               size="large"
@@ -149,7 +149,7 @@ const ApprovalDetails = (props: any) => {
               <MailOutlined />
               Email {data?.user_name}
             </Button>
-          </Col>
+          </Col> */}
         </Row>
       </Skeleton>
     </ProGridContainer>

@@ -1,4 +1,4 @@
-import { ProIntlProvider } from '@/common';
+import { ProIntlProvider, RandomQuote } from '@/common';
 import ProTable from '@ant-design/pro-table';
 import { Col, Row } from 'antd';
 import React, { useRef } from 'react';
@@ -33,15 +33,16 @@ const TeamsTab: FC<TeamsTabsProps> = ({ data }) => {
       <Col span={24}>
         <ProIntlProvider>
           <ProTable
+            locale={{
+              emptyText: <RandomQuote />,
+            }}
             options={false}
             dataSource={data}
             columns={columns}
             actionRef={actionRef}
             rowKey="id"
             search={false}
-            pagination={{
-              pageSize: 25,
-            }}
+            pagination={false}
             dateFormatter="string"
             toolBarRender={false}
           />
