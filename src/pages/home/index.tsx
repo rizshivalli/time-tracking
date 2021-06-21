@@ -27,25 +27,25 @@ const Home = () => {
           <p>Here’s how to get started:</p>
         </div>
         <div className="Home_clicking_divs_wraps">
-          <span>
+          <span className="Home_icons_Wraps">
             <CheckCircleOutlined />
           </span>
           <span className="Home_fonts_wraps">Learn the basics of time tracking</span>
         </div>
         <div className="Home_clicking_divs_wraps">
-          <span>
+          <span className="Home_icons_Wraps">
             <PlusCircleOutlined />
           </span>
           <span className="Home_fonts_wraps">Track your first hour</span>
         </div>
         <div className="Home_clicking_divs_wraps">
-          <span>
+          <span className="Home_icons_Wraps">
             <ClockCircleOutlined />
           </span>
           <span className="Home_fonts_wraps">Peruse your projects</span>
         </div>
         <div className="Home_clicking_divs_wraps">
-          <span>
+          <span className="Home_icons_Wraps">
             <ExclamationCircleOutlined />
           </span>
           <span className="Home_fonts_wraps">Get the desktop and mobile apps</span>
@@ -57,7 +57,9 @@ const Home = () => {
           <p>
             <a href="">Webinars</a>
           </p>
-          <p>Live online classes. Pick the brains of our experts.</p>
+          <p>
+            Live online classes. Pick the<br></br> brains of our experts.
+          </p>
         </div>
         <div className="belowlinks_wraps">
           <p>
@@ -71,6 +73,11 @@ const Home = () => {
           </p>
           <p>Friendly experts, always ready to help.</p>
         </div>
+      </Col>
+      <ProDivider></ProDivider>
+      <Col span={24}>
+        <input type="checkbox"></input>
+        <span>Email me occasional updates, tips, and interesting stories</span>
       </Col>
     </Row>
   );
