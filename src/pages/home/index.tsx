@@ -14,13 +14,9 @@ const Home = () => {
   return (
     <Row>
       <Col span={12}>
-        <p className="Home_Welcome_Wraps">Welcome to Harvest, Minhaj!</p>
+        <p className="Home_Welcome_Wraps">Welcome to Simplifi Team!</p>
       </Col>
-      <Col span={12}>
-        <span className="Home_forever_Wraps">
-          <CloseOutlined /> I’m a pro at Harvest, hide this page forever
-        </span>
-      </Col>
+      <Col span={12}></Col>
       <ProDivider></ProDivider>
       <Col span={18}>
         <div>

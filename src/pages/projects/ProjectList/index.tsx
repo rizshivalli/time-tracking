@@ -1,19 +1,49 @@
-import { ProDivider, ProGridContainer, ProIntlProvider, ProSpace } from '@/common';
+import { ProDivider, ProGridContainer, ProIntlProvider, ProSpace, RandomQuote } from '@/common';
 import { DownOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
-import { Button, Col, Dropdown, Menu, Row, Input } from 'antd';
-import React, { useRef, useState } from 'react';
+import { Button, Col, Dropdown, Menu, Row, Input, Skeleton } from 'antd';
+import React, { useEffect, useRef, useState } from 'react';
 import ExportProjectsModal from './components/ExportProjectsModal';
 import ImportProjects from './components/ImportProjects';
 import './index.less';
-import { getProjects, getProjectsCount } from '../service';
+import { archiveProject, getProjects } from '../service';
 import { Link } from 'umi';
 
+const { Search } = Input;
 const ProjectList = () => {
   const actionRef = useRef<ActionType>();
   const [importModalVisible, setImportModalVisibility] = useState<boolean>(false);
   const [exportModalVisible, setExportModalVisibility] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [data, setData] = useState<any[]>([]);
+
+  const getData = async (params: {} = {}) => {
+    setLoading(true);
+    await getProjects(params)
+      .then((response) => {
+        setData(response);
+      })
+      .catch((error) => {
+        setData([]);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const searchData = async (params: {} = {}) => {
+    await getProjects(params)
+      .then((response) => {
+        setData(response);
+      })
+      .catch((error) => {
+        setData([]);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
 
   const columns: ProColumns<any>[] = [
     {
@@ -27,12 +57,12 @@ const ProjectList = () => {
       render: (text, row) => <Link to={`/projects/details/${row.id}`}>{row.name}</Link>,
     },
     {
-      title: 'client',
+      title: 'Client',
       dataIndex: 'client_name',
       render: (text, row) => <div>{row.client?.name}</div>,
     },
     {
-      title: 'project_code',
+      title: 'Project Code',
       dataIndex: 'project_code',
     },
     {
@@ -52,7 +82,20 @@ const ProjectList = () => {
               <Menu.Item key="1">
                 <Link to={`/project/${record.id}`}>Edit</Link>
               </Menu.Item>
-              <Menu.Item key="2">Archive</Menu.Item>
+              <Menu.Item
+                key="2"
+                onClick={async () => {
+                  const params = { archived: true };
+                  archiveProject(record.id, params)
+                    .then(() => {})
+                    .catch(() => {})
+                    .finally(() => {
+                      getData();
+                    });
+                }}
+              >
+                Archive
+              </Menu.Item>
             </Menu>
           }
         >
@@ -64,83 +107,90 @@ const ProjectList = () => {
     },
   ];
 
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const onChange = (e: string) => {
+    const params = { name_contains: e };
+    searchData(params);
+  };
+
   return (
     <ProGridContainer>
-      <Row>
-        <Col span={16}>
-          <ProSpace direction="vertical" style={{ width: '100%' }}>
-            <ProSpace direction="horizontal">
-              <Link to="/projects/new">
-                <Button type="primary" icon={<PlusOutlined />}>
-                  Create New Project
+      <Skeleton loading={loading} active avatar>
+        <Row>
+          <Col span={16}>
+            <ProSpace direction="vertical" style={{ width: '100%' }}>
+              <ProSpace direction="horizontal">
+                <Link to="/projects/new">
+                  <Button type="primary" icon={<PlusOutlined />}>
+                    Create New Project
+                  </Button>
+                </Link>
+                <Button
+                  className="left-button"
+                  onClick={() => {
+                    setImportModalVisibility(true);
+                  }}
+                >
+                  Import
                 </Button>
-              </Link>
-              <Button
-                className="left-button"
-                onClick={() => {
-                  setImportModalVisibility(true);
-                }}
-              >
-                Import
-              </Button>
-              <Button
-                className="left-button"
-                onClick={() => {
-                  setExportModalVisibility(true);
-                }}
-              >
-                Export
-              </Button>
+                <Button
+                  className="left-button"
+                  onClick={() => {
+                    setExportModalVisibility(true);
+                  }}
+                >
+                  Export
+                </Button>
+              </ProSpace>
             </ProSpace>
-          </ProSpace>
-        </Col>
-        <Col span={8}>
-          <ProSpace direction="vertical" style={{ width: '100%' }}>
-            <Input
-              type="Search"
-              size="middle"
-              prefix={<SearchOutlined />}
-              placeholder="Search by client or project name"
-            />
-          </ProSpace>
-        </Col>
-        <Col span={24}>
-          <ProSpace direction="vertical" style={{ width: '100%' }}>
-            <ProDivider />
-            <ProIntlProvider>
-              <ProTable
-                request={async (params = {}) => {
-                  const data = await getProjects();
-                  const count = await getProjectsCount();
-                  return {
-                    data,
-                    page: params.current,
-                    success: true,
-                    total: count,
-                  };
-                }}
-                columns={columns}
-                actionRef={actionRef}
-                editable={{
-                  type: 'multiple',
-                }}
-                rowKey="id"
-                search={false}
-                pagination={{
-                  pageSize: 5,
-                }}
-                dateFormatter="string"
-                toolBarRender={false}
+          </Col>
+          <Col span={8}>
+            <ProSpace direction="vertical" style={{ width: '100%' }}>
+              <Search
+                onSearch={onChange}
+                allowClear
+                size="middle"
+                placeholder="Search by project name"
               />
-            </ProIntlProvider>
-          </ProSpace>
-          <ImportProjects visible={importModalVisible} setVisibility={setImportModalVisibility} />
-          <ExportProjectsModal
-            visible={exportModalVisible}
-            setVisibility={setExportModalVisibility}
-          />
-        </Col>
-      </Row>
+            </ProSpace>
+          </Col>
+          <Col span={24}>
+            <ProSpace direction="vertical" style={{ width: '100%' }}>
+              <ProDivider />
+              <ProIntlProvider>
+                <ProTable
+                  locale={{
+                    emptyText: <RandomQuote />,
+                  }}
+                  dataSource={data}
+                  pagination={false}
+                  columns={columns}
+                  actionRef={actionRef}
+                  editable={{
+                    type: 'multiple',
+                  }}
+                  rowKey="id"
+                  search={false}
+                  dateFormatter="string"
+                  toolBarRender={false}
+                />
+              </ProIntlProvider>
+            </ProSpace>
+            <ImportProjects
+              visible={importModalVisible}
+              setVisibility={setImportModalVisibility}
+              onSuccess={actionRef?.current?.reload()}
+            />
+            <ExportProjectsModal
+              visible={exportModalVisible}
+              setVisibility={setExportModalVisibility}
+            />
+          </Col>
+        </Row>
+      </Skeleton>
     </ProGridContainer>
   );
 };

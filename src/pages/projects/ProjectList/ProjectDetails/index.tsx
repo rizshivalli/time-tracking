@@ -42,14 +42,6 @@ const ProjectDetails = (props: any) => {
             </div>
           </Col>
           <Col span={6}></Col>
-          <Col span={10} className="text-right">
-            <Input
-              type="Search"
-              size="middle"
-              prefix={<SearchOutlined />}
-              placeholder="Search by client or project name"
-            />
-          </Col>
         </Row>
         <ProDivider />
         {data.length !== 0 ? (

@@ -10,8 +10,15 @@ interface NewEntryProps {
   visible: boolean;
   setVisibility: any;
   onSuccess: any;
+  employee: any;
 }
-const NewEntry: FC<NewEntryProps> = ({ selectedKey, visible, setVisibility, onSuccess }) => {
+const NewEntry: FC<NewEntryProps> = ({
+  selectedKey,
+  visible,
+  setVisibility,
+  onSuccess,
+  employee,
+}) => {
   const [form] = ProForm.useForm();
   const [taskOptions, setTaskOptions] = useState([]);
 
@@ -23,7 +30,11 @@ const NewEntry: FC<NewEntryProps> = ({ selectedKey, visible, setVisibility, onSu
   };
 
   const handleFinish = useCallback(async (values) => {
-    await addWeekRows(values)
+    const newVal = { org_member_id: employee ? employee?.value : null };
+    await addWeekRows({
+      ...values,
+      ...newVal,
+    })
       .then((result) => {
         if (result) {
           Modal.success({

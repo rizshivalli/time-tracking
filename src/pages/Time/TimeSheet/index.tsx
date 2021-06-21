@@ -26,17 +26,16 @@ import {
   message,
   Statistic,
   Empty,
-  Alert,
 } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getTimeRecords, stopTimeRecord, submitWeekForApproval } from '../service';
+import { getTimeRecords, stopTimeRecord, submitWeekForApproval, getTeamMembers } from '../service';
 import { NewEntryModal } from './components';
 import { hasAccess } from '@/utils/token';
 import './index.less';
+import { identifier } from '@/pages/manage/Client/service';
 
 const { TabPane } = Tabs;
-const { Option } = Select;
 const { Text } = Typography;
 
 const today = getToday('dddd, DD MMM');
@@ -63,7 +62,8 @@ const TimeSheet = () => {
   const [listLoading, setListLoading] = useState<boolean>(false);
   const [weekTotal, setWeekTotal] = useState<string>('0');
   const [weekStatus, setWeekStatus] = useState<string>('Not Submitted');
-  const [editingEmployee, setEditingEmployee] = useState<string | null>(null);
+  const [employeeData, setEmployeeData] = useState<any[]>([]);
+  const [editingEmployee, setEditingEmployee] = useState<any | null>(null);
 
   const checkWeekApprovalStatus = (time: any) => {
     let status = 'unapproved';
@@ -74,11 +74,15 @@ const TimeSheet = () => {
   };
 
   const getWeekData = useCallback(
-    async (key: string = selectedTabKey, org_member_id: string | null = '23') => {
+    async (
+      key: string = selectedTabKey,
+      organisation_member: string | number | null = editingEmployee?.value,
+    ) => {
       const newDates = getStartAndEndOfWeek(key);
       setListLoading(true);
 
-      const params = org_member_id === null ? null : { org_member_id: org_member_id };
+      const params =
+        organisation_member === null ? null : { organisation_member: organisation_member };
       await getTimeRecords(newDates, params)
         .then((time) => {
           const total = calulateTotalWeekTime(time);
@@ -93,7 +97,7 @@ const TimeSheet = () => {
           setListLoading(false);
         });
     },
-    [selectedTabKey],
+    [selectedTabKey, editingEmployee],
   );
 
   const stopTimer = async (id: string, values: any) => {
@@ -106,13 +110,18 @@ const TimeSheet = () => {
     return access;
   };
 
+  const getEmployeeList = async () => {
+    const data = await getTeamMembers();
+    setEmployeeData(data);
+  };
+
   useEffect(() => {
     getWeekData(selectedTabKey);
+    getEmployeeList();
     checkAccess();
-  }, []);
+  }, [editingEmployee]);
 
   const onDateChange = (date: any, dateString: string) => {
-    console.log(date, dateString);
     if (date) {
       const newDate = getRequiredDateFormat(dateString, 'YYYY-MM-DD');
       const getNewDatesArray = getWeekFromSuntoSat(newDate);
@@ -155,6 +164,14 @@ const TimeSheet = () => {
     right: <Tag icon={<ClockCircleOutlined />}>Week Total: {weekTotal && weekTotal}</Tag>,
   };
 
+  function handleEmployeeChange(value: identifier, option: any) {
+    if (value) {
+      getWeekData(selectedTabKey, value);
+      setEditingEmployee(option);
+    } else {
+      setEditingEmployee(null);
+    }
+  }
   return (
     <ProGridContainer>
       <Row>
@@ -173,16 +190,25 @@ const TimeSheet = () => {
           </div>
         </Col>
         <Col span={22}>
-          <div className="Timesheet_Note_Wraps">
-            <div className="Time_content_icons">
-              <PicLeftOutlined />
+          {editingEmployee && (
+            <div className="Timesheet_Note_Wraps">
+              <div className="Time_content_icons">
+                <PicLeftOutlined />
+              </div>
+              <p className="Time_content_para">{`${editingEmployee.label}’s Timesheet`}</p>
+              <p className="changes_content">
+                All changes will save to this user’s timesheet.
+                <a
+                  onClick={() => {
+                    handleEmployeeChange(undefined, null);
+                  }}
+                >
+                  {' '}
+                  Resume editing your own timesheet
+                </a>
+              </p>
             </div>
-            <p className="Time_content_para">[SAMPLE] Kiran Kronological’s Timesheet</p>
-            <p className="changes_content">
-              All changes will save to this user’s timesheet.
-              <a href=""> Resume editing your own timesheet</a>
-            </p>
-          </div>
+          )}
           <div className="Time_Sheet-container">
             <div className="top-widget">
               <ProSpace size="large" align="start" className="top-widget-container">
@@ -208,16 +234,20 @@ const TimeSheet = () => {
                     </Link>
                   </Radio.Group>
                   <Select
+                    allowClear
                     disabled={!checkAccess}
                     showSearch
                     style={{ width: 200 }}
                     placeholder="Employee"
                     optionFilterProp="children"
-                  >
-                    <Option value="jack">Jack</Option>
-                    <Option value="lucy">Lucy</Option>
-                    <Option value="tom">Tom</Option>
-                  </Select>
+                    options={employeeData}
+                    // @ts-ignore
+                    onChange={handleEmployeeChange}
+                    filterOption={(input, option) => {
+                      // @ts-ignore
+                      return option?.label?.toLowerCase()?.indexOf(input?.toLowerCase()) >= 0;
+                    }}
+                  />
                 </ProSpace>
               </ProSpace>
             </div>
@@ -270,13 +300,19 @@ const TimeSheet = () => {
                                   <Row justify="center" className="time-card-content">
                                     <Col span={18}>
                                       <ProSpace direction="vertical">
-                                        <Text className="time-client-name">
-                                          <p>
-                                            <strong>[SAMPLE] Non-Billable Project</strong> ([SAMPLE]
-                                            Client A)
-                                          </p>
-                                          <small>Programming – This is a sample time entry.</small>
-                                        </Text>
+                                        <ProSpace direction="vertical">
+                                          <Text className="time-client-name">
+                                            <p>
+                                              <strong>{`[${
+                                                listItem?.project?.project_code
+                                                  ? listItem?.project?.project_code
+                                                  : listItem?.project?.name
+                                              }]`}</strong>
+                                              {listItem?.task.name}
+                                            </p>
+                                            <small>{listItem?.notes}</small>
+                                          </Text>
+                                        </ProSpace>
                                       </ProSpace>
                                     </Col>
 
@@ -307,9 +343,6 @@ const TimeSheet = () => {
                                       <Col span={6} className="card-left-content">
                                         <Text className="time-hours">
                                           {listItem?.duration?.slice(0, -3)}
-                                          {/* {listItem?.duration === '00:00:00'
-                                            ? getDuration(listItem.start_time, listItem.end_time)
-                                            : listItem?.duration?.slice(0, -3)} */}
                                         </Text>
                                         <Button
                                           disabled
@@ -321,7 +354,6 @@ const TimeSheet = () => {
                                               project: listItem?.project?.id,
                                               task: listItem?.task.id,
                                             };
-                                            // restartTimer(values)
                                           }}
                                         >
                                           Start
@@ -368,6 +400,7 @@ const TimeSheet = () => {
           onSuccess={(key: string) => {
             getWeekData(key);
           }}
+          employee={editingEmployee}
         />
       )}
     </ProGridContainer>

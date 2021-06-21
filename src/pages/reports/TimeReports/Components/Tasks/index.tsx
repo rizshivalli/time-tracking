@@ -1,4 +1,4 @@
-import { ProGridContainer, ProIntlProvider } from '@/common';
+import { ProGridContainer, ProIntlProvider, RandomQuote } from '@/common';
 import ProTable, { ActionType, ProColumns } from '@ant-design/pro-table';
 import { Col, Row, Button, Dropdown, Menu, Progress, Tooltip } from 'antd';
 import { DownOutlined, FormOutlined } from '@ant-design/icons';
@@ -88,6 +88,9 @@ const TasksReports = () => {
         <Col span={24}>
           <ProIntlProvider>
             <ProTable
+              locale={{
+                emptyText: <RandomQuote />,
+              }}
               dataSource={data}
               columns={columns}
               actionRef={actionRef}

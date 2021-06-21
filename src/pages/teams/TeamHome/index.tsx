@@ -7,10 +7,21 @@ import {
   SearchOutlined,
 } from '@ant-design/icons';
 import ProTable, { ActionType, ProColumns } from '@ant-design/pro-table';
-import { Button, Col, Row, Statistic, Progress, Menu, Dropdown, Input, Skeleton } from 'antd';
+import {
+  Button,
+  Col,
+  Row,
+  Statistic,
+  Progress,
+  Menu,
+  Dropdown,
+  Input,
+  Skeleton,
+  message,
+} from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'umi';
-import { getTeamMembers } from '../service';
+import { archiveTeamMembers, getTeamMembers } from '../service';
 import { ImportPeopleModal } from './components';
 import './index.less';
 
@@ -47,6 +58,40 @@ const columns: ProColumns<any>[] = [
   {
     title: 'Total Capacity',
     dataIndex: 'total_capacity',
+  },
+  {
+    title: '',
+    width: 120,
+    dataIndex: 'option',
+    valueType: 'option',
+    fixed: 'right',
+    render: (_, record) => [
+      <Dropdown
+        overlay={
+          <Menu>
+            <Menu.Item
+              key="2"
+              onClick={async () => {
+                const params = { archived: true };
+                archiveTeamMembers(record.id, params)
+                  .then(() => {
+                    message.success('Team member archived successfully');
+                  })
+                  .catch(() => {
+                    message.error('Error occured while deleting, Please try again');
+                  });
+              }}
+            >
+              Archive
+            </Menu.Item>
+          </Menu>
+        }
+      >
+        <Button className="Team_BtnsWrpas">
+          Options <DownOutlined />
+        </Button>
+      </Dropdown>,
+    ],
   },
 ];
 
@@ -171,9 +216,7 @@ const TeamHome = () => {
                   actionRef={actionRef}
                   rowKey="id"
                   search={false}
-                  pagination={{
-                    pageSize: 25,
-                  }}
+                  pagination={false}
                   dateFormatter="string"
                   toolBarRender={false}
                 />
@@ -181,7 +224,11 @@ const TeamHome = () => {
             </ProSpace>
           </Col>
         </Row>
-        <ImportPeopleModal visible={importModalVisible} setVisibility={setImportModalVisibility} />
+        <ImportPeopleModal
+          visible={importModalVisible}
+          setVisibility={setImportModalVisibility}
+          onSuccess={actionRef?.current?.reload()}
+        />
       </Skeleton>
     </ProGridContainer>
   );

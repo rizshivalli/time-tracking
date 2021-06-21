@@ -1,5 +1,6 @@
 import request from '@/utils/request';
 import { getOrganization, getToken } from '@/utils/token';
+import { message } from 'antd';
 
 type identifier = string | number | undefined;
 
@@ -34,18 +35,19 @@ export async function createProject(params: any) {
   }
 }
 
-export async function getProjects() {
+export async function getProjects(params: any) {
   const token = await getToken();
   const organization = await getOrganization();
   const response = await request('/strapi/projects', {
     method: 'GET',
     headers: { Authorization: `Bearer ${token}`, orgid: organization },
+    params,
   });
-
   if (response.statusCode === 200) {
     return response.data;
   } else {
-    throw new Error(response.message);
+    message.error('Error occured, Please try again');
+    return [];
   }
 }
 
@@ -108,4 +110,23 @@ export async function importProjectCSV(params: any) {
     method: 'POST',
     data: { ...params },
   });
+}
+
+export async function archiveProject(id: identifier, params: { archived: boolean }) {
+  const token = await getToken();
+  const organization = await getOrganization();
+  const response = await request(`/strapi/projects/${id}`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}`, orgid: organization },
+    data: params,
+  });
+
+  if (response.statusCode === 200) {
+    message.success('Team member archived successfully');
+    return response.data;
+  } else {
+    message.error('Error occured while deleting, Please try again');
+
+    return [];
+  }
 }
