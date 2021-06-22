@@ -301,9 +301,9 @@ const TimeSheet = () => {
                   onlyOneLineEditorAlertMessage: 'You can only edit one task at a time',
                   onSave: async (key, row) => {
                     const params =
-                      editingEmployee.value === null
+                      editingEmployee?.value === null
                         ? null
-                        : { org_member_id: editingEmployee.value };
+                        : { org_member_id: editingEmployee?.value };
                     // const newVal = { org_member_id: employee ? employee?.value : null };
                     const data = await updateWeekRecords({ ...row, ...params });
                     if (data === 200) {
