@@ -1,6 +1,5 @@
 import { ProDivider } from '@/common';
 import {
-  CloseOutlined,
   CheckCircleOutlined,
   PlusCircleOutlined,
   ClockCircleOutlined,
