@@ -54,7 +54,7 @@ export async function getTasks(project_id: string) {
 export async function getProjectsForTask() {
   const token = await getToken();
   const organization = await getOrganization();
-  const response = await request('/strapi/projects', {
+  const response = await request('/strapi/clients', {
     method: 'GET',
     headers: { Authorization: `Bearer ${token}`, orgid: organization },
   });
