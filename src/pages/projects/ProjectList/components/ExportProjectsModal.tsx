@@ -9,8 +9,7 @@ const { Text } = Typography;
 
 const buttonGroupData = [
   { key: 0, value: 'Active', number: 5 },
-  { key: 1, value: 'Budgeted', number: 4 },
-  { key: 2, value: 'Archived', number: 2 },
+  { key: 1, value: 'Archived', number: 2 },
 ];
 const exportTypeGroupData = [
   { key: 0, value: 'CSV' },

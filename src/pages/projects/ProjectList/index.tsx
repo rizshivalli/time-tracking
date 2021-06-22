@@ -157,9 +157,64 @@ const ProjectList = () => {
               />
             </ProSpace>
           </Col>
+          <ProDivider></ProDivider>
+          <Col span={4} className="filtered_butons">
+            <Dropdown
+              overlay={
+                <Menu>
+                  <Menu.Item>
+                    <Input size="middle" placeholder="Search" prefix={<SearchOutlined />} />
+                  </Menu.Item>
+                  <Menu.Item key="1">Everyone</Menu.Item>
+                  <Menu.Item key="2">My Pinnted Teammates</Menu.Item>
+                  <Menu.Item key="3">My Pinned Projects</Menu.Item>
+                  <Menu.Item key="4">Sample Role</Menu.Item>
+                </Menu>
+              }
+            >
+              <Button className="Active_projects">
+                Active Projects <DownOutlined />
+              </Button>
+            </Dropdown>
+          </Col>
+          <Col span={20} className="filtered_butons">
+            <Dropdown
+              overlay={
+                <Menu>
+                  <Menu.Item>
+                    <Input size="middle" placeholder="Search" prefix={<SearchOutlined />} />
+                  </Menu.Item>
+                  <Menu.Item key="1">Everyone</Menu.Item>
+                  <Menu.Item key="2">My Pinnted Teammates</Menu.Item>
+                  <Menu.Item key="3">My Pinned Projects</Menu.Item>
+                  <Menu.Item key="4">Sample Role</Menu.Item>
+                </Menu>
+              }
+            >
+              <Button className="Filter_by">
+                Filter By Client <DownOutlined />
+              </Button>
+            </Dropdown>
+            <Dropdown
+              overlay={
+                <Menu>
+                  <Menu.Item>
+                    <Input size="middle" placeholder="Search" prefix={<SearchOutlined />} />
+                  </Menu.Item>
+                  <Menu.Item key="1">Everyone</Menu.Item>
+                  <Menu.Item key="2">My Pinnted Teammates</Menu.Item>
+                  <Menu.Item key="3">My Pinned Projects</Menu.Item>
+                  <Menu.Item key="4">Sample Role</Menu.Item>
+                </Menu>
+              }
+            >
+              <Button className="Filter_by">
+                Filter By Manager <DownOutlined />
+              </Button>
+            </Dropdown>
+          </Col>
           <Col span={24}>
             <ProSpace direction="vertical" style={{ width: '100%' }}>
-              <ProDivider />
               <ProIntlProvider>
                 <ProTable
                   locale={{
