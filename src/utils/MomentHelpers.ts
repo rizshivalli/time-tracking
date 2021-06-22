@@ -60,7 +60,7 @@ export const getStartAndEndOfWeek = (date: string) => {
 export const getStartAndEndOfWeekString = (date: string) => {
   return `${getRequiredDateFormat(
     moment(date).startOf('week'),
-    'DD-MMM',
+    'DD MMM YYYY',
   )} - ${getRequiredDateFormat(moment(date).endOf('week'), 'DD MMM YYYY')}`;
 };
 
