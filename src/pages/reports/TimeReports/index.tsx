@@ -81,7 +81,7 @@ const TimeReports = () => {
           </Col>
           <Col span={4}>
             <div className="progress_bar">
-              <Progress type="circle" percent={67} width={80} />
+              <Progress type="circle" percent={0} width={80} />
             </div>
           </Col>
           <Col span={6} className="Report_Head_Content">
@@ -91,19 +91,19 @@ const TimeReports = () => {
             <div className="left_text">
               <p className="green_box"></p>
               <p>
-                <strong> 382.30 </strong> Billable
+                <strong>0 </strong> Billable
               </p>
             </div>
             <div className="left_text">
               <p className="skyblue_box"></p>
               <p>
-                <strong> 188.51</strong> Non-Billable
+                <strong>{data?.total_hours}</strong> Non-Billable
               </p>
             </div>
           </Col>
           <Col span={5} className="Report_Head_Content">
             <div className="head_title">Billable Amount</div>
-            <div className="amount_title">$38,563.00</div>
+            <div className="amount_title">$0.00</div>
             <div className="project_fee">
               <Checkbox> Include fixed fee projects</Checkbox>
               <Tooltip title="Billable Amounts for fixed fee projects are based on hourly rates. This means the Billable Amount may not match the invoiced amount.">
@@ -113,7 +113,7 @@ const TimeReports = () => {
           </Col>
           <Col span={5} className="Report_Head_Content">
             <div className="head_title">Uninvoiced Amount</div>
-            <div className="amount_title">$38,617.00</div>
+            <div className="amount_title">$0.00</div>
             <p className="excludes">Excludes fixed fee projects</p>
           </Col>
         </Row>
