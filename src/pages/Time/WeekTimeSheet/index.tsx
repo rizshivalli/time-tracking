@@ -224,7 +224,9 @@ const TimeSheet = () => {
             <div className="top-widget">
               <ProSpace size="large" align="start" className="top-widget-container">
                 <ProSpace>
-                  <ProTitle size={3}>This Week:</ProTitle>
+                  <ProTitle size={3}>
+                    <strong>This Week:</strong>
+                  </ProTitle>
                   <ProTitle size={3}>{thisWeek}</ProTitle>
                 </ProSpace>
               </ProSpace>

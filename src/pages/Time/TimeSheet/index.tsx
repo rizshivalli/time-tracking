@@ -213,7 +213,9 @@ const TimeSheet = () => {
             <div className="top-widget">
               <ProSpace size="large" align="start" className="top-widget-container">
                 <ProSpace>
-                  <ProTitle size={3}>Today:</ProTitle>
+                  <ProTitle size={3}>
+                    <strong>Today:</strong>
+                  </ProTitle>
                   <ProTitle size={3}>{today}</ProTitle>
                 </ProSpace>
               </ProSpace>

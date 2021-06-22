@@ -8,6 +8,7 @@ import {
 import { Col, Row, Checkbox } from 'antd';
 import React from 'react';
 import './index.less';
+import clipart from '@/assets/clipart.png';
 
 const Home = () => {
   return (
@@ -16,7 +17,7 @@ const Home = () => {
         <p className="Home_Welcome_Wraps">Welcome to Simplifi Team!</p>
       </Col>
       <ProDivider></ProDivider>
-      <Col span={18}>
+      <Col span={17}>
         <div>
           <p>Here’s how to get started:</p>
         </div>
@@ -45,7 +46,9 @@ const Home = () => {
           <p className="Home_fonts_wraps">Get the desktop and mobile apps</p>
         </div>
       </Col>
-      <Col span={6}></Col>
+      <Col span={7} className="clipart_images">
+        <img src={clipart} width="300" height="300" />
+      </Col>
       <Col span={18}>
         <div className="belowlinks_wraps">
           <p className="para_links">

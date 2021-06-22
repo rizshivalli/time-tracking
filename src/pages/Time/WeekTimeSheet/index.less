@@ -1,5 +1,19 @@
 @import '~antd/es/style/themes/default.less';
-
+.Timesheet_Note_Wraps{
+  background: #fffce9;
+  border: 1px solid #d5ca0f;
+  padding: 10px 0px;
+}
+.Timesheet_Note_Wraps .Time_content_icons {
+  float: left;
+  padding: 10px 30px;
+  font-size: 29px;
+}
+.Timesheet_Note_Wraps p.Time_content_para {
+  font-weight: 600;
+  margin: 0;
+  font-size: 24px;
+}
 .top-widget {
   display: flex;
   justify-content: space-between;
@@ -16,6 +30,15 @@ Button.Weektime_Btns {
 }
 .Week_Time_Sheet_container .ant-card-body {
   padding: 0 !important;
+}
+.Week_Time_Sheet_container .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+  color: #545454;
+  background-color: #dedede;
+  border: none;
+  outline: none;
+}
+.Week_Time_Sheet_container h3.ant-typography {
+  font-weight: 400!important;
 }
 @media (max-width: 768px) {
   .Week_Time_Sheet_container .top-widget {

@@ -133,7 +133,7 @@ const TeamHome = () => {
             <ProSpace direction="vertical" style={{ width: '100%' }}>
               <ProSpace>
                 <Link to="/people/new">
-                  <Button type="primary" icon={<PlusOutlined />}>
+                  <Button type="primary" className="Team_add_person" icon={<PlusOutlined />}>
                     Add Person
                   </Button>
                 </Link>
