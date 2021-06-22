@@ -7,22 +7,71 @@ span.Home_forever_Wraps{
     float:right;
 }
 .Home_clicking_divs_wraps {
-    padding: 8px 9px;
+    padding: 9px 9px;
+    line-height: 2;
     border: 1px solid;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+    cursor: pointer;
 }
-span.Home_fonts_wraps {
-    font-size: 22px;
-    font-weight: 600;
+.Home_clicking_divs_wraps:hover {
+    background-color: #fefefe;
 }
 span.Home_icons_Wraps {
     font-size: 18px;
 }
+p.Home_fonts_wraps {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+    margin-top: -5px;
+}
 .Home_clicking_divs_wraps span {
-    padding: 0px 3px;
+    padding: 0px 4px;
+    float: left;
+}
+.Home_icons_Wraps span.anticon.anticon {
+    font-size: 31px;
 }
 .belowlinks_wraps {
     float: left;
     margin-top: 50px;
-    padding: 0px 10px;
+    padding-right: 50px;
+}
+p.para_links {
+    margin: 0;
+    font-size: 19px;
+    text-decoration: underline;
+}
+@media (max-width: 562px) {
+    .Home_clicking_divs_wraps {
+        padding: 12px 2px;
+    }
+    .Home_icons_Wraps span.anticon.anticon {
+        font-size: 24px;
+    }
+    p.Home_fonts_wraps {
+        font-size: 14px;
+    }
+}
+@media (max-width: 376px) {
+    .Home_clicking_divs_wraps {
+        padding: 12px 2px;
+    }
+    .Home_icons_Wraps span.anticon.anticon {
+        font-size: 16px;
+    }
+    p.Home_fonts_wraps {
+        font-size: 13px;
+    }
+}
+@media (max-width: 320px) {
+    .Home_clicking_divs_wraps {
+        padding: 12px 2px;
+    }
+    .Home_icons_Wraps span.anticon.anticon {
+        font-size: 16px;
+    }
+    p.Home_fonts_wraps {
+        font-size: 11px;
+    }
 }
