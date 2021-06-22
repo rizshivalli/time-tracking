@@ -1,4 +1,5 @@
 import { ProDivider, ProGridContainer, ProIntlProvider, ProSpace, RandomQuote } from '@/common';
+import { getStartAndEndOfWeekString, getToday } from '@/utils/MomentHelpers';
 import {
   PlusOutlined,
   LeftOutlined,
@@ -25,81 +26,86 @@ import { archiveTeamMembers, getTeamMembers } from '../service';
 import { ImportPeopleModal } from './components';
 import './index.less';
 
-const columns: ProColumns<any>[] = [
-  {
-    dataIndex: 'index',
-    valueType: 'indexBorder',
-    width: 48,
-  },
-  {
-    title: 'Name',
-    dataIndex: 'full_name',
-  },
-  {
-    title: 'Capacity',
-    dataIndex: 'capacity',
-  },
-  {
-    title: 'Designation',
-    dataIndex: 'designation',
-  },
-  {
-    title: 'Work Email',
-    dataIndex: 'email',
-  },
-  {
-    title: 'Total Hours',
-    dataIndex: 'total_hours',
-    valueType: (item) => ({
-      type: 'progress',
-      status: item.status,
-    }),
-  },
-  {
-    title: 'Total Capacity',
-    dataIndex: 'total_capacity',
-  },
-  {
-    title: '',
-    width: 120,
-    dataIndex: 'option',
-    valueType: 'option',
-    fixed: 'right',
-    render: (_, record) => [
-      <Dropdown
-        overlay={
-          <Menu>
-            <Menu.Item
-              key="2"
-              onClick={async () => {
-                const params = { archived: true };
-                archiveTeamMembers(record.id, params)
-                  .then(() => {
-                    message.success('Team member archived successfully');
-                  })
-                  .catch(() => {
-                    message.error('Error occured while deleting, Please try again');
-                  });
-              }}
-            >
-              Archive
-            </Menu.Item>
-          </Menu>
-        }
-      >
-        <Button className="Team_BtnsWrpas">
-          Options <DownOutlined />
-        </Button>
-      </Dropdown>,
-    ],
-  },
-];
+const todayDate = getToday('YYYY-MM-DD');
+
+const thisWeek = getStartAndEndOfWeekString(todayDate);
 
 const TeamHome = () => {
   const actionRef = useRef<ActionType>();
   const [data, setData] = useState<any[]>();
   const [loading, setLoading] = useState<boolean>(false);
   const [importModalVisible, setImportModalVisibility] = useState<boolean>(false);
+
+  const columns: ProColumns<any>[] = [
+    {
+      dataIndex: 'index',
+      valueType: 'indexBorder',
+      width: 48,
+    },
+    {
+      title: 'Name',
+      dataIndex: 'full_name',
+    },
+    {
+      title: 'Capacity',
+      dataIndex: 'capacity',
+    },
+    {
+      title: 'Designation',
+      dataIndex: 'designation',
+    },
+    {
+      title: 'Work Email',
+      dataIndex: 'email',
+    },
+    {
+      title: 'Total Hours',
+      dataIndex: 'total_hours',
+      valueType: (item) => ({
+        type: 'progress',
+        status: item.status,
+      }),
+    },
+    {
+      title: 'Total Capacity',
+      dataIndex: 'total_capacity',
+    },
+    {
+      title: '',
+      width: 120,
+      dataIndex: 'option',
+      valueType: 'option',
+      fixed: 'right',
+      render: (_, record) => [
+        <Dropdown
+          overlay={
+            <Menu>
+              <Menu.Item
+                key="2"
+                onClick={async () => {
+                  const hide = message.loading('Action in progress..', 0);
+                  const params = { archived: true };
+                  archiveTeamMembers(record.id, params)
+                    .then(() => {})
+                    .catch(() => {})
+                    .finally(() => {
+                      fetchData();
+                      hide();
+                    });
+                }}
+              >
+                Archive
+              </Menu.Item>
+            </Menu>
+          }
+        >
+          <Button className="Team_BtnsWrpas">
+            Options <DownOutlined />
+          </Button>
+        </Dropdown>,
+      ],
+    },
+  ];
 
   const fetchData = async () => {
     setLoading(true);
@@ -145,10 +151,10 @@ const TeamHome = () => {
           </Col>
           <ProDivider />
           <Col span={24} className="left">
-            <Button icon={<LeftOutlined />}></Button>
-            <Button icon={<RightOutlined />}></Button>
+            {/* <Button icon={<LeftOutlined />}></Button>
+            <Button icon={<RightOutlined />}></Button> */}
             <p>
-              <strong>This Week :</strong> 07 – 13 Jun 2021
+              <strong>This Week :</strong> {thisWeek}
             </p>
             <div>
               <Dropdown

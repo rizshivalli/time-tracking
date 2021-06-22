@@ -1,10 +1,12 @@
 import { ProGridContainer, ProIntlProvider, RandomQuote } from '@/common';
-import ProTable, { ActionType, ProColumns } from '@ant-design/pro-table';
+import ProTable from '@ant-design/pro-table';
 import { Col, Row, Button, Dropdown, Menu, Progress, Tooltip } from 'antd';
 import { DownOutlined, FormOutlined } from '@ant-design/icons';
 import React, { useRef } from 'react';
 import './index.less';
 import { Link } from 'react-router-dom';
+import type { FC } from 'react';
+import type { ActionType, ProColumns } from '@ant-design/pro-table';
 
 const columns: ProColumns<any>[] = [
   {
@@ -13,43 +15,21 @@ const columns: ProColumns<any>[] = [
     width: 48,
   },
   {
-    title: 'Name',
-    dataIndex: 'full_name',
-    render: (text, row) => <Link to={`/reports/time/task/details`}>{row.full_name}</Link>,
-  },
-  {
-    title: 'Capacity',
-    dataIndex: 'capacity',
-  },
-  {
-    title: 'Designation',
-    dataIndex: 'designation',
-  },
-  {
-    title: 'Work Email',
-    dataIndex: 'email',
+    title: 'Task',
+    dataIndex: 'project',
+    render: (text, row) => <Link to={`/reports/time/task/details/${row.id}`}>{row.task}</Link>,
   },
   {
     title: 'Total Hours',
-    dataIndex: 'total_hours',
-    valueType: (item) => ({
-      type: 'progress',
-      status: item.status,
-    }),
-  },
-  {
-    title: 'Total Capacity',
-    dataIndex: 'total_capacity',
+    dataIndex: 'sum',
   },
 ];
 
-const data = [
-  { full_name: 'rizwan', total_hours: 8, total_capacity: 35 },
-  { full_name: 'ahmed', total_hours: 2, total_capacity: 35 },
-  { full_name: 'jane', total_hours: 4, total_capacity: 35 },
-];
+interface TasksReportsProps {
+  data: any[];
+}
 
-const TasksReports = () => {
+const TasksReports: FC<TasksReportsProps> = ({ data }) => {
   const actionRef = useRef<ActionType>();
   return (
     <ProGridContainer>
