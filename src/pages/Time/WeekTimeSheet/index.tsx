@@ -1,6 +1,11 @@
 import { ProGridContainer, ProIntlProvider, ProSpace, ProTitle, RandomQuote } from '@/common';
 import { identifier } from '@/pages/manage/Client/service';
-import { getToday, getRequiredDateFormat, getStartAndEndOfWeek } from '@/utils/MomentHelpers';
+import {
+  getToday,
+  getRequiredDateFormat,
+  getStartAndEndOfWeek,
+  getStartAndEndOfWeekString,
+} from '@/utils/MomentHelpers';
 import { hasAccess } from '@/utils/token';
 import { CheckOutlined, PlusOutlined, PicLeftOutlined } from '@ant-design/icons';
 import ProTable, { ActionType } from '@ant-design/pro-table';
@@ -17,7 +22,8 @@ import {
 import { NewEntryModal } from './components';
 import './index.less';
 
-const today = getToday('dddd, DD MMM');
+const thisWeek = getStartAndEndOfWeekString(getToday('MM-DD-YYYY'));
+const todayDate = getToday('MM-DD-YYYY');
 
 const checkAccess = async () => {
   const access = await hasAccess();
@@ -112,7 +118,6 @@ const getWeekFromSuntoSatForTable = (date: string) => {
 };
 
 const TimeSheet = () => {
-  const todayDate = getToday('MM-DD-YYYY');
   const getWeekdata = getWeekFromSuntoSatForTable(todayDate);
   const [period, setPeriod] = useState<string>('week');
   const [datesToDisplay, setDatesToDisplay] = useState<any[]>(getWeekdata);
@@ -219,8 +224,8 @@ const TimeSheet = () => {
             <div className="top-widget">
               <ProSpace size="large" align="start" className="top-widget-container">
                 <ProSpace>
-                  <ProTitle size={3}>Today:</ProTitle>
-                  <ProTitle size={3}>{today}</ProTitle>
+                  <ProTitle size={3}>This Week:</ProTitle>
+                  <ProTitle size={3}>{thisWeek}</ProTitle>
                 </ProSpace>
               </ProSpace>
               <ProSpace size="large" align="end" className="top-widget-container">

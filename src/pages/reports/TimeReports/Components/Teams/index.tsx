@@ -1,10 +1,12 @@
 import { ProGridContainer, ProIntlProvider, RandomQuote } from '@/common';
-import ProTable, { ActionType, ProColumns } from '@ant-design/pro-table';
+import ProTable from '@ant-design/pro-table';
 import { Col, Row, Button, Dropdown, Menu } from 'antd';
 import { DownOutlined, FormOutlined } from '@ant-design/icons';
 import React, { useRef } from 'react';
 import './index.less';
 import { Link } from 'umi';
+import type { FC } from 'react';
+import type { ActionType, ProColumns } from '@ant-design/pro-table';
 
 const columns: ProColumns<any>[] = [
   {
@@ -13,28 +15,21 @@ const columns: ProColumns<any>[] = [
     width: 48,
   },
   {
-    title: 'Name',
-    dataIndex: 'tasks',
-    render: (text, row) => <Link to={`/reports/time/team/details`}>{row.tasks}</Link>,
+    title: 'Task',
+    dataIndex: 'project',
+    render: (text, row) => <Link to={`/reports/time/team/details/${row.id}`}>{row.name}</Link>,
   },
-
   {
     title: 'Total Hours',
-    dataIndex: 'total_hours',
-    valueType: (item) => ({
-      type: 'progress',
-      status: item.status,
-    }),
+    dataIndex: 'total_time',
   },
 ];
 
-const data = [
-  { tasks: 'Testing', total_hours: 8, total_capacity: 35 },
-  { tasks: 'Unit Testing', total_hours: 2, total_capacity: 35 },
-  { tasks: 'Ui design', total_hours: 4, total_capacity: 35 },
-];
+interface TeamsReportsProps {
+  data: any[];
+}
 
-const TeamsReports = () => {
+const TeamsReports: FC<TeamsReportsProps> = ({ data }) => {
   const actionRef = useRef<ActionType>();
   return (
     <ProGridContainer>

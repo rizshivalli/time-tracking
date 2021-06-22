@@ -2,7 +2,7 @@ import { ProDivider, ProGridContainer, ProIntlProvider, ProSpace, RandomQuote } 
 import { DownOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
-import { Button, Col, Dropdown, Menu, Row, Input, Skeleton } from 'antd';
+import { Button, Col, Dropdown, Menu, Row, Input, Skeleton, message } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import ExportProjectsModal from './components/ExportProjectsModal';
 import ImportProjects from './components/ImportProjects';
@@ -85,12 +85,14 @@ const ProjectList = () => {
               <Menu.Item
                 key="2"
                 onClick={async () => {
+                  const hide = message.loading('Action in progress..', 0);
                   const params = { archived: true };
                   archiveProject(record.id, params)
                     .then(() => {})
                     .catch(() => {})
                     .finally(() => {
                       getData();
+                      hide();
                     });
                 }}
               >

@@ -38,16 +38,23 @@ export async function getTeamMembers() {
 export async function archiveTeamMembers(id: identifier, params: { archived: boolean }) {
   const token = await getToken();
   const organization = await getOrganization();
-  const response = await request(`/strapi/organisation-members/${id}`, {
-    method: 'POST',
+  await request(`/strapi/organisation-members/${id}`, {
+    method: 'PUT',
     headers: { Authorization: `Bearer ${token}`, orgid: organization },
     data: params,
-  });
-
-  if (response.statusCode === 200) {
-    return response.data;
-  } else {
-    message.error(`${response.message}, Please try Again`);
-    return [];
-  }
+  })
+    .then((response) => {
+      if (response && response.statusCode === 200) {
+        message.success('Team Member archived successfully');
+        return response.data;
+      } else {
+        message.error('Error occured while archiving, Please try again');
+        return [];
+      }
+    })
+    .catch((error) => {
+      {
+        throw new Error(error.message);
+      }
+    });
 }

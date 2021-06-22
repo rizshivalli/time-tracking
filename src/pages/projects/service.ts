@@ -1,6 +1,7 @@
 import request from '@/utils/request';
 import { getOrganization, getToken } from '@/utils/token';
 import { message } from 'antd';
+import { response } from 'express';
 
 type identifier = string | number | undefined;
 
@@ -115,18 +116,23 @@ export async function importProjectCSV(params: any) {
 export async function archiveProject(id: identifier, params: { archived: boolean }) {
   const token = await getToken();
   const organization = await getOrganization();
-  const response = await request(`/strapi/projects/${id}`, {
-    method: 'POST',
+  await request(`/strapi/projects/${id}`, {
+    method: 'PUT',
     headers: { Authorization: `Bearer ${token}`, orgid: organization },
     data: params,
-  });
-
-  if (response.statusCode === 200) {
-    message.success('Team member archived successfully');
-    return response.data;
-  } else {
-    message.error('Error occured while deleting, Please try again');
-
-    return [];
-  }
+  })
+    .then((response) => {
+      if (response && response.statusCode === 200) {
+        message.success('Project archived successfully');
+        return response.data;
+      } else {
+        message.error('Error occured while archiving, Please try again');
+        return [];
+      }
+    })
+    .catch((error) => {
+      {
+        throw new Error(error.message);
+      }
+    });
 }
