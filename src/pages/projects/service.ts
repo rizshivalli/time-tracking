@@ -136,3 +136,16 @@ export async function archiveProject(id: identifier, params: { archived: boolean
       }
     });
 }
+
+export async function exportProjectCSV(params: any) {
+  const token = await getToken();
+  const organization = await getOrganization();
+  return request('/strapi/projects/export', {
+    responseType: 'blob',
+    headers: { Authorization: `Bearer ${token}`, orgid: organization },
+    method: 'GET',
+    // data: { ...params },
+  });
+}
+
+// projects / exports;

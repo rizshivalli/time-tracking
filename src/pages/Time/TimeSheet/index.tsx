@@ -214,6 +214,7 @@ const TimeSheet = () => {
               <ProSpace size="large" align="start" className="top-widget-container">
                 <ProSpace>
                   <ProTitle size={3}>
+                    {/* @ts-ignore */}
                     <strong>Today:</strong>
                   </ProTitle>
                   <ProTitle size={3}>{today}</ProTitle>

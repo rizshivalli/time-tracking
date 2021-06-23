@@ -19,12 +19,13 @@ export async function createTeamMember(params: any) {
   }
 }
 
-export async function getTeamMembers() {
+export async function getTeamMembers(params: any) {
   const token = await getToken();
   const organization = await getOrganization();
   const response = await request('/strapi/organisation-members', {
     method: 'GET',
     headers: { Authorization: `Bearer ${token}`, orgid: organization },
+    params,
   });
 
   if (response.statusCode === 200) {
@@ -57,4 +58,15 @@ export async function archiveTeamMembers(id: identifier, params: { archived: boo
         throw new Error(error.message);
       }
     });
+}
+
+export async function exportTeamCSV(params: any) {
+  const token = await getToken();
+  const organization = await getOrganization();
+  return request('/strapi/organisation-members/export', {
+    responseType: 'blob',
+    headers: { Authorization: `Bearer ${token}`, orgid: organization },
+    method: 'GET',
+    // data: { ...params },
+  });
 }

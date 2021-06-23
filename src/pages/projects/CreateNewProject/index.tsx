@@ -108,7 +108,7 @@ const CreateNewProject = () => {
                 rules={[{ required: true, message: 'Please select a client!' }]}
               />
             )}
-            {'or'}{' '}
+            {'or'}
             {!isClientNew ? (
               <Button
                 className="New_Clinets_wraps"

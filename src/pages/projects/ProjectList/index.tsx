@@ -9,8 +9,15 @@ import ImportProjects from './components/ImportProjects';
 import './index.less';
 import { archiveProject, getProjects } from '../service';
 import { Link } from 'umi';
+import { hasAccess } from '@/utils/token';
 
 const { Search } = Input;
+
+const checkAccess = async () => {
+  const access = await hasAccess();
+  return access;
+};
+
 const ProjectList = () => {
   const actionRef = useRef<ActionType>();
   const [importModalVisible, setImportModalVisibility] = useState<boolean>(false);
@@ -54,7 +61,17 @@ const ProjectList = () => {
     {
       title: 'Project Name',
       dataIndex: 'name',
-      render: (text, row) => <Link to={`/projects/details/${row.id}`}>{row.name}</Link>,
+      render: (text, row) => {
+        return (
+          <div>
+            {checkAccess() ? (
+              <Link to={`/projects/details/${row.id}`}>{row.name}</Link>
+            ) : (
+              <div>{text}</div>
+            )}
+          </div>
+        );
+      },
     },
     {
       title: 'Client',
@@ -75,8 +92,10 @@ const ProjectList = () => {
       dataIndex: 'option',
       valueType: 'option',
       fixed: 'right',
+
       render: (_, record) => [
         <Dropdown
+          disabled={!checkAccess()}
           overlay={
             <Menu>
               <Menu.Item key="1">
@@ -126,11 +145,17 @@ const ProjectList = () => {
             <ProSpace direction="vertical" style={{ width: '100%' }}>
               <ProSpace direction="horizontal">
                 <Link to="/projects/new">
-                  <Button type="primary" className="New_project" icon={<PlusOutlined />}>
+                  <Button
+                    type="primary"
+                    className="New_project"
+                    icon={<PlusOutlined />}
+                    disabled={!checkAccess()}
+                  >
                     New Project
                   </Button>
                 </Link>
                 <Button
+                  disabled={!checkAccess()}
                   className="left-button"
                   onClick={() => {
                     setImportModalVisibility(true);
@@ -159,7 +184,7 @@ const ProjectList = () => {
               />
             </ProSpace>
           </Col>
-          <ProDivider></ProDivider>
+          <ProDivider />
           <Col span={4} className="filtered_butons">
             <Dropdown
               overlay={

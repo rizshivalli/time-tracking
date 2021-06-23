@@ -1,9 +1,12 @@
 import { ProModal, ProSpace } from '@/common';
 import React, { useState } from 'react';
 import type { FC } from 'react';
-import { Typography } from 'antd';
+import { message, Typography } from 'antd';
 import ProjectButtonGroup from './ProjectButtonGroup';
 import ExportTypeButtonGroup from './ExportTypeButtonGroup';
+import { exportProjectCSV } from '../../service';
+import { saveAs } from 'file-saver';
+import { getRequiredDateFormat } from '@/utils/MomentHelpers';
 
 const { Text } = Typography;
 
@@ -13,7 +16,7 @@ const buttonGroupData = [
 ];
 const exportTypeGroupData = [
   { key: 0, value: 'CSV' },
-  { key: 1, value: 'EXCEL' },
+  { key: 1, value: 'XLS' },
 ];
 
 interface ExportProjectModalProps {
@@ -23,6 +26,7 @@ interface ExportProjectModalProps {
 
 const ExportProjects: FC<ExportProjectModalProps> = ({ visible, setVisibility }) => {
   const [selectedProjectTypeButton, setSelectedProjectTypeButton] = useState(buttonGroupData[0]);
+
   const [selectedExportTypeButton, setSelectedExportTypeButton] = useState(exportTypeGroupData[1]);
 
   const buttonGroupCallBack = (dataFromChild: any) => {
@@ -32,12 +36,42 @@ const ExportProjects: FC<ExportProjectModalProps> = ({ visible, setVisibility })
     setSelectedExportTypeButton(dataFromChild);
   };
 
+  const downloadProjectReport = async (params: any) => {
+    const hide = message.loading('Please wait while we download your file..', 0);
+    await exportProjectCSV({})
+      .then((data) => {
+        saveAs(
+          data,
+          `All Projects ${getRequiredDateFormat(
+            new Date(),
+            'MM-DD-YYYY HH-mm-ss',
+          )}.${params.export_type.toLowerCase()}`,
+        );
+        message.success('Report File generated successfully');
+        setVisibility(false);
+      })
+      .catch((error) => {
+        message.error('Error occured while generating report');
+      })
+      .finally(() => {
+        hide();
+      });
+  };
+
   return (
     <ProModal
       title="Export Projects"
       visible={visible}
       onCancel={() => {
         setVisibility(false);
+      }}
+      onOk={async () => {
+        const params = {
+          project_type: selectedProjectTypeButton.value,
+          export_type: selectedExportTypeButton.value,
+        };
+        await downloadProjectReport(params);
+        console.log('🚀 ~ file: ExportProjectsModal.tsx ~ line 47 ~ params', params);
       }}
     >
       <ProSpace direction="vertical">

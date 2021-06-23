@@ -7,6 +7,7 @@ import './index.less';
 import { Link } from 'react-router-dom';
 import type { FC } from 'react';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
+import { CSVLink } from 'react-csv';
 
 const columns: ProColumns<any>[] = [
   {
@@ -51,8 +52,16 @@ const ProjectsReports: FC<ProjectsReportsProps> = ({ data }) => {
             <Dropdown
               overlay={
                 <Menu>
-                  <Menu.Item key="1">Excel</Menu.Item>
-                  <Menu.Item key="2">CSV</Menu.Item>
+                  <Menu.Item key="1">
+                    <CSVLink filename={'Projects.csv'} data={data}>
+                      CSV
+                    </CSVLink>
+                  </Menu.Item>
+                  <Menu.Item key="2">
+                    <CSVLink filename={'Projects.xls'} data={data}>
+                      Excel
+                    </CSVLink>
+                  </Menu.Item>
                 </Menu>
               }
             >

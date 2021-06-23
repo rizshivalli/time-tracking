@@ -124,7 +124,7 @@ const ClientTime = (props: any) => {
             <p className="excludes">Excludes fixed fee projects</p>
           </Col>
         </Row>
-        <ProDivider></ProDivider>
+        <ProDivider />
         <Row>
           <Col span={24}>
             <div className="Task_Projects_Tabs">

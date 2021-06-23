@@ -293,14 +293,14 @@ export async function getArchivedApprovals() {
   }
 }
 
-export async function getUnsubmittedTimesheets() {
+export async function getUnsubmittedTimesheets(params: any) {
   const token = await getToken();
   const organization = await getOrganization();
-  const params = { is_archived: true };
+
   const response = await request('/strapi/approvals/type/unsubmitted', {
     method: 'GET',
     headers: { Authorization: `Bearer ${token}`, orgid: organization },
-    data: { params },
+    params,
   });
 
   if (response.statusCode === 200) {

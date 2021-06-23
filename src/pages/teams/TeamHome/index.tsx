@@ -1,5 +1,5 @@
 import { ProDivider, ProGridContainer, ProIntlProvider, ProSpace, RandomQuote } from '@/common';
-import { getStartAndEndOfWeekString, getToday } from '@/utils/MomentHelpers';
+import { getRequiredDateFormat, getStartAndEndOfWeekString, getToday } from '@/utils/MomentHelpers';
 import {
   PlusOutlined,
   LeftOutlined,
@@ -22,13 +22,19 @@ import {
 } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'umi';
-import { archiveTeamMembers, getTeamMembers } from '../service';
+import { archiveTeamMembers, exportTeamCSV, getTeamMembers } from '../service';
 import { ImportPeopleModal } from './components';
+import { saveAs } from 'file-saver';
+import { hasAccess } from '@/utils/token';
 import './index.less';
 
+const { Search } = Input;
 const todayDate = getToday('YYYY-MM-DD');
-
 const thisWeek = getStartAndEndOfWeekString(todayDate);
+const checkAccess = async () => {
+  const access = await hasAccess();
+  return access;
+};
 
 const TeamHome = () => {
   const actionRef = useRef<ActionType>();
@@ -79,6 +85,7 @@ const TeamHome = () => {
       fixed: 'right',
       render: (_, record) => [
         <Dropdown
+          disabled={!checkAccess()}
           overlay={
             <Menu>
               <Menu.Item
@@ -108,9 +115,22 @@ const TeamHome = () => {
     },
   ];
 
-  const fetchData = async () => {
+  const fetchData = async (params: {} = {}) => {
     setLoading(true);
-    await getTeamMembers()
+    await getTeamMembers(params)
+      .then((response) => {
+        setData(response);
+      })
+      .catch((error) => {
+        setData([]);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const searchData = async (params: {} = {}) => {
+    await getTeamMembers(params)
       .then((response) => {
         setData(response);
       })
@@ -126,19 +146,48 @@ const TeamHome = () => {
     fetchData();
   }, []);
 
+  const onChange = (e: string) => {
+    const params = { full_name_contains: e };
+    searchData(params);
+  };
+
+  const downloadTeamReport = async (key: any) => {
+    const hide = message.loading('Please wait while we download your file..', 0);
+    await exportTeamCSV({})
+      .then((data) => {
+        saveAs(
+          data,
+          `All Teams ${getRequiredDateFormat(new Date(), 'MM-DD-YYYY HH-mm-ss')}.${key}`,
+        );
+        message.success('Report File generated successfully');
+      })
+      .catch((error) => {
+        message.error('Error occured while generating report');
+      })
+      .finally(() => {
+        hide();
+      });
+  };
+
   return (
     <ProGridContainer>
       <Skeleton loading={loading} active avatar>
         <Row>
-          <Col span={24}>
+          <Col span={16}>
             <ProSpace direction="vertical" style={{ width: '100%' }}>
               <ProSpace>
                 <Link to="/people/new">
-                  <Button type="primary" className="Team_add_person" icon={<PlusOutlined />}>
+                  <Button
+                    type="primary"
+                    className="Team_add_person"
+                    icon={<PlusOutlined />}
+                    disabled={!checkAccess()}
+                  >
                     Add Person
                   </Button>
                 </Link>
                 <Button
+                  disabled={!checkAccess()}
                   className="Team_BtnsWrpas"
                   onClick={() => {
                     setImportModalVisibility(true);
@@ -146,8 +195,44 @@ const TeamHome = () => {
                 >
                   Imports
                 </Button>
-                <Button className="Team_BtnsWrpas">Export</Button>
+                {/* <Button className="Team_BtnsWrpas">Export</Button> */}
+                <Dropdown
+                  overlay={
+                    <Menu>
+                      <Menu.Item
+                        key="1"
+                        onClick={async () => {
+                          await downloadTeamReport('csv');
+                        }}
+                      >
+                        Export CSV
+                      </Menu.Item>
+                      <Menu.Item
+                        key="2"
+                        onClick={async () => {
+                          await downloadTeamReport('xls');
+                        }}
+                      >
+                        Export EXCEL
+                      </Menu.Item>
+                    </Menu>
+                  }
+                >
+                  <Button className="Team_BtnsWrpas">
+                    Export <DownOutlined />
+                  </Button>
+                </Dropdown>
               </ProSpace>
+            </ProSpace>
+          </Col>
+          <Col span={8}>
+            <ProSpace direction="vertical" style={{ width: '100%' }}>
+              <Search
+                onSearch={onChange}
+                allowClear
+                size="middle"
+                placeholder="Search by employee name"
+              />
             </ProSpace>
           </Col>
           <ProDivider />
@@ -157,24 +242,6 @@ const TeamHome = () => {
             <p>
               <strong>This Week :</strong> {thisWeek}
             </p>
-            <div>
-              <Dropdown
-                overlay={
-                  <Menu>
-                    <Menu.Item>
-                      <Input placeholder="Search" prefix={<SearchOutlined />} />
-                    </Menu.Item>
-                    <Menu.Item key="1">Everyone</Menu.Item>
-                    <Menu.Item key="2">My Pins</Menu.Item>
-                    <Menu.Item key="3">Sample Roles</Menu.Item>
-                  </Menu>
-                }
-              >
-                <Button className="btn">
-                  Everyone <DownOutlined />
-                </Button>
-              </Dropdown>
-            </div>
           </Col>
         </Row>
         <ProDivider />
