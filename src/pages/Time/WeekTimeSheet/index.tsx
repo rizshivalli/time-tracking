@@ -22,8 +22,8 @@ import {
 import { NewEntryModal } from './components';
 import './index.less';
 
-const thisWeek = getStartAndEndOfWeekString(getToday('MM-DD-YYYY'));
-const todayDate = getToday('MM-DD-YYYY');
+const thisWeek = getStartAndEndOfWeekString(getToday('YYYY-MM-DD'));
+const todayDate = getToday('YYYY-MM-DD');
 
 const checkAccess = async () => {
   const access = await hasAccess();
@@ -114,6 +114,7 @@ const getWeekFromSuntoSatForTable = (date: string) => {
   ];
 
   const newD = [...taskName, ...weekDates, ...operation];
+  console.log('🚀 ~ file: index.tsx ~ line 118 ~ getWeekFromSuntoSatForTable ~ newD', newD);
   return newD;
 };
 
@@ -225,6 +226,7 @@ const TimeSheet = () => {
               <ProSpace size="large" align="start" className="top-widget-container">
                 <ProSpace>
                   <ProTitle size={3}>
+                    {/* @ts-ignore */}
                     <strong>This Week:</strong>
                   </ProTitle>
                   <ProTitle size={3}>{thisWeek}</ProTitle>
@@ -318,6 +320,9 @@ const TimeSheet = () => {
                     }
                   },
                   onChange: setEditableRowKeys,
+                  onDelete: async (key, row) => {
+                    console.log('🚀 ~ file: index.tsx ~ line 322 ~ onDelete: ~ row', row);
+                  },
                 }}
                 rowKey="key"
                 search={false}

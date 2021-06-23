@@ -142,6 +142,13 @@ export default defineConfig({
                       authority: ['admin', 'owner', 'project_manager'],
                     },
                     {
+                      path: '/time/time-sheet/unsubmitted/:id',
+                      name: 'un-submitted',
+                      component: './Time/Unsubmitted/Details',
+                      hideInMenu: true,
+                      authority: ['admin', 'owner', 'project_manager'],
+                    },
+                    {
                       name: 'archive',
                       path: '/time/time-sheet/archive',
                       component: './Time/TimeArchive',
@@ -176,12 +183,18 @@ export default defineConfig({
                   component: './projects/CreateNewProject',
                   hideInMenu: true,
                 },
-
                 {
                   name: 'teams',
                   icon: 'TeamOutlined',
                   path: '/teams/home',
                   component: './teams/TeamHome',
+                },
+                {
+                  name: 'teams',
+                  icon: 'TeamOutlined',
+                  path: '/teams/summary/:id',
+                  component: './teams/TeamHome/Details',
+                  hideInMenu: true,
                 },
                 {
                   name: 'teams',
@@ -207,25 +220,25 @@ export default defineConfig({
                     },
                     {
                       name: 'time',
-                      path: '/reports/time/client/details',
+                      path: '/reports/time/client/details/:id',
                       component: './reports/TimeReports/ClientDetails',
                       hideInMenu: true,
                     },
                     {
                       name: 'time',
-                      path: '/reports/time/project/details',
+                      path: '/reports/time/project/details/:id',
                       component: './reports/TimeReports/ProjectDetails',
                       hideInMenu: true,
                     },
                     {
                       name: 'time',
-                      path: '/reports/time/task/details',
+                      path: '/reports/time/task/details/:id',
                       component: './reports/TimeReports/TaskDetails',
                       hideInMenu: true,
                     },
                     {
                       name: 'time',
-                      path: '/reports/time/team/details',
+                      path: '/reports/time/team/details/:id',
                       component: './reports/TimeReports/TeamDetails',
                       hideInMenu: true,
                     },

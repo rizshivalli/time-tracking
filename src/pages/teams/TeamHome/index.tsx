@@ -45,6 +45,7 @@ const TeamHome = () => {
     {
       title: 'Name',
       dataIndex: 'full_name',
+      render: (text, row) => <Link to={`/teams/summary/${row.id}`}>{row.full_name}</Link>,
     },
     {
       title: 'Capacity',
