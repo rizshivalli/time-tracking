@@ -152,7 +152,6 @@ export default defineConfig({
                       name: 'archive',
                       path: '/time/time-sheet/archive',
                       component: './Time/TimeArchive',
-                      authority: ['admin', 'owner', 'project_manager'],
                     },
                   ],
                 },
@@ -188,6 +187,7 @@ export default defineConfig({
                   icon: 'TeamOutlined',
                   path: '/teams/home',
                   component: './teams/TeamHome',
+                  authority: ['admin', 'owner', 'project_manager'],
                 },
                 {
                   name: 'teams',
@@ -270,11 +270,11 @@ export default defineConfig({
                       path: '/manage/tasks',
                       component: './manage/Tasks',
                     },
-                    {
-                      name: 'roles',
-                      path: '/manage/roles',
-                      component: './manage/Roles',
-                    },
+                    // {
+                    //   name: 'roles',
+                    //   path: '/manage/roles',
+                    //   component: './manage/Roles',
+                    // },
                   ],
                 },
 
