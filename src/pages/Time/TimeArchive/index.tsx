@@ -7,6 +7,7 @@ import type { ProColumns } from '@ant-design/pro-table';
 import type { ActionType } from '@ant-design/pro-table';
 import { getArchivedApprovals } from '../service';
 import './index.less';
+import { Link } from 'umi';
 
 const columns: ProColumns<any>[] = [
   {
@@ -35,9 +36,9 @@ const columns: ProColumns<any>[] = [
     valueType: 'option',
     // @ts-ignore
     render: (_, row, index, action) => [
-      <Button key="a" onClick={() => {}}>
-        View TimeSheet
-      </Button>,
+      <Link key="a" to={`/time/time-sheet/archive/${row.id}`}>
+        <Button>View TimeSheet</Button>
+      </Link>,
     ],
   },
 ];

@@ -24,11 +24,7 @@ import './index.less';
 
 const thisWeek = getStartAndEndOfWeekString(getToday('YYYY-MM-DD'));
 const todayDate = getToday('YYYY-MM-DD');
-
-const checkAccess = async () => {
-  const access = await hasAccess();
-  return access;
-};
+const access = hasAccess();
 
 // const thisWeekDates = getWeekFromSuntoSat(fullDate);
 
@@ -114,7 +110,6 @@ const getWeekFromSuntoSatForTable = (date: string) => {
   ];
 
   const newD = [...taskName, ...weekDates, ...operation];
-  console.log('🚀 ~ file: index.tsx ~ line 118 ~ getWeekFromSuntoSatForTable ~ newD', newD);
   return newD;
 };
 
@@ -143,7 +138,6 @@ const TimeSheet = () => {
   };
 
   useEffect(() => {
-    checkAccess();
     getEmployeeList();
   }, []);
 
@@ -251,7 +245,7 @@ const TimeSheet = () => {
                   </Radio.Group>
                   <Select
                     allowClear
-                    disabled={!checkAccess}
+                    disabled={!access}
                     showSearch
                     style={{ width: 200 }}
                     placeholder="Employee"
@@ -328,24 +322,31 @@ const TimeSheet = () => {
                 search={false}
                 footer={() => [
                   <div>
-                    <Button
-                      size="large"
-                      key="3"
-                      type="primary"
-                      className="Weektime_Btns"
-                      onClick={() => {
-                        setNewEntryModalVisible(true);
-                      }}
-                    >
-                      <PlusOutlined />
-                      New Entry
-                    </Button>
+                    {approvalStatus !== 'Approved' && (
+                      <Button
+                        size="large"
+                        key="3"
+                        type="primary"
+                        className="Weektime_Btns"
+                        onClick={() => {
+                          setNewEntryModalVisible(true);
+                        }}
+                      >
+                        <PlusOutlined />
+                        New Entry
+                      </Button>
+                    )}
 
                     <Button
                       size="large"
                       key="2"
                       type="primary"
                       className="Weektime_Btns"
+                      disabled={
+                        approvalStatus !== 'Not Submitted' && approvalStatus !== 'unapproved'
+                          ? true
+                          : false
+                      }
                       onClick={() => {
                         submitWeek();
                       }}

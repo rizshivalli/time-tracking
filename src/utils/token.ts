@@ -61,7 +61,7 @@ export function getOrganization(str?: string) {
   return token;
 }
 
-export async function hasAccess(str?: string) {
+export function hasAccess(str?: string) {
   const tokenString =
     typeof str === 'undefined' && localStorage ? localStorage.getItem('antd-pro-authority') : str; // tokenString could be admin, "admin", ["admin"]
 

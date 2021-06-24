@@ -111,6 +111,7 @@ const Register: FC<RegisterProps> = ({ submitting, dispatch, userAndregister }) 
     });
   };
   const checkConfirm = (_: any, value: string) => {
+    setvisible(false);
     const promise = Promise;
     if (value && value !== form.getFieldValue('password')) {
       return promise.reject(intl.formatMessage({ id: 'userandregister.password.twice' }));
@@ -234,7 +235,7 @@ const Register: FC<RegisterProps> = ({ submitting, dispatch, userAndregister }) 
                   )
                 }
                 overlayStyle={{ width: 240 }}
-                placement="right"
+                placement="topRight"
                 visible={visible}
               >
                 <FormItem

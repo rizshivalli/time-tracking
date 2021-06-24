@@ -104,7 +104,7 @@ const ImportPeopleModal: FC<ImportProjectModalProps> = ({ visible, setVisibility
         onCancel={() => setVisibility(false)}
         okText="Upload and Import People"
         onOk={() => {
-          onSuccess;
+          onSuccess();
           setVisibility(false);
         }}
       >

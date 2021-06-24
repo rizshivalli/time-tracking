@@ -1,3 +1,4 @@
+import { history } from 'umi';
 import { ProDivider, ProGridContainer, ProIntlProvider, ProTitle } from '@/common';
 import { getClients } from '@/pages/manage/Client/service';
 import { getCommonTasks } from '@/pages/manage/Tasks/service';
@@ -23,6 +24,7 @@ const CreateNewProject = () => {
 
   const onTaskCreated = () => {
     form.resetFields();
+    history.goBack();
   };
 
   const handleFinish = useCallback(async (values) => {
@@ -52,11 +54,12 @@ const CreateNewProject = () => {
           form={form}
           onReset={() => {
             form.resetFields();
+            history.goBack();
           }}
           submitter={{
             searchConfig: {
               submitText: 'Create Project',
-              resetText: 'Reset Feilds',
+              resetText: 'Cancel',
             },
           }}
           onFinish={(values: any) => {

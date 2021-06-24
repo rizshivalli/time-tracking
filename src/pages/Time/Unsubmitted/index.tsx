@@ -1,6 +1,6 @@
 import { ProGridContainer, ProIntlProvider, ProSpace, ProTitle, RandomQuote } from '@/common';
 import ProTable, { ProColumns } from '@ant-design/pro-table';
-import { Col, DatePicker, Button, Menu, Row, Dropdown } from 'antd';
+import { Col, DatePicker, Button, Row } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { ActionType } from '@ant-design/pro-table';
@@ -31,7 +31,7 @@ const columns: ProColumns<any>[] = [
   {
     title: 'Submitted by',
     dataIndex: 'user_name',
-    render: (text: string, value: any) => <div>{value?.submitted_by?.full_name}</div>,
+    render: (text, value) => <div>{value?.submitted_by?.full_name}</div>,
   },
   {
     title: '',
@@ -48,18 +48,6 @@ const columns: ProColumns<any>[] = [
     ],
   },
 ];
-
-// const beforeSearch = (params: any) => {
-//   console.log('🚀 ~ file: index.tsx ~ line 36 ~ beforeSearch ~ params', params);
-//   replaceKey(params, 'user_name', 'user_name_contains');
-//   if (params.date_range) {
-//     const dates = getStartAndEndOfWeek(getRequiredDateFormat(params.date_range, 'YYYY-MM-DD'));
-//     delete params?.date_range;
-//     params = { ...params, ...dates };
-//   }
-
-//   return params;
-// };
 
 const Unsubmitted = () => {
   const actionRef = useRef<ActionType>();

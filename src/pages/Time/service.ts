@@ -124,7 +124,6 @@ export async function getTimeRecords(dates: { start_date: string; end_date: stri
 }
 
 export async function getWeekTimeRecords(start_date: string, end_date: string, params: any) {
-  console.log('🚀 ~ file: service.ts ~ line 127 ~ getWeekTimeRecords ~ params', params);
   const token = await getToken();
   const organization = await getOrganization();
   const response = await request(

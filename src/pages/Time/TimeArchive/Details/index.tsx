@@ -1,12 +1,10 @@
 import { ProGridContainer, ProIntlProvider, RandomQuote } from '@/common';
-import { Button, Col, message, Row, Progress, Skeleton } from 'antd';
+import { Col, message, Row, Progress, Skeleton } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
-import { getPendingApprovalByID, approveTimesheet } from '../../service';
+import { getPendingApprovalByID } from '../../service';
 import { humanize, createTableColumns } from '@/utils/generalUtils';
 import ProTable, { ActionType } from '@ant-design/pro-table';
-import { CheckOutlined, MailOutlined } from '@ant-design/icons';
 import './index.less';
-import { history } from 'umi';
 
 const ApprovalDetails = (props: any) => {
   const [id] = useState<string>(props?.match?.params?.id);
@@ -59,8 +57,8 @@ const ApprovalDetails = (props: any) => {
           <Row>
             <Col span={24} className="heading">
               <div className="head_title">
-                <p className="sub_title">{`Approve [SAMPLE] ${data?.user_name}’s Timesheet for ${data?.date_range}`}</p>
-                <span>[SAMPLE] Client A (Fixed Fee Project)</span>
+                <p className="sub_title">{`Archived ${data?.user_name}’s Timesheet for ${data?.date_range}`}</p>
+                {/* <span>[SAMPLE] Client A (Fixed Fee Project)</span> */}
               </div>
             </Col>
             <Col span={5}>
@@ -100,7 +98,7 @@ const ApprovalDetails = (props: any) => {
         <Row>
           <Col span={24}>
             <ProIntlProvider>
-              <p className="pending_hours">Pending Hours</p>
+              <p className="pending_hours">Archived Hours</p>
               <ProTable
                 locale={{
                   emptyText: <RandomQuote />,
@@ -117,7 +115,7 @@ const ApprovalDetails = (props: any) => {
               />
             </ProIntlProvider>
           </Col>
-          <Col span={24}>
+          {/* <Col span={24}>
             <Button
               className="Approvel_button"
               size="large"
@@ -128,7 +126,6 @@ const ApprovalDetails = (props: any) => {
                 await approveTimesheet(id)
                   .then(() => {
                     actionRef?.current?.reload();
-                    history.goBack();
                   })
                   .finally(() => {
                     setLoading(false);
@@ -139,21 +136,19 @@ const ApprovalDetails = (props: any) => {
               <CheckOutlined />
               {data?.status !== 'Approved' ? `Approve Timesheet` : `Approved Timesheet`}
             </Button>
-
-            {data?.status !== 'Approved' && (
-              <Button
-                className="Approvel_button"
-                size="large"
-                key="3"
-                type="primary"
-                onClick={() => {}}
-                disabled={loading}
-              >
-                <MailOutlined />
-                Email {data?.user_name}
-              </Button>
-            )}
-          </Col>
+            ,
+            <Button
+              className="Approvel_button"
+              size="large"
+              key="3"
+              type="primary"
+              onClick={() => {}}
+              disabled={loading}
+            >
+              <MailOutlined />
+              Email {data?.user_name}
+            </Button>
+          </Col> */}
         </Row>
       </Skeleton>
     </ProGridContainer>

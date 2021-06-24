@@ -52,7 +52,7 @@ const TasksReports: FC<TasksReportsProps> = ({ data }) => {
                       CSV
                     </CSVLink>
                   </Menu.Item>
-                  <Menu.Item key="2">
+                  <Menu.Item key="2" disabled>
                     <CSVLink filename={'Tasks.xls'} data={data}>
                       Excel
                     </CSVLink>
@@ -64,10 +64,10 @@ const TasksReports: FC<TasksReportsProps> = ({ data }) => {
                 Export <DownOutlined />
               </Button>
             </Dropdown>
-            <Button size="middle" className="Export_btns">
+            <Button size="middle" className="Export_btns" disabled>
               Detailed Report
             </Button>
-            <Button size="middle" className="Export_btns">
+            <Button size="middle" className="Export_btns" disabled>
               <FormOutlined />
             </Button>
           </div>

@@ -12,11 +12,7 @@ import { Link } from 'umi';
 import { hasAccess } from '@/utils/token';
 
 const { Search } = Input;
-
-const checkAccess = async () => {
-  const access = await hasAccess();
-  return access;
-};
+const access = hasAccess();
 
 const ProjectList = () => {
   const actionRef = useRef<ActionType>();
@@ -64,7 +60,7 @@ const ProjectList = () => {
       render: (text, row) => {
         return (
           <div>
-            {checkAccess() ? (
+            {access ? (
               <Link to={`/projects/details/${row.id}`}>{row.name}</Link>
             ) : (
               <div>{text}</div>
@@ -95,7 +91,7 @@ const ProjectList = () => {
 
       render: (_, record) => [
         <Dropdown
-          disabled={!checkAccess()}
+          disabled={!access}
           overlay={
             <Menu>
               <Menu.Item key="1">
@@ -149,13 +145,13 @@ const ProjectList = () => {
                     type="primary"
                     className="New_project"
                     icon={<PlusOutlined />}
-                    disabled={!checkAccess()}
+                    disabled={!access}
                   >
                     New Project
                   </Button>
                 </Link>
                 <Button
-                  disabled={!checkAccess()}
+                  disabled={!access}
                   className="left-button"
                   onClick={() => {
                     setImportModalVisibility(true);
@@ -251,9 +247,6 @@ const ProjectList = () => {
                   pagination={false}
                   columns={columns}
                   actionRef={actionRef}
-                  editable={{
-                    type: 'multiple',
-                  }}
                   rowKey="id"
                   search={false}
                   dateFormatter="string"
@@ -264,7 +257,7 @@ const ProjectList = () => {
             <ImportProjects
               visible={importModalVisible}
               setVisibility={setImportModalVisibility}
-              onSuccess={actionRef?.current?.reload()}
+              onSuccess={getData}
             />
             <ExportProjectsModal
               visible={exportModalVisible}

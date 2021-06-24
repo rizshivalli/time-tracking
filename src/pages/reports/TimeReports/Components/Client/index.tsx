@@ -33,24 +33,6 @@ interface ClientsReportsProps {
 const ClientsReports: FC<ClientsReportsProps> = ({ data }) => {
   const actionRef = useRef<ActionType>();
 
-  // const downloadTeamReport = async (key: any) => {
-  //   const hide = message.loading('Please wait while we download your file..', 0);
-  //   await exportTeamCSV({})
-  //     .then((data) => {
-  //       saveAs(
-  //         data,
-  //         `All Teams ${getRequiredDateFormat(new Date(), 'MM-DD-YYYY HH-mm-ss')}.${key}`,
-  //       );
-  //       message.success('Report File generated successfully');
-  //     })
-  //     .catch((error) => {
-  //       message.error('Error occured while generating report');
-  //     })
-  //     .finally(() => {
-  //       hide();
-  //     });
-  // };
-
   return (
     <ProGridContainer>
       <Row>
@@ -67,7 +49,7 @@ const ClientsReports: FC<ClientsReportsProps> = ({ data }) => {
                       CSV
                     </CSVLink>
                   </Menu.Item>
-                  <Menu.Item key="2">
+                  <Menu.Item key="2" disabled>
                     <CSVLink filename={'clients.xls'} data={data}>
                       Excel
                     </CSVLink>
@@ -79,10 +61,10 @@ const ClientsReports: FC<ClientsReportsProps> = ({ data }) => {
                 Export <DownOutlined />
               </Button>
             </Dropdown>
-            <Button size="middle" className="Export_btns">
+            <Button size="middle" className="Export_btns" disabled>
               Detailed Report
             </Button>
-            <Button size="middle" className="Export_btns">
+            <Button size="middle" className="Export_btns" disabled>
               <FormOutlined />
             </Button>
           </div>

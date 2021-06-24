@@ -147,7 +147,7 @@ const Login: React.FC<LoginProps> = (props) => {
               </div>
             </ProForm>
             <div className={styles.newAccount}>
-              <Link to="/user/register">Create a new account CI CD Test</Link>
+              <Link to="/user/register">Create a new account</Link>
             </div>
           </div>
         </div>

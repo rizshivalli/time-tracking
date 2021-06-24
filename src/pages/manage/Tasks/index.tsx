@@ -32,10 +32,9 @@ const ManageTasks = () => {
   const [newTaskModalVisble, setNewTaskModalVisibility] = useState<boolean>(false);
   const [commonTasks, setCommonTasks] = useState([]);
   const [deleteAlert, setDeleteAlert] = useState<any>({ visible: false, id: null });
-  const hideDeleteModal = useCallback(
-    () => setDeleteAlert({ visible: false, id: null }),
-    [deleteAlert],
-  );
+  const hideDeleteModal = useCallback(() => setDeleteAlert({ visible: false, id: null }), [
+    deleteAlert,
+  ]);
 
   const getCommonTasksFromServer = useCallback(async () => {
     setCommonLoading(true);
@@ -74,6 +73,7 @@ const ManageTasks = () => {
                 New Task
               </Button>
               <Dropdown
+                disabled
                 overlay={
                   <Menu>
                     <Menu.Item key="1">Export to Excel</Menu.Item>
@@ -112,7 +112,6 @@ const ManageTasks = () => {
                 },
               }}
               rowKey="id"
-              headerTitle="Common Tasks"
               rowSelection={false}
               dataSource={commonTasks}
             />

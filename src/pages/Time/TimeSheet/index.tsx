@@ -37,7 +37,7 @@ import { identifier } from '@/pages/manage/Client/service';
 
 const { TabPane } = Tabs;
 const { Text } = Typography;
-
+const access = hasAccess();
 const today = getToday('dddd, DD MMM');
 const todayDate = getToday('YYYY-MM-DD');
 const fullDate = getToday('YYYY-MM-DD');
@@ -105,11 +105,6 @@ const TimeSheet = () => {
     getWeekData(selectedTabKey);
   };
 
-  const checkAccess = async () => {
-    const access = await hasAccess();
-    return access;
-  };
-
   const getEmployeeList = async () => {
     const data = await getTeamMembers();
     setEmployeeData(data);
@@ -118,7 +113,6 @@ const TimeSheet = () => {
   useEffect(() => {
     getWeekData(selectedTabKey);
     getEmployeeList();
-    checkAccess();
   }, [editingEmployee]);
 
   const onDateChange = (date: any, dateString: string) => {
@@ -176,18 +170,20 @@ const TimeSheet = () => {
     <ProGridContainer>
       <Row>
         <Col span={2}>
-          <div className="new_entry_wraps">
-            <Button
-              size="large"
-              className="btn"
-              type="primary"
-              onClick={() => {
-                setNewEntryModalVisible(true);
-              }}
-              icon={<PlusOutlined />}
-            />
-            <div className="entry_class_wraps">New Entry</div>
-          </div>
+          {weekStatus !== 'Approved' && (
+            <div className="new_entry_wraps">
+              <Button
+                size="large"
+                className="btn"
+                type="primary"
+                onClick={() => {
+                  setNewEntryModalVisible(true);
+                }}
+                icon={<PlusOutlined />}
+              />
+              <div className="entry_class_wraps">New Entry</div>
+            </div>
+          )}
         </Col>
         <Col span={22}>
           {editingEmployee && (
@@ -236,21 +232,23 @@ const TimeSheet = () => {
                       <Radio.Button value="week">Week</Radio.Button>
                     </Link>
                   </Radio.Group>
-                  <Select
-                    allowClear
-                    disabled={!checkAccess}
-                    showSearch
-                    style={{ width: 200 }}
-                    placeholder="Employee"
-                    optionFilterProp="children"
-                    options={employeeData}
-                    // @ts-ignore
-                    onChange={handleEmployeeChange}
-                    filterOption={(input, option) => {
+                  {true && (
+                    <Select
+                      allowClear
+                      disabled={!access}
+                      showSearch
+                      style={{ width: 200 }}
+                      placeholder="Employee"
+                      optionFilterProp="children"
+                      options={employeeData}
                       // @ts-ignore
-                      return option?.label?.toLowerCase()?.indexOf(input?.toLowerCase()) >= 0;
-                    }}
-                  />
+                      onChange={handleEmployeeChange}
+                      filterOption={(input, option) => {
+                        // @ts-ignore
+                        return option?.label?.toLowerCase()?.indexOf(input?.toLowerCase()) >= 0;
+                      }}
+                    />
+                  )}
                 </ProSpace>
               </ProSpace>
             </div>

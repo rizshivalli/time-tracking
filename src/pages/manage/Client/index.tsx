@@ -50,10 +50,11 @@ const ManageClient = () => {
                 >
                   New Client
                 </Button>
-                <Button className="btncom" size="middle" icon={<PlusOutlined />}>
+                <Button className="btncom" size="middle" icon={<PlusOutlined />} disabled>
                   Add Contact
                 </Button>
                 <Dropdown
+                  disabled
                   overlay={
                     <Menu>
                       <Menu.Item key="1">Import Client From CSV</Menu.Item>
@@ -96,7 +97,6 @@ const ManageClient = () => {
                   },
                 }}
                 rowKey="title"
-                headerTitle="Manage Clients"
                 rowSelection={false}
                 dataSource={clientList}
               />

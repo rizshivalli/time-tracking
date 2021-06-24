@@ -31,10 +31,8 @@ import './index.less';
 const { Search } = Input;
 const todayDate = getToday('YYYY-MM-DD');
 const thisWeek = getStartAndEndOfWeekString(todayDate);
-const checkAccess = async () => {
-  const access = await hasAccess();
-  return access;
-};
+
+const access = hasAccess();
 
 const TeamHome = () => {
   const actionRef = useRef<ActionType>();
@@ -85,7 +83,7 @@ const TeamHome = () => {
       fixed: 'right',
       render: (_, record) => [
         <Dropdown
-          disabled={!checkAccess()}
+          disabled={!access}
           overlay={
             <Menu>
               <Menu.Item
@@ -181,13 +179,13 @@ const TeamHome = () => {
                     type="primary"
                     className="Team_add_person"
                     icon={<PlusOutlined />}
-                    disabled={!checkAccess()}
+                    disabled={!access}
                   >
                     Add Person
                   </Button>
                 </Link>
                 <Button
-                  disabled={!checkAccess()}
+                  disabled={!access}
                   className="Team_BtnsWrpas"
                   onClick={() => {
                     setImportModalVisibility(true);
@@ -301,7 +299,7 @@ const TeamHome = () => {
         <ImportPeopleModal
           visible={importModalVisible}
           setVisibility={setImportModalVisibility}
-          onSuccess={actionRef?.current?.reload()}
+          onSuccess={fetchData}
         />
       </Skeleton>
     </ProGridContainer>

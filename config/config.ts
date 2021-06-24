@@ -153,6 +153,12 @@ export default defineConfig({
                       path: '/time/time-sheet/archive',
                       component: './Time/TimeArchive',
                     },
+                    {
+                      path: '/time/time-sheet/archive/:id',
+                      name: 'archive',
+                      component: './Time/TimeArchive/Details',
+                      hideInMenu: true,
+                    },
                   ],
                 },
 

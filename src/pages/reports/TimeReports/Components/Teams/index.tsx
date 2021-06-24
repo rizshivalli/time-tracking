@@ -45,7 +45,7 @@ const TeamsReports: FC<TeamsReportsProps> = ({ data }) => {
                       CSV
                     </CSVLink>
                   </Menu.Item>
-                  <Menu.Item key="2">
+                  <Menu.Item key="2" disabled>
                     <CSVLink filename={'Teams.xls'} data={data}>
                       Excel
                     </CSVLink>
@@ -57,10 +57,10 @@ const TeamsReports: FC<TeamsReportsProps> = ({ data }) => {
                 Export <DownOutlined />
               </Button>
             </Dropdown>
-            <Button size="middle" className="Export_btns">
+            <Button size="middle" className="Export_btns" disabled>
               Detailed Report
             </Button>
-            <Button size="middle" className="Export_btns">
+            <Button size="middle" className="Export_btns" disabled>
               <FormOutlined />
             </Button>
           </div>

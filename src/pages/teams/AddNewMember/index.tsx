@@ -1,3 +1,4 @@
+import { history } from 'umi';
 import { ProDivider, ProGridContainer, ProTitle } from '@/common';
 import { capacityOptions } from '@/utils/generalUtils';
 import ProForm, { ProFormRadio, ProFormSelect, ProFormText } from '@ant-design/pro-form';
@@ -10,6 +11,7 @@ const AddNewMember = () => {
 
   const onTaskCreated = () => {
     form.resetFields();
+    history.goBack();
   };
   const handleFinish = useCallback(async (values) => {
     await createTeamMember(values)
@@ -37,6 +39,7 @@ const AddNewMember = () => {
       <ProForm
         onReset={() => {
           form.resetFields();
+          history.goBack();
         }}
         onFinish={(values) => {
           let contractor;
@@ -112,10 +115,10 @@ const AddNewMember = () => {
             width="sm"
             label="Capacity"
             name="capacity"
-            fieldProps={{ defaultValue: '35' }}
+            fieldProps={{ defaultValue: '0.00' }}
             options={capacityOptions}
-            placeholder="Please select a tasks"
-            rules={[{ required: true, message: 'Please select your tasks!' }]}
+            placeholder="Please select a capacity"
+            rules={[{ required: true, message: 'Please select team member capacity!' }]}
           />
           <span>The number of hours per week this person is available to work.</span>
         </ProForm.Group>
