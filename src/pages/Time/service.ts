@@ -204,12 +204,13 @@ export async function submitWeekForApproval(id: identifier) {
 }
 
 // get list of pending Approvals
-export async function getPendingApprovals() {
+export async function getPendingApprovals(params: any) {
   const token = await getToken();
   const organization = await getOrganization();
   const response = await request('/strapi/approvals/type/pending', {
     method: 'GET',
     headers: { Authorization: `Bearer ${token}`, orgid: organization },
+    params,
   });
 
   if (response.statusCode === 200) {
@@ -335,4 +336,30 @@ export async function getTeamMembers() {
     message.error(`${response.message}, Please try Again`);
     return [];
   }
+}
+
+// approvals / send - unsubmitted - email;
+
+export async function sendAllUnsubmittedMail() {
+  const hide = message.loading('Sending Emails...', 0);
+  const token = await getToken();
+  const organization = await getOrganization();
+  await request(`/strapi/approvals/send-unsubmitted-email`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}`, orgid: organization },
+  })
+    .then((response) => {
+      if (response.statusCode === 200) {
+        hide();
+        message.success('Email has been successfully sent');
+        return response.data;
+      } else {
+        hide();
+        message.error(`${response.message}, Please try Again`);
+      }
+    })
+    .catch((error) => {
+      hide();
+      message.error(`${error.message}, Please try Again`);
+    });
 }

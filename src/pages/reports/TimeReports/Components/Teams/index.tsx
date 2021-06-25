@@ -22,7 +22,7 @@ const columns: ProColumns<any>[] = [
   },
   {
     title: 'Total Hours',
-    dataIndex: 'total_time',
+    dataIndex: 'total_hours',
   },
 ];
 

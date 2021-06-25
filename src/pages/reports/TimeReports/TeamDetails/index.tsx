@@ -16,7 +16,6 @@ import { history } from 'umi';
 
 const { RangePicker } = DatePicker;
 const { TabPane } = Tabs;
-
 const today = getToday('YYYY-MM-DD');
 
 const TeamTime = (props: any) => {
@@ -56,7 +55,7 @@ const TeamTime = (props: any) => {
     <ProGridContainer>
       <Row>
         <Col span={24} className="AllTime">
-          <p className="Main_title">All Time</p>
+          <p className="Main_title">Team Member Report</p>
           <div className="Dropdown">
             <RangePicker
               allowClear
@@ -80,7 +79,7 @@ const TeamTime = (props: any) => {
                 Time Report <RightOutlined />
               </a>
             </span>
-            <p>[SAMPLE] Hiromi Hourglass</p>
+            <p>{`${`[${data?.designation}]`} ${data?.full_name} `}</p>
           </Col>
         </Row>
         <Row className="Report_rowmap">
