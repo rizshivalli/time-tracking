@@ -6,7 +6,8 @@
   "scripts": {
     "analyze": "cross-env ANALYZE=1 umi build",
     "build": "umi build",
-    "deploy": "npm run site && npm run gh-pages",
+    "deploy": "umi build && git add . && git commit -m",
+    "postdeploy": "git push",
     "dev": "npm run start:dev",
     "fetch:blocks": "pro fetch-blocks && npm run prettier",
     "gh-pages": "gh-pages -d dist",
@@ -64,6 +65,7 @@
     "bizcharts-plugin-slider": "^2.1.1-beta.1",
     "classnames": "^2.2.6",
     "dva": "^2.4.0",
+    "file-saver": "^2.0.5",
     "gg-editor": "^2.0.2",
     "highcharts": "^9.1.1",
     "highcharts-react-official": "^3.0.0",
