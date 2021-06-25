@@ -121,10 +121,6 @@ const PendingApproval = () => {
                   locale={{
                     emptyText: <RandomQuote />,
                   }}
-                  // request={async () => {
-                  //   const data = await getPendingApprovals();
-                  //   return { data };
-                  // }}
                   dataSource={data}
                   columns={columns}
                   actionRef={actionRef}

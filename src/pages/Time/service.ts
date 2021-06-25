@@ -276,14 +276,14 @@ export async function addMultipleTeamMembers(params: any[]) {
   }
 }
 
-export async function getArchivedApprovals() {
+export async function getArchivedApprovals(params: any) {
   const token = await getToken();
   const organization = await getOrganization();
-  const params = { is_archived: true };
+  // const params = { is_archived: true, ...newParams };
   const response = await request('/strapi/approvals/type/archived', {
     method: 'GET',
     headers: { Authorization: `Bearer ${token}`, orgid: organization },
-    data: { params },
+    params,
   });
 
   if (response.statusCode === 200) {
@@ -320,9 +320,11 @@ export async function getRandomQuote() {
 export async function getTeamMembers() {
   const token = await getToken();
   const organization = await getOrganization();
+  const params = { is_archived_ne: true };
   const response = await request('/strapi/organisation-members', {
     method: 'GET',
     headers: { Authorization: `Bearer ${token}`, orgid: organization },
+    params,
   });
 
   if (response.statusCode === 200) {
