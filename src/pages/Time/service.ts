@@ -365,3 +365,28 @@ export async function sendAllUnsubmittedMail() {
       message.error(`${error.message}, Please try Again`);
     });
 }
+
+export async function sendPendingApprovalRemainder(params: any) {
+  const hide = message.loading('Sending Email...', 0);
+  const token = await getToken();
+  const organization = await getOrganization();
+  await request(`/strapi/approvals/email`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}`, orgid: organization },
+    data: params,
+  })
+    .then((response) => {
+      if (response.statusCode === 200) {
+        hide();
+        message.success('Email has been successfully sent');
+        return response.data;
+      } else {
+        hide();
+        message.error(`${response.message}, Please try Again`);
+      }
+    })
+    .catch((error) => {
+      hide();
+      message.error(`${error.message}, Please try Again`);
+    });
+}

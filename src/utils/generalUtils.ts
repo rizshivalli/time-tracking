@@ -122,11 +122,11 @@ export const capacityOptions = [
 
 export function humanize(str: string) {
   let i,
-    frags = str.split('_');
-  for (i = 0; i < frags.length; i++) {
-    frags[i] = frags[i].charAt(0).toUpperCase() + frags[i].slice(1);
+    frags = str?.split('_');
+  for (i = 0; i < frags?.length; i++) {
+    frags[i] = frags[i]?.charAt(0).toUpperCase() + frags[i]?.slice(1);
   }
-  return frags.join(' ');
+  return frags?.join(' ');
 }
 
 export const createTableColumns = (

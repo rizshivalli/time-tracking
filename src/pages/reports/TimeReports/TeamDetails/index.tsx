@@ -13,6 +13,7 @@ import './index.less';
 import { getTeamsReportById } from '../service';
 import { useEffect } from 'react';
 import { history } from 'umi';
+import { humanize } from '@/utils/generalUtils';
 
 const { RangePicker } = DatePicker;
 const { TabPane } = Tabs;
@@ -79,7 +80,9 @@ const TeamTime = (props: any) => {
                 Time Report <RightOutlined />
               </a>
             </span>
-            <p>{`${`[${data?.designation}]`} ${data?.full_name} `}</p>
+            <p>{`${`[${data?.designation ? data?.designation : humanize(data?.permission)}]`} ${
+              data?.full_name
+            } `}</p>
           </Col>
         </Row>
         <Row className="Report_rowmap">

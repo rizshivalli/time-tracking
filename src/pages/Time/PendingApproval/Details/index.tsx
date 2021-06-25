@@ -1,15 +1,20 @@
-import { ProGridContainer, ProIntlProvider, RandomQuote } from '@/common';
+import { ProGridContainer, ProIntlProvider, ProSpace, RandomQuote } from '@/common';
 import { Button, Col, message, Row, Progress, Skeleton } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
-import { getPendingApprovalByID, approveTimesheet } from '../../service';
+import {
+  getPendingApprovalByID,
+  approveTimesheet,
+  sendPendingApprovalRemainder,
+} from '../../service';
 import { humanize, createTableColumns } from '@/utils/generalUtils';
 import ProTable, { ActionType } from '@ant-design/pro-table';
 import { CheckOutlined, MailOutlined } from '@ant-design/icons';
 import './index.less';
-import { history } from 'umi';
+import { history, connect } from 'umi';
 
 const ApprovalDetails = (props: any) => {
   const [id] = useState<string>(props?.match?.params?.id);
+  const [currentUser] = useState<any>(props.currentUser);
   const [data, setData] = useState<any>({});
   const [loading, setLoading] = useState<any>({});
   const actionRef = useRef<ActionType>();
@@ -52,6 +57,26 @@ const ApprovalDetails = (props: any) => {
     getDataForApproval();
   }, []);
 
+  // const sendEmailToUser = async () => {
+  //   const params = {
+  //     to: data?.submitted_by?.email,
+  //     from: '',
+  //     replyTo: 'annesophiepic@strapi.io',
+  //     subject: `[SIMPLIFI TEAM] Comments on submitted hours`,
+  //     text: 'Hello world!',
+  //     html: 'Hello world!',
+  //   };
+  // }
+
+  const sendEmailRemainder = async () => {
+    const params = {
+      organisation_member: data?.submitted_by?.id,
+      subject: '[SIMPLIFI TEAM] Comments on submitted hours',
+      cc: null,
+      text: `This is a note sent from Simplifi Team by ${currentUser?.name} regarding your hours between ${data?.date_range}:`,
+    };
+    await sendPendingApprovalRemainder(params);
+  };
   return (
     <ProGridContainer>
       <Skeleton loading={loading} active avatar>
@@ -59,8 +84,8 @@ const ApprovalDetails = (props: any) => {
           <Row>
             <Col span={24} className="heading">
               <div className="head_title">
-                <p className="sub_title">{`Approve [SAMPLE] ${data?.user_name}’s Timesheet for ${data?.date_range}`}</p>
-                <span>[SAMPLE] Client A (Fixed Fee Project)</span>
+                <p className="sub_title">{`Approve ${data?.user_name}’s Timesheet for ${data?.date_range}`}</p>
+                {/* <span>[SAMPLE] Client A (Fixed Fee Project)</span> */}
               </div>
             </Col>
             <Col span={5}>
@@ -118,41 +143,45 @@ const ApprovalDetails = (props: any) => {
             </ProIntlProvider>
           </Col>
           <Col span={24}>
-            <Button
-              className="Approvel_button"
-              size="large"
-              key="2"
-              type="primary"
-              onClick={async () => {
-                setLoading(true);
-                await approveTimesheet(id)
-                  .then(() => {
-                    actionRef?.current?.reload();
-                    history.goBack();
-                  })
-                  .finally(() => {
-                    setLoading(false);
-                  });
-              }}
-              disabled={loading || data?.status === 'Approved'}
-            >
-              <CheckOutlined />
-              {data?.status !== 'Approved' ? `Approve Timesheet` : `Approved Timesheet`}
-            </Button>
-
-            {data?.status !== 'Approved' && (
+            <ProSpace>
               <Button
                 className="Approvel_button"
                 size="large"
-                key="3"
+                key="2"
                 type="primary"
-                onClick={() => {}}
-                disabled={loading}
+                onClick={async () => {
+                  setLoading(true);
+                  await approveTimesheet(id)
+                    .then(() => {
+                      actionRef?.current?.reload();
+                      history.goBack();
+                    })
+                    .finally(() => {
+                      setLoading(false);
+                    });
+                }}
+                disabled={loading || data?.status === 'Approved'}
               >
-                <MailOutlined />
-                Email {data?.user_name}
+                <CheckOutlined />
+                {data?.status !== 'Approved' ? `Approve Timesheet` : `Approved Timesheet`}
               </Button>
-            )}
+
+              {data?.status !== 'Approved' && (
+                <Button
+                  className="Approvel_button"
+                  size="large"
+                  key="3"
+                  type="primary"
+                  disabled={loading}
+                  onClick={async () => {
+                    await sendEmailRemainder();
+                  }}
+                >
+                  <MailOutlined />
+                  Email {data?.user_name}
+                </Button>
+              )}
+            </ProSpace>
           </Col>
         </Row>
       </Skeleton>
@@ -160,4 +189,8 @@ const ApprovalDetails = (props: any) => {
   );
 };
 
-export default ApprovalDetails;
+export default connect(({ user }: any) => ({
+  currentUser: user.currentUser,
+}))(ApprovalDetails);
+
+// export default ApprovalDetails;

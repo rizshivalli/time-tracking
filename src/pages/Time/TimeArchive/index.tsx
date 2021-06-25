@@ -84,7 +84,7 @@ const TimeArchive = () => {
   };
 
   const onChange = (e: string) => {
-    const params = { user_name_contains: e };
+    const params = { 'submitted_by.full_name_contains': e };
     searchData(params);
   };
 

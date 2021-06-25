@@ -57,7 +57,7 @@ const Unsubmitted = () => {
   const actionRef = useRef<ActionType>();
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [weekRange, setWeekRange] = useState<string>('');
+  const [weekRange, setWeekRange] = useState<string>('All Time');
 
   const getUnsubmittedData = async () => {
     setLoading(true);
@@ -91,10 +91,16 @@ const Unsubmitted = () => {
   };
 
   const handleWeekChange = (a: any) => {
-    const parsedDate = getRequiredDateFormat(a, 'YYYY-MM-DD');
-    const dates = getStartAndEndOfWeek(getRequiredDateFormat(parsedDate, 'YYYY-MM-DD'));
-    setWeekRange(getStartAndEndOfWeekString(parsedDate));
-    searchData(dates);
+    if (a) {
+      const parsedDate = getRequiredDateFormat(a, 'YYYY-MM-DD');
+      const dates = getStartAndEndOfWeek(getRequiredDateFormat(parsedDate, 'YYYY-MM-DD'));
+      const date = { date: dates.end_date };
+      setWeekRange(getStartAndEndOfWeekString(parsedDate));
+      searchData(date);
+    } else {
+      setWeekRange('All Time');
+      searchData({});
+    }
   };
 
   const sendUnsubmittedEmail = async () => {
@@ -116,8 +122,12 @@ const Unsubmitted = () => {
                     onChange={handleWeekChange}
                     placeholder="Select Week"
                   />
-                  <p>
-                    <strong>{weekRange}</strong>
+                  <p
+                    style={{
+                      paddingTop: '10px',
+                    }}
+                  >
+                    <ProTitle size={3}>{weekRange}</ProTitle>
                   </p>
                 </ProSpace>
               </Col>

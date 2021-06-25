@@ -3,7 +3,7 @@ import ProTable from '@ant-design/pro-table';
 import { Button, Col, Row, Menu, Dropdown, Input } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
-import { DownOutlined, SearchOutlined } from '@ant-design/icons';
+import { DownOutlined } from '@ant-design/icons';
 import { getPendingApprovals } from '../service';
 import { Link } from 'umi';
 import './index.less';
@@ -50,7 +50,6 @@ const PendingApproval = () => {
   const actionRef = useRef<ActionType>();
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [weekRange, setWeekRange] = useState<string>('');
 
   const getUnsubmittedData = async () => {
     setLoading(true);
@@ -84,7 +83,7 @@ const PendingApproval = () => {
   };
 
   const onChange = (e: string) => {
-    const params = { user_name_contains: e };
+    const params = { 'submitted_by.full_name_contains': e };
     searchData(params);
   };
 
