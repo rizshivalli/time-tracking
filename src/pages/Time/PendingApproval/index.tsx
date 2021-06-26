@@ -1,13 +1,15 @@
 import { ProGridContainer, ProIntlProvider, ProSpace, ProTitle, RandomQuote } from '@/common';
 import ProTable from '@ant-design/pro-table';
 import { Button, Col, Row, Menu, Dropdown, Input } from 'antd';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
-import { DownOutlined, SearchOutlined } from '@ant-design/icons';
+import { DownOutlined } from '@ant-design/icons';
 import { getPendingApprovals } from '../service';
 import { Link } from 'umi';
 import './index.less';
+import { Skeleton } from 'antd';
 
+const { Search } = Input;
 const columns: ProColumns<any>[] = [
   {
     dataIndex: 'id',
@@ -46,6 +48,44 @@ const columns: ProColumns<any>[] = [
 
 const PendingApproval = () => {
   const actionRef = useRef<ActionType>();
+  const [data, setData] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const getUnsubmittedData = async () => {
+    setLoading(true);
+    await getPendingApprovals({})
+      .then((response) => {
+        setData(response);
+      })
+      .catch((err) => {
+        setData([]);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    getUnsubmittedData();
+  }, []);
+
+  const searchData = async (params: {} = {}) => {
+    await getPendingApprovals(params)
+      .then((response) => {
+        setData(response);
+      })
+      .catch((error) => {
+        setData([]);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const onChange = (e: string) => {
+    const params = { 'submitted_by.full_name_contains': e };
+    searchData(params);
+  };
 
   return (
     <ProGridContainer>
@@ -67,46 +107,32 @@ const PendingApproval = () => {
                   Sorted By: Projects <DownOutlined />
                 </Button>
               </Dropdown>
-              <Dropdown
-                overlay={
-                  <Menu>
-                    <Menu.Item>
-                      <Input size="middle" placeholder="Search" prefix={<SearchOutlined />} />
-                    </Menu.Item>
-                    <Menu.Item key="1">Everyone</Menu.Item>
-                    <Menu.Item key="2">My Pinnted Teammates</Menu.Item>
-                    <Menu.Item key="3">My Pinned Projects</Menu.Item>
-                    <Menu.Item key="4">Sample Role</Menu.Item>
-                  </Menu>
-                }
-              >
-                <Button className="Everyone_Btns">
-                  Show: Everyone <DownOutlined />
-                </Button>
-              </Dropdown>
+
+              <div className="Everyone_Btns">
+                <Search onSearch={onChange} allowClear size="middle" placeholder="Employee Name" />
+              </div>
             </Col>
-            <ProIntlProvider>
-              <ProTable
-                pagination={false}
-                search={false}
-                locale={{
-                  emptyText: <RandomQuote />,
-                }}
-                request={async () => {
-                  const data = await getPendingApprovals();
-                  return { data };
-                }}
-                columns={columns}
-                actionRef={actionRef}
-                editable={{
-                  type: 'multiple',
-                }}
-                rowKey="id"
-                dateFormatter="string"
-                toolBarRender={false}
-              />
-            </ProIntlProvider>
-            <Button type="primary">Approve Timesheets</Button>
+            <Skeleton loading={loading} active>
+              <ProIntlProvider>
+                <ProTable
+                  pagination={false}
+                  search={false}
+                  locale={{
+                    emptyText: <RandomQuote />,
+                  }}
+                  dataSource={data}
+                  columns={columns}
+                  actionRef={actionRef}
+                  editable={{
+                    type: 'multiple',
+                  }}
+                  rowKey="id"
+                  dateFormatter="string"
+                  toolBarRender={false}
+                />
+              </ProIntlProvider>
+              {data.length > 0 && <Button type="primary">Approve Timesheets</Button>}
+            </Skeleton>
           </ProSpace>
         </Col>
       </Row>

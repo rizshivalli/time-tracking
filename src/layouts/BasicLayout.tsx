@@ -18,6 +18,7 @@ import RightContent from '@/components/GlobalHeader/RightContent';
 import type { ConnectState } from '@/models/connect';
 import { getMatchMenu } from '@umijs/route-utils';
 import logo from '../assets/logo.svg';
+import simplifiLogo from '../assets/SimplifiLogoWhite@3x.png';
 
 const noMatch = (
   <Result

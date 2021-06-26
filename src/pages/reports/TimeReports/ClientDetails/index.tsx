@@ -76,7 +76,7 @@ const ClientTime = (props: any) => {
             <a onClick={() => history.goBack()}>
               Time Report <RightOutlined />
             </a>
-            <p>[SAMPLE] Client A </p>
+            <p>{data?.name}</p>
           </Col>
         </Row>
         <Row className="Report_rowmap">

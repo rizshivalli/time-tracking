@@ -101,7 +101,7 @@ const ProjectList = () => {
                 key="2"
                 onClick={async () => {
                   const hide = message.loading('Action in progress..', 0);
-                  const params = { archived: true };
+                  const params = { is_archived: true };
                   archiveProject(record.id, params)
                     .then(() => {})
                     .catch(() => {})

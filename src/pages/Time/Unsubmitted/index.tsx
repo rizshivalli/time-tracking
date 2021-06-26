@@ -4,7 +4,7 @@ import { Col, DatePicker, Button, Row } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { ActionType } from '@ant-design/pro-table';
-import { getUnsubmittedTimesheets } from '../service';
+import { getUnsubmittedTimesheets, sendAllUnsubmittedMail } from '../service';
 import {
   getStartAndEndOfWeek,
   getRequiredDateFormat,
@@ -16,6 +16,7 @@ import { Skeleton } from 'antd';
 const columns: ProColumns<any>[] = [
   {
     dataIndex: 'id',
+    key: 'id',
     valueType: 'indexBorder',
     width: 48,
     hideInTable: true,
@@ -23,14 +24,17 @@ const columns: ProColumns<any>[] = [
   {
     title: 'Employee Name',
     dataIndex: 'user_name',
+    key: 'user_name',
   },
   {
     title: 'Date Range',
     dataIndex: 'date_range',
+    key: 'date_range',
   },
   {
     title: 'Submitted by',
-    dataIndex: 'user_name',
+    dataIndex: 'submitted_by',
+    key: 'submitted_by',
     render: (text, value) => <div>{value?.submitted_by?.full_name}</div>,
   },
   {
@@ -53,7 +57,7 @@ const Unsubmitted = () => {
   const actionRef = useRef<ActionType>();
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [weekRange, setWeekRange] = useState<string>('');
+  const [weekRange, setWeekRange] = useState<string>('All Time');
 
   const getUnsubmittedData = async () => {
     setLoading(true);
@@ -87,16 +91,26 @@ const Unsubmitted = () => {
   };
 
   const handleWeekChange = (a: any) => {
-    const parsedDate = getRequiredDateFormat(a, 'YYYY-MM-DD');
-    const dates = getStartAndEndOfWeek(getRequiredDateFormat(parsedDate, 'YYYY-MM-DD'));
-    setWeekRange(getStartAndEndOfWeekString(parsedDate));
-    searchData(dates);
+    if (a) {
+      const parsedDate = getRequiredDateFormat(a, 'YYYY-MM-DD');
+      const dates = getStartAndEndOfWeek(getRequiredDateFormat(parsedDate, 'YYYY-MM-DD'));
+      const date = { date: dates.end_date };
+      setWeekRange(getStartAndEndOfWeekString(parsedDate));
+      searchData(date);
+    } else {
+      setWeekRange('All Time');
+      searchData({});
+    }
+  };
+
+  const sendUnsubmittedEmail = async () => {
+    await sendAllUnsubmittedMail();
   };
 
   return (
     <ProGridContainer>
       <Skeleton loading={loading} active>
-        <Row>
+        <Row gutter={[0, 16]}>
           <Col span={24}>
             <ProSpace direction="vertical" style={{ width: '100%' }}>
               <ProTitle size={3}>Unsubmitted</ProTitle>
@@ -108,8 +122,12 @@ const Unsubmitted = () => {
                     onChange={handleWeekChange}
                     placeholder="Select Week"
                   />
-                  <p>
-                    <strong>{weekRange}</strong>
+                  <p
+                    style={{
+                      paddingTop: '10px',
+                    }}
+                  >
+                    <ProTitle size={3}>{weekRange}</ProTitle>
                   </p>
                 </ProSpace>
               </Col>
@@ -131,12 +149,18 @@ const Unsubmitted = () => {
               </ProIntlProvider>
             </ProSpace>
           </Col>
-          <Col span={24}>
-            <Button type="primary" size="middle" className="Send_Mail_BtnWrap">
-              {' '}
-              Send Email Remainder
-            </Button>
-          </Col>
+          {data.length > 0 && (
+            <Col span={24}>
+              <Button
+                type="primary"
+                size="middle"
+                className="Send_Mail_BtnWrap"
+                onClick={() => sendUnsubmittedEmail()}
+              >
+                Send Email Remainder
+              </Button>
+            </Col>
+          )}
         </Row>
       </Skeleton>
     </ProGridContainer>

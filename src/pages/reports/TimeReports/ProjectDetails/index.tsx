@@ -81,10 +81,10 @@ const ProjectTime = (props: any) => {
             </span>
             <span>
               <a href="">
-                [SAMPLE] Client A <RightOutlined />
+                {data?.client?.name} <RightOutlined />
               </a>
             </span>
-            <p>[SAMPLE] Fixed Fee Project </p>
+            <p>{`${`[${data?.project_code}]`} ${data?.name} `}</p>
           </Col>
           <Col span={4}>
             <Button size="middle" className="Projects_Notes_Btns">

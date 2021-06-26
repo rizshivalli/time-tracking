@@ -90,7 +90,7 @@ const TeamHome = () => {
                 key="2"
                 onClick={async () => {
                   const hide = message.loading('Action in progress..', 0);
-                  const params = { archived: true };
+                  const params = { is_archived: true };
                   archiveTeamMembers(record.id, params)
                     .then(() => {})
                     .catch(() => {})

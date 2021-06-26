@@ -8,6 +8,9 @@ import { Link } from 'react-router-dom';
 import type { FC } from 'react';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import { CSVLink } from 'react-csv';
+import { hasAccess } from '@/utils/token';
+
+const access = hasAccess();
 
 const columns: ProColumns<any>[] = [
   {
@@ -17,12 +20,22 @@ const columns: ProColumns<any>[] = [
   },
   {
     title: 'Task',
-    dataIndex: 'project',
-    render: (text, row) => <Link to={`/reports/time/task/details/${row.id}`}>{row.task}</Link>,
+    dataIndex: 'task',
+    render: (text, row) => {
+      return (
+        <div>
+          {access ? (
+            <Link to={`/reports/time/task/details/${row.id}`}>{row.task}</Link>
+          ) : (
+            <div>{text}</div>
+          )}
+        </div>
+      );
+    },
   },
   {
     title: 'Total Hours',
-    dataIndex: 'sum',
+    dataIndex: 'total_hours',
   },
 ];
 

@@ -55,7 +55,7 @@ const TaskTime = (props: any) => {
     <ProGridContainer>
       <Row>
         <Col span={24} className="AllTime">
-          <p className="Main_title">All Time</p>
+          <p className="Main_title">Task Reports</p>
           <div className="Dropdown">
             <RangePicker
               allowClear
@@ -78,7 +78,7 @@ const TaskTime = (props: any) => {
                 Time Report <RightOutlined />
               </a>
             </span>
-            <p>Marketing</p>
+            <p>{data?.name}</p>
           </Col>
         </Row>
         <Row className="Report_rowmap">

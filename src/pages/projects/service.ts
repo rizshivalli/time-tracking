@@ -39,10 +39,11 @@ export async function createProject(params: any) {
 export async function getProjects(params: any) {
   const token = await getToken();
   const organization = await getOrganization();
+  const newParams = { is_archived_ne: true, ...params };
   const response = await request('/strapi/projects', {
     method: 'GET',
     headers: { Authorization: `Bearer ${token}`, orgid: organization },
-    params,
+    params: newParams,
   });
   if (response.statusCode === 200) {
     return response.data;
@@ -113,7 +114,7 @@ export async function importProjectCSV(params: any) {
   });
 }
 
-export async function archiveProject(id: identifier, params: { archived: boolean }) {
+export async function archiveProject(id: identifier, params: { is_archived: boolean }) {
   const token = await getToken();
   const organization = await getOrganization();
   await request(`/strapi/projects/${id}`, {

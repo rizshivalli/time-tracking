@@ -22,10 +22,11 @@ export async function createTeamMember(params: any) {
 export async function getTeamMembers(params: any) {
   const token = await getToken();
   const organization = await getOrganization();
+  const newParams = { is_archived_ne: true, ...params };
   const response = await request('/strapi/organisation-members', {
     method: 'GET',
     headers: { Authorization: `Bearer ${token}`, orgid: organization },
-    params,
+    params: newParams,
   });
 
   if (response.statusCode === 200) {
@@ -36,7 +37,7 @@ export async function getTeamMembers(params: any) {
   }
 }
 
-export async function archiveTeamMembers(id: identifier, params: { archived: boolean }) {
+export async function archiveTeamMembers(id: identifier, params: { is_archived: boolean }) {
   const token = await getToken();
   const organization = await getOrganization();
   await request(`/strapi/organisation-members/${id}`, {
