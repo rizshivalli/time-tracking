@@ -57,6 +57,8 @@
     "@antv/l7": "^2.1.9",
     "@antv/l7-maps": "^2.1.9",
     "@antv/l7-react": "^2.1.9",
+    "@bugsnag/js": "^7.10.4",
+    "@bugsnag/plugin-react": "^7.10.0",
     "@types/lodash.debounce": "^4.0.6",
     "@types/lodash.isequal": "^4.5.5",
     "@umijs/route-utils": "^1.0.33",

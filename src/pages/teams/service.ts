@@ -22,11 +22,11 @@ export async function createTeamMember(params: any) {
 export async function getTeamMembers(params: any) {
   const token = await getToken();
   const organization = await getOrganization();
-  const newParams = { is_archived_ne: true, ...params };
+  // const newParams = { is_archived_ne: true, ...params };
   const response = await request('/strapi/organisation-members', {
     method: 'GET',
     headers: { Authorization: `Bearer ${token}`, orgid: organization },
-    params: newParams,
+    params,
   });
 
   if (response.statusCode === 200) {
@@ -68,6 +68,25 @@ export async function exportTeamCSV(params: any) {
     responseType: 'blob',
     headers: { Authorization: `Bearer ${token}`, orgid: organization },
     method: 'GET',
+    params,
     // data: { ...params },
   });
+}
+
+export async function getMembersSummarry(id: identifier, params: any) {
+  const token = await getToken();
+  const organization = await getOrganization();
+  // const newParams = { is_archived_ne: true, ...params };
+  const response = await request(`/strapi/organisation-members/summary/${id}`, {
+    method: 'GET',
+    headers: { Authorization: `Bearer ${token}`, orgid: organization },
+    params,
+  });
+
+  if (response.statusCode === 200) {
+    return response.data;
+  } else {
+    message.error(`${response.message}, Please try Again`);
+    return [];
+  }
 }

@@ -1,15 +1,17 @@
 import { ProDivider, ProGridContainer, ProIntlProvider, ProSpace, RandomQuote } from '@/common';
-import { DownOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons';
+import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
-import { Button, Col, Dropdown, Menu, Row, Input, Skeleton, message } from 'antd';
-import React, { useEffect, useRef, useState } from 'react';
+import { Button, Col, Dropdown, Menu, Row, Input, Skeleton, message, Select } from 'antd';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ExportProjectsModal from './components/ExportProjectsModal';
 import ImportProjects from './components/ImportProjects';
-import './index.less';
-import { archiveProject, getProjects } from '../service';
+import { archiveProject, getClients, getProjects } from '../service';
 import { Link } from 'umi';
 import { hasAccess } from '@/utils/token';
+import { CSVLink } from 'react-csv';
+
+import './index.less';
 
 const { Search } = Input;
 const access = hasAccess();
@@ -19,10 +21,21 @@ const ProjectList = () => {
   const [importModalVisible, setImportModalVisibility] = useState<boolean>(false);
   const [exportModalVisible, setExportModalVisibility] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [listLoading, setListLoading] = useState<boolean>(false);
   const [data, setData] = useState<any[]>([]);
+  const [clientsData, setClientsData] = useState<any[]>([]);
+  const [filterParams, setFilterParams] = useState<any>({ is_archived: false });
+  const [archived, setArchived] = useState<boolean>(false);
 
-  const getData = async (params: {} = {}) => {
+  const getData = async (params: {} = { is_archived: false }) => {
     setLoading(true);
+    await getClients()
+      .then((client) => {
+        setClientsData(client);
+      })
+      .catch(() => {
+        setClientsData([]);
+      });
     await getProjects(params)
       .then((response) => {
         setData(response);
@@ -35,18 +48,22 @@ const ProjectList = () => {
       });
   };
 
-  const searchData = async (params: {} = {}) => {
-    await getProjects(params)
-      .then((response) => {
-        setData(response);
-      })
-      .catch((error) => {
-        setData([]);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
+  const searchData = useCallback(
+    async (params: {} = {}) => {
+      setListLoading(true);
+      await getProjects(params)
+        .then((response) => {
+          setData(response);
+        })
+        .catch((error) => {
+          setData([]);
+        })
+        .finally(() => {
+          setListLoading(false);
+        });
+    },
+    [filterParams],
+  );
 
   const columns: ProColumns<any>[] = [
     {
@@ -97,22 +114,24 @@ const ProjectList = () => {
               <Menu.Item key="1">
                 <Link to={`/project/${record.id}`}>Edit</Link>
               </Menu.Item>
-              <Menu.Item
-                key="2"
-                onClick={async () => {
-                  const hide = message.loading('Action in progress..', 0);
-                  const params = { is_archived: true };
-                  archiveProject(record.id, params)
-                    .then(() => {})
-                    .catch(() => {})
-                    .finally(() => {
-                      getData();
-                      hide();
-                    });
-                }}
-              >
-                Archive
-              </Menu.Item>
+              {record.is_archived === false && (
+                <Menu.Item
+                  key="2"
+                  onClick={async () => {
+                    const hide = message.loading('Action in progress..', 0);
+                    const params = { is_archived: true };
+                    archiveProject(record.id, params)
+                      .then(() => {})
+                      .catch(() => {})
+                      .finally(() => {
+                        getData();
+                        hide();
+                      });
+                  }}
+                >
+                  Archive
+                </Menu.Item>
+              )}
             </Menu>
           }
         >
@@ -129,7 +148,18 @@ const ProjectList = () => {
   }, []);
 
   const onChange = (e: string) => {
-    const params = { name_contains: e };
+    setFilterParams((existingParams: any) => {
+      return { ...existingParams, name_contains: e };
+    });
+    const params = { ...filterParams, name_contains: e };
+    searchData(params);
+  };
+
+  const handleClientChange = (e: string) => {
+    setFilterParams((existingParams: any) => {
+      return { ...existingParams, 'client.name_contains': e };
+    });
+    const params = { ...filterParams, 'client.name_contains': e };
     searchData(params);
   };
 
@@ -181,65 +211,69 @@ const ProjectList = () => {
             </ProSpace>
           </Col>
           <ProDivider />
+
           <Col span={4} className="filtered_butons">
             <Dropdown
               overlay={
                 <Menu>
-                  <Menu.Item>
-                    <Input size="middle" placeholder="Search" prefix={<SearchOutlined />} />
+                  <Menu.Item
+                    key="1"
+                    onClick={() => {
+                      setArchived(false);
+                      setFilterParams({ is_archived: false });
+                      getData();
+                    }}
+                  >
+                    Active Projects
                   </Menu.Item>
-                  <Menu.Item key="1">Everyone</Menu.Item>
-                  <Menu.Item key="2">My Pinnted Teammates</Menu.Item>
-                  <Menu.Item key="3">My Pinned Projects</Menu.Item>
-                  <Menu.Item key="4">Sample Role</Menu.Item>
+                  <Menu.Item
+                    key="2"
+                    onClick={() => {
+                      setArchived(true);
+                      setFilterParams({ is_archived: true });
+                      searchData({ is_archived: true });
+                    }}
+                  >
+                    Archived Projects
+                  </Menu.Item>
                 </Menu>
               }
             >
               <Button className="Active_projects">
-                Active Projects <DownOutlined />
+                {archived ? 'Archived projects' : 'Active Projects'} <DownOutlined />
               </Button>
             </Dropdown>
           </Col>
+
           <Col span={20} className="filtered_butons">
-            <Dropdown
-              overlay={
-                <Menu>
-                  <Menu.Item>
-                    <Input size="middle" placeholder="Search" prefix={<SearchOutlined />} />
-                  </Menu.Item>
-                  <Menu.Item key="1">Everyone</Menu.Item>
-                  <Menu.Item key="2">My Pinnted Teammates</Menu.Item>
-                  <Menu.Item key="3">My Pinned Projects</Menu.Item>
-                  <Menu.Item key="4">Sample Role</Menu.Item>
-                </Menu>
-              }
-            >
-              <Button className="Filter_by">
-                Filter By Client <DownOutlined />
-              </Button>
-            </Dropdown>
-            <Dropdown
-              overlay={
-                <Menu>
-                  <Menu.Item>
-                    <Input size="middle" placeholder="Search" prefix={<SearchOutlined />} />
-                  </Menu.Item>
-                  <Menu.Item key="1">Everyone</Menu.Item>
-                  <Menu.Item key="2">My Pinnted Teammates</Menu.Item>
-                  <Menu.Item key="3">My Pinned Projects</Menu.Item>
-                  <Menu.Item key="4">Sample Role</Menu.Item>
-                </Menu>
-              }
-            >
-              <Button className="Filter_by">
-                Filter By Manager <DownOutlined />
-              </Button>
-            </Dropdown>
+            <ProSpace>
+              <Select
+                allowClear
+                disabled={!access}
+                showSearch
+                style={{ width: 200 }}
+                placeholder="Filter By Client"
+                optionFilterProp="children"
+                options={clientsData}
+                onChange={handleClientChange}
+                filterOption={(input, option) => {
+                  // @ts-ignore
+                  return option?.label?.toLowerCase()?.indexOf(input?.toLowerCase()) >= 0;
+                }}
+              />
+              {/* <Button className="left-button">
+                <CSVLink filename={'Projects.csv'} data={data}>
+                  Export
+                </CSVLink>
+              </Button> */}
+            </ProSpace>
           </Col>
+
           <Col span={24}>
             <ProSpace direction="vertical" style={{ width: '100%' }}>
               <ProIntlProvider>
                 <ProTable
+                  loading={listLoading}
                   locale={{
                     emptyText: <RandomQuote />,
                   }}
@@ -262,6 +296,7 @@ const ProjectList = () => {
             <ExportProjectsModal
               visible={exportModalVisible}
               setVisibility={setExportModalVisibility}
+              existingParams={filterParams}
             />
           </Col>
         </Row>

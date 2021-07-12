@@ -1,8 +1,20 @@
 import { ProDivider, ProGridContainer, RandomQuote } from '@/common';
-import { Col, Row, Modal, Input, Button, Menu, Dropdown, Progress, Tabs, Skeleton } from 'antd';
+import {
+  Col,
+  Row,
+  Modal,
+  Input,
+  Button,
+  Menu,
+  Dropdown,
+  Progress,
+  Tabs,
+  Skeleton,
+  message,
+} from 'antd';
 import React, { useEffect, useState } from 'react';
 import { LeftOutlined, SearchOutlined, EditOutlined, DownOutlined } from '@ant-design/icons';
-import { getProjectSummaryById } from '../../service';
+import { archiveProject, getProjectSummaryById } from '../../service';
 import './index.less';
 import { LineChart } from '@/common/Charts';
 import { TeamsTab, TasksTab } from './components';
@@ -69,10 +81,33 @@ const ProjectDetails = (props: any) => {
                 <Dropdown
                   overlay={
                     <Menu>
-                      <Menu.Item key="1">pin</Menu.Item>
-                      <Menu.Item key="2">Duplicate</Menu.Item>
-                      <Menu.Item key="3">Archive</Menu.Item>
-                      <Menu.Item key="4">Delete</Menu.Item>
+                      <Menu.Item key="1" disabled>
+                        Pin
+                      </Menu.Item>
+                      <Menu.Item key="2" disabled>
+                        Duplicate
+                      </Menu.Item>
+                      {!data?.is_archived && (
+                        <Menu.Item
+                          key="3"
+                          onClick={async () => {
+                            const hide = message.loading('Action in progress..', 0);
+                            const params = { is_archived: true };
+                            archiveProject(id, params)
+                              .then(() => {})
+                              .catch(() => {})
+                              .finally(() => {
+                                history.goBack();
+                                hide();
+                              });
+                          }}
+                        >
+                          Archive
+                        </Menu.Item>
+                      )}
+                      <Menu.Item key="4" disabled>
+                        Delete
+                      </Menu.Item>
                     </Menu>
                   }
                 >

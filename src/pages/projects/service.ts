@@ -1,7 +1,6 @@
 import request from '@/utils/request';
 import { getOrganization, getToken } from '@/utils/token';
 import { message } from 'antd';
-import { response } from 'express';
 
 type identifier = string | number | undefined;
 
@@ -39,11 +38,11 @@ export async function createProject(params: any) {
 export async function getProjects(params: any) {
   const token = await getToken();
   const organization = await getOrganization();
-  const newParams = { is_archived_ne: true, ...params };
+  // const newParams = { is_archived_ne: true, ...params };
   const response = await request('/strapi/projects', {
     method: 'GET',
     headers: { Authorization: `Bearer ${token}`, orgid: organization },
-    params: newParams,
+    params,
   });
   if (response.statusCode === 200) {
     return response.data;
@@ -145,8 +144,29 @@ export async function exportProjectCSV(params: any) {
     responseType: 'blob',
     headers: { Authorization: `Bearer ${token}`, orgid: organization },
     method: 'GET',
+    params,
     // data: { ...params },
   });
 }
 
 // projects / exports;
+
+export async function getClients() {
+  const token = await getToken();
+  const organization = await getOrganization();
+  const response = await request('/strapi/clients', {
+    method: 'GET',
+    headers: { Authorization: `Bearer ${token}`, orgid: organization },
+  });
+
+  if (response.statusCode === 200) {
+    const newData = response.data.map((resp: any) => ({
+      label: resp.name,
+      value: resp.name,
+    }));
+
+    return newData;
+  } else {
+    return [];
+  }
+}

@@ -4,6 +4,7 @@
  */
 import { extend } from 'umi-request';
 import { notification } from 'antd';
+import Bugsnag from '@bugsnag/js';
 
 const { NODE_ENV } = process.env;
 const codeMessage = {
@@ -29,6 +30,7 @@ const errorHandler = (error: { response: Response }): Response => {
   const { data } = error;
 
   if (data && data.statusCode) {
+    Bugsnag.notify(data);
     const errorText = codeMessage[data.statusCode] || data.message;
     const { message, error } = data;
     if (!NODE_ENV || NODE_ENV === 'development') {

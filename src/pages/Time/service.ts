@@ -86,6 +86,41 @@ export async function createNewTimeRecord(params: any) {
   }
 }
 
+export async function getTimeRecordByID(id: identifier) {
+  const token = await getToken();
+  const organization = await getOrganization();
+  const response = await request(`/strapi/time-records/${id}`, {
+    method: 'GET',
+    headers: { Authorization: `Bearer ${token}`, orgid: organization },
+  });
+  if (response.statusCode === 200) {
+    return response.data;
+  } else {
+    message.error(`${response.message}, Please try Again`);
+    throw new Error(response.message);
+  }
+}
+
+export async function editTimeRecord(id: identifier, params: any) {
+  const hide = message.loading('Editing Time...', 0);
+  const token = await getToken();
+  const organization = await getOrganization();
+  const response = await request(`/strapi/time-records/${id}`, {
+    method: 'PUT',
+    headers: { Authorization: `Bearer ${token}`, orgid: organization },
+    data: params,
+  });
+  if (response.statusCode === 200) {
+    hide();
+    message.success('Time Edited');
+    return response.data;
+  } else {
+    hide();
+    message.error(`${response.message}, Please try Again`);
+    throw new Error(response.message);
+  }
+}
+
 export async function stopTimeRecord(id: identifier, params: any) {
   const hide = message.loading('Stopping Timer...', 0);
   const token = await getToken();

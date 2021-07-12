@@ -84,16 +84,20 @@
     font-size: 18px;
   }
 }
-.time-client-name {
-  margin-bottom: 3px;
+.ant-typography > .time-client-name {
+  margin-bottom: 3px !important;
 }
-.time-client-name p{
-  font-size: 16px;
+.ant-typography p, div.ant-typography {
+    margin-bottom: 0em !important; 
+}
+
+ .time-client-name p {
+  font-size: 16px !important;
 }
 .time-client-name small {
-  color: #888;
-  margin-bottom:5px;
-  font-size: 14px;
+  color: #888 !important;
+  margin-bottom:5px !important;
+  font-size: 14px !important;
 }
 .time-project-name {
   font-size: 12px;
@@ -113,9 +117,10 @@
 // }
 .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab,
 .ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab {
-  margin: 0px;
-  padding: 15px 33px;
-  border: 1px solid #73737324;
+  margin: 0px !important;
+  padding: 15px 33px !important;
+  border: 1px solid #73737324 !important;
+  background:linear-gradient(#fff, #f0f0f0);
 }
 .Time_Sheet-container > .ant-tabs-card .ant-tabs-tab,
 [data-theme='compact'] .Time_Sheet-container > .ant-tabs-card .ant-tabs-tab {
@@ -150,7 +155,7 @@
   right: 0;
   padding: 14px 0px;
   text-align: center;
-  background: #f0f0f0;
+  background:linear-gradient(#fff, #f0f0f0);
   border: 1px solid #73737324;
 }
 span.ant-tag {
@@ -158,15 +163,19 @@ span.ant-tag {
   border: none;
 }
 .ant-row.ant-row-center.time-card-content {
-  padding: 10px 20px;
+  padding: 10px 20px !important;
   background-color: white;
 }
 .ant-tabs-tab.ant-tabs-tab-active {
-  background-color: #b6b6b6 !important;
+  background: #b6b6b6 !important;
 }
 .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
   color: black !important;
 }
+.ant-radio-group-solid .ant-radio-button-wrapper{
+    background:linear-gradient(#fff, #f0f0f0);
+}
+
 .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
   color: #545454;
   background-color: #dedede;
@@ -230,6 +239,10 @@ span.ant-tag {
   .ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab {
     padding: 14px 32px;
   }
+  .ant-row.ant-row-center.time-card-content {
+  padding: 10px 20px !important;
+  background-color: white;
+}
 }
 @media (max-width: 1024px) {
   h3.ant-typography,

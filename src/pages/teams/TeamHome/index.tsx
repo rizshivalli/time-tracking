@@ -27,6 +27,7 @@ import { ImportPeopleModal } from './components';
 import { saveAs } from 'file-saver';
 import { hasAccess } from '@/utils/token';
 import './index.less';
+import { calulateTotalWeekTime } from '@/utils/generalUtils';
 
 const { Search } = Input;
 const todayDate = getToday('YYYY-MM-DD');
@@ -39,6 +40,7 @@ const TeamHome = () => {
   const [data, setData] = useState<any[]>();
   const [loading, setLoading] = useState<boolean>(false);
   const [importModalVisible, setImportModalVisibility] = useState<boolean>(false);
+  const [filterParams, setFilterParams] = useState<any>({ is_archived: false });
 
   const columns: ProColumns<any>[] = [
     {
@@ -49,11 +51,7 @@ const TeamHome = () => {
     {
       title: 'Name',
       dataIndex: 'full_name',
-      render: (text, row) => <Link to={`/teams/summary/${row.id}`}>{row.full_name}</Link>,
-    },
-    {
-      title: 'Capacity',
-      dataIndex: 'capacity',
+      render: (text, row) => <Link to={`/teams/summary/${row?.id}`}>{row?.full_name}</Link>,
     },
     {
       title: 'Designation',
@@ -66,14 +64,11 @@ const TeamHome = () => {
     {
       title: 'Total Hours',
       dataIndex: 'total_hours',
-      valueType: (item) => ({
-        type: 'progress',
-        status: item.status,
-      }),
+      render: (text, row) => <div>{calulateTotalWeekTime(row?.time_records)}</div>,
     },
     {
       title: 'Total Capacity',
-      dataIndex: 'total_capacity',
+      dataIndex: 'capacity',
     },
     {
       title: '',
@@ -113,7 +108,7 @@ const TeamHome = () => {
     },
   ];
 
-  const fetchData = async (params: {} = {}) => {
+  const fetchData = async (params: {} = filterParams) => {
     setLoading(true);
     await getTeamMembers(params)
       .then((response) => {
@@ -127,7 +122,7 @@ const TeamHome = () => {
       });
   };
 
-  const searchData = async (params: {} = {}) => {
+  const searchData = async (params: {} = filterParams) => {
     await getTeamMembers(params)
       .then((response) => {
         setData(response);
@@ -146,12 +141,15 @@ const TeamHome = () => {
 
   const onChange = (e: string) => {
     const params = { full_name_contains: e };
-    searchData(params);
+    searchData({ ...filterParams, ...params });
+    setFilterParams((existingParams: any) => {
+      return { ...existingParams, full_name_contains: e };
+    });
   };
 
   const downloadTeamReport = async (key: any) => {
     const hide = message.loading('Please wait while we download your file..', 0);
-    await exportTeamCSV({})
+    await exportTeamCSV(filterParams)
       .then((data) => {
         saveAs(
           data,
@@ -191,9 +189,9 @@ const TeamHome = () => {
                     setImportModalVisibility(true);
                   }}
                 >
-                  Imports
+                  Import
                 </Button>
-                {/* <Button className="Team_BtnsWrpas">Export</Button> */}
+
                 <Dropdown
                   overlay={
                     <Menu>
@@ -206,6 +204,7 @@ const TeamHome = () => {
                         Export CSV
                       </Menu.Item>
                       <Menu.Item
+                        disabled
                         key="2"
                         onClick={async () => {
                           await downloadTeamReport('xls');

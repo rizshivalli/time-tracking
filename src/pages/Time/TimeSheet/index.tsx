@@ -30,10 +30,11 @@ import {
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getTimeRecords, stopTimeRecord, submitWeekForApproval, getTeamMembers } from '../service';
-import { NewEntryModal } from './components';
+import { NewEntryModal, EditTimeEntry } from './components';
 import { hasAccess } from '@/utils/token';
 import './index.less';
 import { identifier } from '@/pages/manage/Client/service';
+import { calulateTotalWeekTime } from '@/utils/generalUtils';
 
 const { TabPane } = Tabs;
 const { Text } = Typography;
@@ -42,16 +43,6 @@ const today = getToday('dddd, DD MMM');
 const todayDate = getToday('YYYY-MM-DD');
 const fullDate = getToday('YYYY-MM-DD');
 const thisWeekDates = getWeekFromSuntoSat(fullDate);
-
-const calulateTotalWeekTime = (weekArray: any[]) => {
-  return weekArray
-    ?.map((a: any) => parseFloat(a?.duration?.replace(':', '.')))
-    ?.filter((value: any) => !Number.isNaN(value))
-    ?.reduce((a: number, b: number) => a + b, 0)
-    ?.toFixed(2)
-    ?.toString()
-    ?.replace('.', ':');
-};
 
 const TimeSheet = () => {
   const [period, setPeriod] = useState<string>('day');
@@ -64,6 +55,7 @@ const TimeSheet = () => {
   const [weekStatus, setWeekStatus] = useState<string>('Not Submitted');
   const [employeeData, setEmployeeData] = useState<any[]>([]);
   const [editingEmployee, setEditingEmployee] = useState<any | null>(null);
+  const [editEntryModalVisible, setEditEntryModalVisible] = useState<boolean>(false);
 
   const checkWeekApprovalStatus = (time: any) => {
     let status = 'unapproved';
@@ -359,7 +351,13 @@ const TimeSheet = () => {
                                         >
                                           Start
                                         </Button>
-                                        <Button className="EditWraps_Btns" size="small">
+                                        <Button
+                                          className="EditWraps_Btns"
+                                          size="small"
+                                          onClick={() => {
+                                            setEditEntryModalVisible(true);
+                                          }}
+                                        >
                                           <EditOutlined />
                                         </Button>
                                       </Col>
@@ -367,6 +365,18 @@ const TimeSheet = () => {
                                   </Row>
                                 ) : null}
                               </Col>
+                              {editEntryModalVisible && (
+                                <EditTimeEntry
+                                  selectedKey={selectedTabKey}
+                                  visible={editEntryModalVisible}
+                                  setVisibility={setEditEntryModalVisible}
+                                  onSuccess={(key: string) => {
+                                    getWeekData(key);
+                                  }}
+                                  employee={editingEmployee}
+                                  timeID={listItem.id}
+                                />
+                              )}
                             </Row>
                           );
                         }}

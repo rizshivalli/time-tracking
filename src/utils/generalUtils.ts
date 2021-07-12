@@ -148,3 +148,13 @@ export const createTableColumns = (
 };
 
 export const zeroPad = (num: number, places: number = 2) => String(num).padStart(places, '0');
+
+export const calulateTotalWeekTime = (weekArray: any[]) => {
+  return weekArray
+    ?.map((a: any) => parseFloat(a?.duration?.replace(':', '.')))
+    ?.filter((value: any) => !Number.isNaN(value))
+    ?.reduce((a: number, b: number) => a + b, 0)
+    ?.toFixed(2)
+    ?.toString()
+    ?.replace('.', ':');
+};

@@ -89,7 +89,7 @@ const PendingApproval = () => {
 
   return (
     <ProGridContainer>
-      <Row>
+      <Row gutter={[0, 24]}>
         <Col span={24}>
           <ProSpace direction="vertical" style={{ width: '100%' }}>
             <ProTitle size={3}>Pending Approval</ProTitle>
@@ -131,10 +131,14 @@ const PendingApproval = () => {
                   toolBarRender={false}
                 />
               </ProIntlProvider>
-              {data.length > 0 && <Button type="primary">Approve Timesheets</Button>}
             </Skeleton>
           </ProSpace>
         </Col>
+        {!loading && data.length > 0 && (
+          <Col span={24}>
+            <Button type="primary">Approve Timesheets</Button>
+          </Col>
+        )}
       </Row>
     </ProGridContainer>
   );
