@@ -122,11 +122,11 @@ export const capacityOptions = [
 
 export function humanize(str: string) {
   let i,
-    frags = str.split('_');
-  for (i = 0; i < frags.length; i++) {
-    frags[i] = frags[i].charAt(0).toUpperCase() + frags[i].slice(1);
+    frags = str?.split('_');
+  for (i = 0; i < frags?.length; i++) {
+    frags[i] = frags[i]?.charAt(0).toUpperCase() + frags[i]?.slice(1);
   }
-  return frags.join(' ');
+  return frags?.join(' ');
 }
 
 export const createTableColumns = (
@@ -148,3 +148,13 @@ export const createTableColumns = (
 };
 
 export const zeroPad = (num: number, places: number = 2) => String(num).padStart(places, '0');
+
+export const calulateTotalWeekTime = (weekArray: any[]) => {
+  return weekArray
+    ?.map((a: any) => parseFloat(a?.duration?.replace(':', '.')))
+    ?.filter((value: any) => !Number.isNaN(value))
+    ?.reduce((a: number, b: number) => a + b, 0)
+    ?.toFixed(2)
+    ?.toString()
+    ?.replace('.', ':');
+};

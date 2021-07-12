@@ -1,11 +1,128 @@
 @import '~antd/es/style/themes/default.less';
-
+.Timesheet_Note_Wraps{
+  background: #fffce9;
+  border: 1px solid #d5ca0f;
+  padding: 10px 0px;
+}
+.Timesheet_Note_Wraps .Time_content_icons {
+  float: left;
+  padding: 10px 30px;
+  font-size: 29px;
+}
+.Timesheet_Note_Wraps p.Time_content_para {
+  font-weight: 600;
+  margin: 0;
+  font-size: 24px;
+}
 .top-widget {
   display: flex;
   justify-content: space-between;
-  padding: 10px;
+  padding: 10px 0px !important;
 
   .top-widget-container {
     place-items: center;
   }
+}
+
+Button.Weektime_Btns {
+  margin-bottom: 15px;
+  margin-left: 12px;
+}
+.Week_Time_Sheet_container .ant-card-body {
+  padding: 0 !important;
+}
+.Week_Time_Sheet_container .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+  color: #545454;
+  background-color: #dedede;
+  border: none;
+  outline: none;
+}
+.Week_Time_Sheet_container h3.ant-typography {
+  font-weight: 400!important;
+}
+@media (max-width: 768px) {
+  .Week_Time_Sheet_container .top-widget {
+    padding: 10px 0px !important;
+  }
+  .Week_Time_Sheet_container .ant-select {
+    width: 116px !important;
+  }
+  .ant-space.ant-space-horizontal.ant-space-align-end.top-widget-container {
+    gap: 8px !important;
+  }
+}
+@media (max-width: 569px) {
+  .Week_Time_Sheet_container .top-widget {
+    display: block;
+    padding: 10px 0px !important;
+  }
+  .Week_Time_Sheet_container .ant-select{
+    width: 115px!important;
+  }
+  .Week_Time_Sheet_container .ant-picker {
+    width: 90px!important;
+  }
+  .Week_Time_Sheet_container label.ant-radio-button-wrapper {
+    padding: 0px 12px;
+  }
+  .Week_Time_Sheet_container label.ant-radio-button-wrapper.ant-radio-button-wrapper-checked {
+    padding: 0px 12px;
+  }
+}
+@media (max-width: 376px) {
+  .ant-space.ant-space-horizontal.ant-space-align-end.top-widget-container {
+    gap: 8px !important;
+  }
+  .Week_Time_Sheet_container .ant-select{
+    width: 115px!important;
+  }
+  .Week_Time_Sheet_container .ant-picker {
+    width: 90px!important;
+  }
+  .Week_Time_Sheet_container label.ant-radio-button-wrapper {
+    padding: 0px 12px;
+  }
+  .Week_Time_Sheet_container label.ant-radio-button-wrapper.ant-radio-button-wrapper-checked {
+    padding: 0px 12px;
+  }
+}
+
+@media (max-width: 320px) {
+  .ant-space.ant-space-horizontal.ant-space-align-end.top-widget-container {
+    gap: 8px !important;
+  }
+  .Week_Time_Sheet_container .ant-select{
+    width: 90px!important;
+  }
+  .Week_Time_Sheet_container .ant-picker {
+    width: 65px!important;
+  }
+  .Week_Time_Sheet_container label.ant-radio-button-wrapper {
+    padding: 0px 10px;
+  }
+  .Week_Time_Sheet_container label.ant-radio-button-wrapper.ant-radio-button-wrapper-checked {
+    padding: 0px 10px;
+  }
+}
+
+.ant-table-tbody > tr > td {
+  padding: 12px 8px !important;
+}
+
+.ant-table-container table > thead > tr th {
+  padding: 12px 8px !important;
+  font-weight: 500;
+  font-size: 11px;
+  vertical-align: middle;
+  border-top: 1px solid #ccc;
+}
+
+.status-text {
+  width: 100%;
+  margin: 0;
+  margin-top: 0px;
+  margin-bottom: 5px;
+  padding: 2px 0px;
+  text-align: center;
+  border-radius: 10px;
 }

@@ -1,22 +1,53 @@
 import { ProIntlProvider, ProModal } from '@/common';
 import { getRequiredDateFormat } from '@/utils/MomentHelpers';
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useState, useEffect } from 'react';
 import ProForm, { ProFormSelect, ProFormTextArea, ProFormTimePicker } from '@ant-design/pro-form';
-import { Modal } from 'antd';
+import { Modal, Select } from 'antd';
 import { getProjectsForTask, getTasks, createNewTimeRecord } from '../../service';
+import { Skeleton } from 'antd';
 
 interface NewEntryProps {
   selectedKey: string;
   visible: boolean;
   setVisibility: any;
   onSuccess: any;
+  employee: any;
 }
-const NewEntry: FC<NewEntryProps> = ({ selectedKey, visible, setVisibility, onSuccess }) => {
+
+const { Option, OptGroup } = Select;
+
+const NewEntry: FC<NewEntryProps> = ({
+  selectedKey,
+  visible,
+  setVisibility,
+  onSuccess,
+  employee,
+}) => {
+  console.log('🚀 ~ file: NewEntry.tsx ~ line 22 ~ employee', employee);
   const [form] = ProForm.useForm();
   const [timeEntry, setTimeEntry] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [taskOptions, setTaskOptions] = useState([]);
+  const [clientList, setClientList] = useState([]);
+
+  const getClientList = async () => {
+    setLoading(true);
+    await getProjectsForTask()
+      .then((clients) => {
+        setClientList(clients);
+      })
+      .catch((err) => {
+        setClientList([]);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    getClientList();
+  }, []);
   const onDateChange = (date: any, dateString: string) => {
-    console.log(date, dateString);
     if (date) {
       setTimeEntry(true);
     } else {
@@ -26,16 +57,17 @@ const NewEntry: FC<NewEntryProps> = ({ selectedKey, visible, setVisibility, onSu
 
   const onTaskCreated = () => {
     if (onSuccess) {
-      onSuccess();
+      onSuccess(selectedKey);
     }
     setVisibility(false);
   };
 
   const handleFinish = useCallback(async (values) => {
-    console.log('🚀 ~ file: NewTask.tsx ~ line 25 ~ handleFinish ~ values', values);
-    // setPending(true);
-
-    await createNewTimeRecord(values)
+    const newVal = { organisation_member: employee ? employee?.value : null };
+    await createNewTimeRecord({
+      ...values,
+      ...newVal,
+    })
       .then((result) => {
         if (result) {
           Modal.success({
@@ -69,35 +101,37 @@ const NewEntry: FC<NewEntryProps> = ({ selectedKey, visible, setVisibility, onSu
       footer={false}
     >
       <ProIntlProvider>
-        <ProForm
-          onFinish={(values) => {
-            let newValues;
-            if ('duration' in values) {
-              newValues = { date: selectedKey, ...values };
-            } else {
-              newValues = {
-                date: selectedKey,
-                start_time: new Date().toISOString(),
-                ...values,
-              };
-            }
-            // const newValues = { selectedDate: selectedKey, ...values };
-            console.log('🚀 ~ file: NewEntry.tsx ~ line 91 ~ values', newValues);
-            handleFinish(newValues);
-            return Promise.resolve();
-          }}
-          onReset={() => {
-            form.resetFields();
-            setVisibility(false);
-          }}
-          submitter={{
-            searchConfig: {
-              submitText: `${timeEntry ? 'Save Entry' : 'Start Timer'}`,
-              resetText: 'Close',
-            },
-          }}
-        >
-          <ProFormSelect
+        <Skeleton active loading={loading}>
+          <ProForm
+            onFinish={(values) => {
+              let newValues;
+              if ('duration' in values) {
+                newValues = { date: selectedKey, ...values };
+              } else {
+                newValues = {
+                  date: selectedKey,
+                  start_time: new Date().toISOString(),
+                  ...values,
+                };
+              }
+              // const newValues = { selectedDate: selectedKey, ...values };
+
+              handleFinish(newValues);
+              return Promise.resolve();
+            }}
+            onReset={() => {
+              form.resetFields();
+              setVisibility(false);
+            }}
+            submitter={{
+              searchConfig: {
+                submitText: `Save Entry`,
+                // submitText: `${timeEntry ? 'Save Entry' : 'Start Timer'}`,
+                resetText: 'Close',
+              },
+            }}
+          >
+            {/* <ProFormSelect
             request={async () => {
               const clientList = await getProjectsForTask();
               return clientList.map((obj: any) => ({
@@ -106,41 +140,71 @@ const NewEntry: FC<NewEntryProps> = ({ selectedKey, visible, setVisibility, onSu
               }));
             }}
             fieldProps={{
-              onChange: (value) => {
-                console.log('🚀 ~ file: NewEntry.tsx ~ line 103 ~ value', value);
-
-                getTasksForClient(value);
+              optionItemRender(item) {
+                return item.label + ' - ' + item.value;
               },
             }}
             name="project"
             label="Project/Client"
             rules={[{ required: true, message: 'Please select a client!' }]}
-          />
+          >
+            {NewData.map((data) => (
+              <OptGroup label={data.name}>
+                {data.projects.map((project) => (
+                  <Option value={project.id}>{project.project_name}</Option>
+                ))}
+              </OptGroup>
+            ))}
+          </ProFormSelect> */}
+            <ProForm.Item
+              name="project"
+              label="Project/Client"
+              rules={[{ required: true, message: 'Please select a client!' }]}
+              style={{ width: '100%' }}
+            >
+              <Select
+                placeholder="Please select a project"
+                onChange={(value: any) => {
+                  getTasksForClient(value);
+                }}
+              >
+                {clientList?.map((data: any) => (
+                  <OptGroup label={data?.name} key={data.id}>
+                    {data?.projects?.map((project: any) => (
+                      <Option key={project.id} value={project.id}>
+                        {project.name}
+                      </Option>
+                    ))}
+                  </OptGroup>
+                ))}
+              </Select>
+            </ProForm.Item>
 
-          <ProFormSelect
-            options={taskOptions}
-            name="task"
-            label="Task"
-            rules={[{ required: true, message: 'Please select your task!' }]}
-          />
-
-          <ProForm.Group>
-            <ProFormTextArea width="md" name="notes" label="Notes" />
-            <ProFormTimePicker
-              rules={[{ required: true, message: 'Please enter the time!' }]}
-              label="Select Time"
-              name="duration"
-              fieldProps={{
-                format: 'HH:mm',
-                showNow: false,
-                onOk: () => {
-                  setTimeEntry(true);
-                },
-                onChange: onDateChange,
-              }}
+            <ProFormSelect
+              options={taskOptions}
+              name="task"
+              label="Task"
+              rules={[{ required: true, message: 'Please select your task!' }]}
             />
-          </ProForm.Group>
-        </ProForm>
+
+            <ProForm.Group>
+              <ProFormTextArea width="md" name="notes" label="Notes" />
+              <ProFormTimePicker
+                rules={[{ required: true, message: 'Please enter the time!' }]}
+                label="Select Time"
+                name="duration"
+                fieldProps={{
+                  format: 'HH:mm',
+                  showNow: false,
+                  onOk: () => {
+                    setTimeEntry(true);
+                  },
+                  onChange: onDateChange,
+                }}
+              />
+            </ProForm.Group>
+          </ProForm>
+        </Skeleton>
       </ProIntlProvider>
     </ProModal>
   );

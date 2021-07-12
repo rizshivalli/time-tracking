@@ -2,7 +2,7 @@ import { FileExcelOutlined, LogoutOutlined, UserOutlined } from '@ant-design/ico
 import { Avatar, Menu, Spin } from 'antd';
 import React from 'react';
 import type { ConnectProps } from 'umi';
-import { history, connect } from 'umi';
+import { history, connect, Link } from 'umi';
 import type { ConnectState } from '@/models/connect';
 import type { CurrentUser } from '@/models/user';
 import HeaderDropdown from '../HeaderDropdown';
@@ -33,12 +33,14 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
 
       return;
     }
-    //  else if (key === 'my_reports') {
-    //   history.push(`/profile/${key}`);
-    // } else if (key === 'my_profile') {
-    //   history.push(`/profile/${key}`);
-    // }
-    history.push(`/profile/${key}`);
+    //  else
+    // if (key === 'my_reports') {
+    //   history.push(`/reports/time/team/details/${userId}`);
+    // } else
+    if (key === 'my_profile') {
+      history.push(`/profile/${key}`);
+    }
+    // history.push(`/profile/${key}`);
   };
 
   render(): React.ReactNode {
@@ -46,19 +48,30 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
       currentUser = {
         avatar: '',
         name: '',
+        userid: '',
       },
       menu,
     } = this.props;
+
     const menuHeaderDropdown = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={this.onMenuClick}>
-        {menu && (
+        {/* {menu && (
           <Menu.Item key="my_profile">
             <UserOutlined />
             My Profile
           </Menu.Item>
-        )}
+        )} */}
         {menu && (
-          <Menu.Item key="my_reports">
+          <Menu.Item
+            key="my_reports"
+            id={currentUser.userid}
+            onClick={() =>
+              history.push(
+                // @ts-ignore
+                `/reports/time/team/details/${currentUser?.data?.organisation_member?.id}`,
+              )
+            }
+          >
             <FileExcelOutlined />
             My Reports
           </Menu.Item>

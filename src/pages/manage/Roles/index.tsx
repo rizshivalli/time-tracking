@@ -4,6 +4,7 @@ import ProList from '@ant-design/pro-list';
 import { Button, Col, Row } from 'antd';
 import React, { useState } from 'react';
 import { NewRoleModal } from './components';
+import './index.less';
 
 const dataSource = [
   {
@@ -29,11 +30,14 @@ const ManageRoles = () => {
     <ProGridContainer>
       <Row>
         <Col span={24}>
+          <div className="Roles_title">Roles</div>
+        </Col>
+        <Col span={24}>
           <ProSpace direction="vertical" style={{ width: '100%' }}>
             <ProSpace>
               <Button
                 type="primary"
-                size="large"
+                size="middle"
                 onClick={() => {
                   setNewRoleModalVisible(true);
                 }}

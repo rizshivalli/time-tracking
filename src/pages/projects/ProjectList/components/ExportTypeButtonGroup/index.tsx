@@ -22,6 +22,7 @@ const ExportTypeButtonGroup: FC<ButtonGroupProps> = ({ data, parentCallback, sel
         const isSelected = item.key === selectedButton;
         return (
           <Button
+            disabled={item.isDisabled}
             key={index.toString()}
             block
             size="large"

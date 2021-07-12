@@ -6,6 +6,32 @@
   padding-bottom: 15px;
   // border: 1px solid black;
 }
+.ant-col.ant-col-4.filtered_butons{
+  display: flex;
+}
+.ant-col.ant-col-20.filtered_butons{
+    text-align: right;
+    .ant-select-selection-placeholder{     
+      text-align: left;
+    }
+    .ant-select-selection-item{
+       text-align: left;
+    }
+}
+Button.Active_projects{
+  background:linear-gradient(#fff,#f0f0f0);
+  letter-spacing: 0.5px;
+  color: #545454;
+}
+Button.Filter_by{
+  margin-left: 5px;
+  background:linear-gradient(#fff,#f0f0f0);
+  letter-spacing: 0.5px;
+  color: #545454;
+}
+button.New_project {
+  font-weight: 600;
+}
 
 // table {
 //   width: 100%;
@@ -28,3 +54,19 @@
 // .row-group {
 //   display: table-row-group;
 // }
+Button.Projects_OptionsWrpas{
+  background:linear-gradient(#fff,#f0f0f0);
+}
+Button.left-button{
+  background:linear-gradient(#fff,#f0f0f0);
+  letter-spacing: 0.5px;
+  color: #545454;
+}
+@media (max-width: 426px) {
+  .ant-space.ant-space-horizontal.ant-space-align-center {
+    display: block;
+  }
+  Button.left-button{
+    margin-top: 4px;
+  }
+}

@@ -1,11 +1,17 @@
-import { ProGridContainer, ProSpace, ProTitle } from '@/common';
+import { ProGridContainer, ProSpace, ProTitle, RandomQuote } from '@/common';
 import {
   getWeekFromSuntoSat,
   getToday,
   getStartAndEndOfWeek,
   getRequiredDateFormat,
 } from '@/utils/MomentHelpers';
-import { PlusOutlined, ClockCircleOutlined, HistoryOutlined } from '@ant-design/icons';
+import {
+  PlusOutlined,
+  ClockCircleOutlined,
+  HistoryOutlined,
+  EditOutlined,
+  PicLeftOutlined,
+} from '@ant-design/icons';
 import {
   Button,
   Col,
@@ -20,34 +26,23 @@ import {
   message,
   Statistic,
   Empty,
-  Timeline,
 } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getTimeRecords, stopTimeRecord, submitWeekForApproval } from '../service';
-import { NewEntryModal } from './components';
-import moment from 'moment';
+import { getTimeRecords, stopTimeRecord, submitWeekForApproval, getTeamMembers } from '../service';
+import { NewEntryModal, EditTimeEntry } from './components';
+import { hasAccess } from '@/utils/token';
 import './index.less';
-import { zeroPad } from '@/utils/generalUtils';
+import { identifier } from '@/pages/manage/Client/service';
+import { calulateTotalWeekTime } from '@/utils/generalUtils';
 
 const { TabPane } = Tabs;
-const { Option } = Select;
 const { Text } = Typography;
-
+const access = hasAccess();
 const today = getToday('dddd, DD MMM');
 const todayDate = getToday('YYYY-MM-DD');
 const fullDate = getToday('YYYY-MM-DD');
 const thisWeekDates = getWeekFromSuntoSat(fullDate);
-
-const calulateTotalWeekTime = (weekArray: any[]) => {
-  return weekArray
-    ?.map((a: any) => parseFloat(a?.duration?.replace(':', '.')))
-    ?.filter((value: any) => !Number.isNaN(value))
-    ?.reduce((a: number, b: number) => a + b, 0)
-    ?.toFixed(2)
-    ?.toString()
-    ?.replace('.', ':');
-};
 
 const TimeSheet = () => {
   const [period, setPeriod] = useState<string>('day');
@@ -58,6 +53,9 @@ const TimeSheet = () => {
   const [listLoading, setListLoading] = useState<boolean>(false);
   const [weekTotal, setWeekTotal] = useState<string>('0');
   const [weekStatus, setWeekStatus] = useState<string>('Not Submitted');
+  const [employeeData, setEmployeeData] = useState<any[]>([]);
+  const [editingEmployee, setEditingEmployee] = useState<any | null>(null);
+  const [editEntryModalVisible, setEditEntryModalVisible] = useState<boolean>(false);
 
   const checkWeekApprovalStatus = (time: any) => {
     let status = 'unapproved';
@@ -66,11 +64,18 @@ const TimeSheet = () => {
     }
     setWeekStatus(status);
   };
+
   const getWeekData = useCallback(
-    async (key: string) => {
+    async (
+      key: string = selectedTabKey,
+      organisation_member: string | number | null = editingEmployee?.value,
+    ) => {
       const newDates = getStartAndEndOfWeek(key);
       setListLoading(true);
-      await getTimeRecords(newDates)
+
+      const params =
+        organisation_member === null ? null : { organisation_member: organisation_member };
+      await getTimeRecords(newDates, params)
         .then((time) => {
           const total = calulateTotalWeekTime(time);
           setWeekTotal(total);
@@ -84,7 +89,7 @@ const TimeSheet = () => {
           setListLoading(false);
         });
     },
-    [selectedTabKey],
+    [selectedTabKey, editingEmployee],
   );
 
   const stopTimer = async (id: string, values: any) => {
@@ -92,12 +97,17 @@ const TimeSheet = () => {
     getWeekData(selectedTabKey);
   };
 
+  const getEmployeeList = async () => {
+    const data = await getTeamMembers();
+    setEmployeeData(data);
+  };
+
   useEffect(() => {
     getWeekData(selectedTabKey);
-  }, []);
+    getEmployeeList();
+  }, [editingEmployee]);
 
   const onDateChange = (date: any, dateString: string) => {
-    console.log(date, dateString);
     if (date) {
       const newDate = getRequiredDateFormat(dateString, 'YYYY-MM-DD');
       const getNewDatesArray = getWeekFromSuntoSat(newDate);
@@ -124,69 +134,77 @@ const TimeSheet = () => {
     setPeriod(e.target.value);
   };
 
-  function callback(key: string) {
+  async function callback(key: string) {
     setSelectedTabKey(() => {
       return key;
     });
   }
 
   const submitWeek = async () => {
-    const dates = getStartAndEndOfWeek(selectedTabKey);
-    await submitWeekForApproval(dates);
+    const approval_id = weekData[0]?.approval?.id;
+    await submitWeekForApproval(approval_id);
     getWeekData(selectedTabKey);
   };
 
-  const getDuration = (startTime: string, endTime: string) => {
-    const hourDiff = zeroPad(moment(endTime).diff(startTime, 'hours'));
-    const minDiffer = zeroPad(moment(endTime).diff(startTime, 'minutes'));
-    const totalDiffer = `${hourDiff}:${minDiffer}`;
-    return totalDiffer;
-  };
   const OperationsSlot = {
-    // left: (
-    //   <Button
-    //     type="primary"
-    //     icon={<PlusOutlined />}
-    //     size="large"
-    //     onClick={() => {
-    //       setNewEntryModalVisible(true);
-    //     }}
-    //   >
-    //     New Entry
-    //   </Button>
-    // ),
     right: <Tag icon={<ClockCircleOutlined />}>Week Total: {weekTotal && weekTotal}</Tag>,
   };
 
+  function handleEmployeeChange(value: identifier, option: any) {
+    if (value) {
+      getWeekData(selectedTabKey, value);
+      setEditingEmployee(option);
+    } else {
+      setEditingEmployee(null);
+    }
+  }
   return (
     <ProGridContainer>
       <Row>
         <Col span={2}>
-          <div className="new_entry_wraps">
-            <Button
-              className="btn"
-              type="primary"
-              onClick={() => {
-                setNewEntryModalVisible(true);
-              }}
-              icon={<PlusOutlined />}
-            ></Button>
-            <div
-              onClick={() => {
-                setNewEntryModalVisible(true);
-              }}
-              className="entry_class_wraps"
-            >
-              New Entry
+          {weekStatus !== 'Approved' && (
+            <div className="new_entry_wraps">
+              <Button
+                size="large"
+                className="btn"
+                type="primary"
+                onClick={() => {
+                  setNewEntryModalVisible(true);
+                }}
+                icon={<PlusOutlined />}
+              />
+              <div className="entry_class_wraps">New Entry</div>
             </div>
-          </div>
+          )}
         </Col>
-        <Col span={21}>
-          <div className="card-container">
+        <Col span={22}>
+          {editingEmployee && (
+            <div className="Timesheet_Note_Wraps">
+              <div className="Time_content_icons">
+                <PicLeftOutlined />
+              </div>
+              <p className="Time_content_para">{`${editingEmployee.label}’s Timesheet`}</p>
+              <p className="changes_content">
+                All changes will save to this user’s timesheet.
+                <a
+                  onClick={() => {
+                    handleEmployeeChange(undefined, null);
+                  }}
+                >
+                  {' '}
+                  Resume editing your own timesheet
+                </a>
+              </p>
+            </div>
+          )}
+          <div className="Time_Sheet-container">
             <div className="top-widget">
               <ProSpace size="large" align="start" className="top-widget-container">
                 <ProSpace>
-                  <ProTitle size={3}>Today:</ProTitle>
+                  <ProTitle size={3}>
+                    {/* @ts-ignore */}
+                    <strong>Today:</strong>
+                  </ProTitle>
                   <ProTitle size={3}>{today}</ProTitle>
                 </ProSpace>
               </ProSpace>
@@ -206,17 +224,23 @@ const TimeSheet = () => {
                       <Radio.Button value="week">Week</Radio.Button>
                     </Link>
                   </Radio.Group>
-                  <Select
-                    disabled
-                    showSearch
-                    style={{ width: 200 }}
-                    placeholder="Employee"
-                    optionFilterProp="children"
-                  >
-                    <Option value="jack">Jack</Option>
-                    <Option value="lucy">Lucy</Option>
-                    <Option value="tom">Tom</Option>
-                  </Select>
+                  {true && (
+                    <Select
+                      allowClear
+                      disabled={!access}
+                      showSearch
+                      style={{ width: 200 }}
+                      placeholder="Employee"
+                      optionFilterProp="children"
+                      options={employeeData}
+                      // @ts-ignore
+                      onChange={handleEmployeeChange}
+                      filterOption={(input, option) => {
+                        // @ts-ignore
+                        return option?.label?.toLowerCase()?.indexOf(input?.toLowerCase()) >= 0;
+                      }}
+                    />
+                  )}
                 </ProSpace>
               </ProSpace>
             </div>
@@ -236,7 +260,6 @@ const TimeSheet = () => {
                 {weekStatus}
               </div>
             )}
-
             <Tabs
               type="card"
               defaultActiveKey={selectedTabKey}
@@ -254,21 +277,11 @@ const TimeSheet = () => {
                   return (
                     <TabPane tab={`${day} ${date}`} key={key}>
                       <List
+                        locale={{
+                          emptyText: <RandomQuote />,
+                        }}
                         // Footer
-                        footer={
-                          !listLoading && weekData?.length !== 0 ? (
-                            <div className="time-list-footer">
-                              <Button
-                                onClick={() => {
-                                  submitWeek();
-                                }}
-                                disabled={weekStatus !== 'unapproved' ? true : false}
-                              >
-                                Submit Week for Approval
-                              </Button>
-                            </div>
-                          ) : null
-                        }
+                        footer={false}
                         size="small"
                         loading={listLoading}
                         dataSource={weekData}
@@ -280,13 +293,19 @@ const TimeSheet = () => {
                                   <Row justify="center" className="time-card-content">
                                     <Col span={18}>
                                       <ProSpace direction="vertical">
-                                        <Text className="time-client-name">
-                                          {`[${
-                                            listItem?.project?.project_code
-                                              ? listItem?.project?.project_code
-                                              : listItem?.project?.name
-                                          }]${listItem?.task.name}`}
-                                        </Text>
+                                        <ProSpace direction="vertical">
+                                          <Text className="time-client-name">
+                                            <p>
+                                              <strong>{`[${
+                                                listItem?.project?.project_code
+                                                  ? listItem?.project?.project_code
+                                                  : listItem?.project?.name
+                                              }]`}</strong>
+                                              {listItem?.task.name}
+                                            </p>
+                                            <small>{listItem?.notes}</small>
+                                          </Text>
+                                        </ProSpace>
                                       </ProSpace>
                                     </Col>
 
@@ -317,9 +336,6 @@ const TimeSheet = () => {
                                       <Col span={6} className="card-left-content">
                                         <Text className="time-hours">
                                           {listItem?.duration?.slice(0, -3)}
-                                          {/* {listItem?.duration === '00:00:00'
-                                            ? getDuration(listItem.start_time, listItem.end_time)
-                                            : listItem?.duration?.slice(0, -3)} */}
                                         </Text>
                                         <Button
                                           disabled
@@ -331,35 +347,73 @@ const TimeSheet = () => {
                                               project: listItem?.project?.id,
                                               task: listItem?.task.id,
                                             };
-                                            // restartTimer(values)
                                           }}
                                         >
                                           Start
+                                        </Button>
+                                        <Button
+                                          className="EditWraps_Btns"
+                                          size="small"
+                                          onClick={() => {
+                                            setEditEntryModalVisible(true);
+                                          }}
+                                        >
+                                          <EditOutlined />
                                         </Button>
                                       </Col>
                                     )}
                                   </Row>
                                 ) : null}
                               </Col>
+                              {editEntryModalVisible && (
+                                <EditTimeEntry
+                                  selectedKey={selectedTabKey}
+                                  visible={editEntryModalVisible}
+                                  setVisibility={setEditEntryModalVisible}
+                                  onSuccess={(key: string) => {
+                                    getWeekData(key);
+                                  }}
+                                  employee={editingEmployee}
+                                  timeID={listItem.id}
+                                />
+                              )}
                             </Row>
                           );
                         }}
                       />
-                      {/* TODO Total Time of the day */}
                     </TabPane>
                   );
                 })
               )}
             </Tabs>
+            {!listLoading && weekData?.length !== 0 ? (
+              <div className="time-list-footer">
+                <Button
+                  onClick={() => {
+                    submitWeek();
+                  }}
+                  disabled={
+                    weekStatus !== 'Not Submitted' && weekStatus !== 'unapproved' ? true : false
+                  }
+                >
+                  Submit Week for Approval
+                </Button>
+              </div>
+            ) : null}
           </div>
         </Col>
       </Row>
-      <NewEntryModal
-        selectedKey={selectedTabKey}
-        visible={newEntryModalVisible}
-        setVisibility={setNewEntryModalVisible}
-        onSuccess={getWeekData}
-      />
+      {newEntryModalVisible && (
+        <NewEntryModal
+          selectedKey={selectedTabKey}
+          visible={newEntryModalVisible}
+          setVisibility={setNewEntryModalVisible}
+          onSuccess={(key: string) => {
+            getWeekData(key);
+          }}
+          employee={editingEmployee}
+        />
+      )}
     </ProGridContainer>
   );
 };

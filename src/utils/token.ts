@@ -60,3 +60,29 @@ export function getOrganization(str?: string) {
 
   return token;
 }
+
+export function hasAccess(str?: string) {
+  const tokenString =
+    typeof str === 'undefined' && localStorage ? localStorage.getItem('antd-pro-authority') : str; // tokenString could be admin, "admin", ["admin"]
+
+  let token;
+
+  try {
+    if (tokenString) {
+      token = JSON.parse(tokenString);
+    }
+  } catch (e) {
+    token = tokenString;
+  }
+
+  if (typeof token === 'string') {
+    return [token];
+  }
+  const authString = token.toString();
+
+  if (authString === 'admin' || authString === 'owner' || authString === 'project_manager') {
+    return true;
+  } else {
+    return false;
+  }
+}

@@ -4,6 +4,8 @@ import { Redirect, connect } from 'umi';
 import type { ConnectProps } from 'umi';
 import type { ConnectState } from '@/models/connect';
 import type { CurrentUser } from '@/models/user';
+import Bugsnag from '@bugsnag/js';
+import BugsnagPluginReact from '@bugsnag/plugin-react';
 
 type SecurityLayoutProps = {
   loading?: boolean;
@@ -14,6 +16,13 @@ type SecurityLayoutState = {
   isReady: boolean;
 };
 
+Bugsnag.start({
+  apiKey: 'ee25fede931f70bc5a29227d97814703',
+  plugins: [new BugsnagPluginReact()],
+  enabledReleaseStages: ['production'],
+});
+
+const ErrorBoundary = Bugsnag?.getPlugin('react')?.createErrorBoundary(React);
 class SecurityLayout extends React.Component<SecurityLayoutProps, SecurityLayoutState> {
   state: SecurityLayoutState = {
     isReady: false,
@@ -29,6 +38,10 @@ class SecurityLayout extends React.Component<SecurityLayoutProps, SecurityLayout
         type: 'user/fetchCurrent',
       });
     }
+    // @ts-ignore
+    const { currentUser } = this?.props;
+
+    Bugsnag.setUser(currentUser?.userid, currentUser?.data?.email, currentUser?.name);
   }
 
   render() {
@@ -44,7 +57,8 @@ class SecurityLayout extends React.Component<SecurityLayoutProps, SecurityLayout
     if (!isLogin && window.location.pathname !== '/user/login') {
       return <Redirect to={`/user/login`} />;
     }
-    return children;
+    // @ts-ignore
+    return <ErrorBoundary>{children}</ErrorBoundary>;
   }
 }
 

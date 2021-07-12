@@ -1,11 +1,12 @@
 import { ProDivider, ProGridContainer, ProSpace } from '@/common';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Button, Col, message, Row } from 'antd';
+import { Button, Col, message, Row, Menu, Dropdown } from 'antd';
 import ProList from '@ant-design/pro-list';
 import { NewTaskModal } from './components';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, DownOutlined } from '@ant-design/icons';
 import { getCommonTasks, deleteCommonTask } from './service';
 import DeleteAlert from '@/common/DeleteAlert';
+import './index.less';
 
 const dataSource = [
   {
@@ -58,16 +59,32 @@ const ManageTasks = () => {
     <ProGridContainer>
       <Row>
         <Col span={24}>
+          <div className="manage_tasks_title">Manage Tasks</div>
+        </Col>
+        <Col span={24}>
           <ProSpace direction="vertical" style={{ width: '100%' }}>
             <ProSpace>
               <Button
                 type="primary"
-                size="large"
+                size="middle"
                 onClick={() => setNewTaskModalVisibility(true)}
                 icon={<PlusOutlined />}
               >
                 New Task
-              </Button>{' '}
+              </Button>
+              <Dropdown
+                disabled
+                overlay={
+                  <Menu>
+                    <Menu.Item key="1">Export to Excel</Menu.Item>
+                    <Menu.Item key="2">Export to CSV</Menu.Item>
+                  </Menu>
+                }
+              >
+                <Button className="Export_Wraps_btn">
+                  Export <DownOutlined />
+                </Button>
+              </Dropdown>
             </ProSpace>
             <ProDivider />
             <ProList<{ id: string; name: string }>
@@ -95,7 +112,6 @@ const ManageTasks = () => {
                 },
               }}
               rowKey="id"
-              headerTitle="Common Tasks"
               rowSelection={false}
               dataSource={commonTasks}
             />

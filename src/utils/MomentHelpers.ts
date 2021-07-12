@@ -56,3 +56,45 @@ export const getStartAndEndOfWeek = (date: string) => {
   };
   return dates;
 };
+
+export const getStartAndEndOfWeekString = (date: string) => {
+  return `${getRequiredDateFormat(
+    moment(date).startOf('week'),
+    'DD MMM YYYY',
+  )} - ${getRequiredDateFormat(moment(date).endOf('week'), 'DD MMM YYYY')}`;
+};
+
+export const initialDateRanges: any = [
+  getRequiredDateFormat(moment().subtract(21, 'y'), 'YYYY-MM-DD'),
+  getRequiredDateFormat(moment(), 'YYYY-MM-DD'),
+];
+
+export const dashboardDateRanges: any = {
+  'This Week': [moment().startOf('week'), moment().endOf('week')],
+  'This month': [moment().startOf('month'), moment().endOf('month')],
+  'Last 30 days': [moment().subtract(30, 'd'), moment()],
+  'Last month': [
+    moment().subtract(1, 'M').startOf('month'),
+    moment().subtract(1, 'M').endOf('month'),
+  ],
+  'Last 3 months': [
+    moment().subtract(4, 'M').startOf('month'),
+    moment().subtract(1, 'M').endOf('month'),
+  ],
+  'Last 6 months': [
+    moment().subtract(7, 'M').startOf('month'),
+    moment().subtract(1, 'M').endOf('month'),
+  ],
+  // 'Q 1': [moment().startOf('year'), moment().startOf('year').add(2, 'M').endOf('month')],
+  // 'Q 2': [
+  //   moment().startOf('year').add(3, 'M'),
+  //   moment().startOf('year').add(5, 'M').endOf('month'),
+  // ],
+  // 'Q 3': [
+  //   moment().startOf('year').add(6, 'M'),
+  //   moment().startOf('year').add(8, 'M').endOf('month'),
+  // ],
+  // 'Q 4': [moment().startOf('year').add(9, 'M'), moment().endOf('year')],
+  'This year': [moment().startOf('year'), moment().endOf('year')],
+  'All ': [moment('2000-01-01'), moment()],
+};

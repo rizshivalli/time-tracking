@@ -1,3 +1,4 @@
+import { history } from 'umi';
 import { ProDivider, ProGridContainer, ProIntlProvider, ProTitle } from '@/common';
 import { getClients } from '@/pages/manage/Client/service';
 import { getCommonTasks } from '@/pages/manage/Tasks/service';
@@ -14,6 +15,7 @@ import { Modal } from 'antd';
 import React, { useCallback, useState } from 'react';
 import { createProject, getTeamMates } from '../service';
 import SendInviteModal from './components/SendInviteModal';
+import './index.less';
 
 const CreateNewProject = () => {
   const [isClientNew, setClientNew] = useState<boolean>(false);
@@ -22,6 +24,7 @@ const CreateNewProject = () => {
 
   const onTaskCreated = () => {
     form.resetFields();
+    history.goBack();
   };
 
   const handleFinish = useCallback(async (values) => {
@@ -51,11 +54,12 @@ const CreateNewProject = () => {
           form={form}
           onReset={() => {
             form.resetFields();
+            history.goBack();
           }}
           submitter={{
             searchConfig: {
               submitText: 'Create Project',
-              resetText: 'Reset Feilds',
+              resetText: 'Cancel',
             },
           }}
           onFinish={(values: any) => {
@@ -107,9 +111,10 @@ const CreateNewProject = () => {
                 rules={[{ required: true, message: 'Please select a client!' }]}
               />
             )}
-            {'or'}{' '}
+            {'or'}
             {!isClientNew ? (
               <Button
+                className="New_Clinets_wraps"
                 icon={<PlusOutlined />}
                 onClick={() => {
                   setClientNew(true);

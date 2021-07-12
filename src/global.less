@@ -6,6 +6,13 @@ body,
   height: 100%;
 }
 
+// @font-family: 'Fakt', 'Helvetica Neue', arial, sans-serif;
+
+// @font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+//   'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+//   'Noto Color Emoji';
+
+
 .colorWeak {
   filter: invert(80%);
 }
@@ -22,11 +29,87 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+ font-family:  'Fakt', 'Helvetica Neue',  sans-serif !important;
+
+font-face {
+  font-family:"Fakt";
+  font-style:normal;
+  font-weight:400;
+  src:url(./font/FaktProNormal.woff) format("woff");
+  font-display:swap
+}
+
+font-face {
+  font-family:"Fakt";
+  font-style:normal;
+  font-weight:500;
+  src:url(./font/FaktProMedium.woff) format("woff");
+  font-display:swap
+}
+
+font-face {
+  font-family:"Fakt";
+  font-style:normal;
+  font-weight:600;
+  src:url(./font/FaktProSemiBold.woff) format("woff");
+  font-display:swap
+}
+font-face {
+  font-family:"Fakt";
+  font-style:italic;
+  font-weight:400;
+  src:url(./font/FaktProNormalItalic.woff) format("woff");
+  font-display:swap 
+}
+
+font-face { 
+  font-family:"Fakt";
+  font-style:italic;
+  font-weight:500;
+  src:url(./font/FaktProMediumItalic.woff) format("woff");
+  font-display:swap
+} 
+
+font-face {
+  font-family:"Fakt";
+  font-style:italic;
+  font-weight:600;
+  src:url(./font/FaktProSemiBoldItalic.woff) format("woff");
+  font-display:swap
+}
 }
 
 ul,
 ol {
   list-style: none;
+}
+
+.ant-modal-header {
+  text-align: center;
+  background-color: #f0f2f5 !important;
+  border-radius: 6px !important;
+}
+.ant-modal-content {
+  border-radius: 6px !important;
+}
+.ant-modal-content .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+  height: auto;
+  padding: 5px 10px;
+  background: linear-gradient(#fff, #f4f4f4) !important;
+}
+
+.ant-table-container table > thead > tr th {
+  padding: 5px 20px !important;
+  font-weight: 500;
+  font-size: 14px !important;
+  vertical-align: middle;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  background:linear-gradient(#fff, #f0f0f0);
+}
+.ant-table-tbody > tr > td {
+  padding: 10px 20px !important;
+
 }
 
 @media (max-width: @screen-xs) {

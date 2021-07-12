@@ -1,0 +1,118 @@
+@import '~antd/es/style/themes/default.less';
+
+.back_to_Project {
+  cursor: pointer;
+  transition: 0.5s;
+}
+.back_to_Project:hover {
+  opacity: 0.6;
+  transition: 0.5s;
+}
+.ant-col.ant-col-18.text-right {
+  text-align: right;
+}
+p {
+  margin: 0;
+}
+p.Head_Title {
+  margin: 0;
+  margin-bottom: 5px;
+  font-weight: 600;
+  font-size: 26px;
+}
+p.para_text {
+  margin: 0;
+  margin-bottom: 15px;
+}
+p.Head_Title small {
+  padding: 4px 8px;
+  color: #626262;
+  font-size: 11px;
+  line-height: 1;
+  vertical-align: middle;
+  background-color: white;
+  border: 1px solid #b6b6b6;
+  border-radius: 21px;
+}
+.ant-col.ant-col-6.projects_Detsils_btnwraps {
+  text-align: right;
+}
+.ant-col.ant-col-6.projects_Detsils_btnwraps Button {
+  margin-bottom: 10px;
+  margin-left: 10px;
+  background: linear-gradient(#fff, #f0f0f0);
+}
+
+.Bar_Chart_Card {
+  position: relative;
+  padding: 20px 20px;
+  overflow: hidden;
+  background-color: white;
+  border: 1px solid lightgray;
+}
+.Box_Content {
+  color: #626262;
+  font-weight: 500;
+  font-size: 14px;
+}
+.Main-Text {
+  margin: 0;
+  margin-bottom: 9px;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 1.25;
+}
+.Bar_Chart_Card .inline_box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.Projects_Tabs .ant-tabs-content.ant-tabs-content-top {
+  padding: 32px 0px;
+  background-color: white;
+}
+.Projects_Tabs .ant-tabs > .ant-tabs-nav,
+.ant-tabs > div > .ant-tabs-nav {
+  margin: 0;
+}
+.ant-tabs-ink-bar {
+  top: 0;
+}
+.Projects_Tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #2f54eb;
+  text-shadow: 0 0 0.25px currentColor;
+  background-color: white;
+}
+.Projects_Tabs .ant-tabs-tab.ant-tabs-tab-active {
+  padding: 0px 20px;
+  background-color: white !important;
+}
+
+@media (max-width: 768px) {
+  .Bar_Chart_Card {
+    height: 230px;
+    padding: 20px 12px;
+  }
+}
+
+@media (max-width: 526px) {
+  .back_to_Project {
+    margin-top: 9px;
+    font-size: 10px;
+  }
+  .ant-col.ant-col-6.projects_Detsils_btnwraps Button {
+    margin-top: 6px;
+    margin-bottom: 6px;
+    margin-left: 0px;
+    padding: 1px 10px;
+    font-size: 9px;
+  }
+  .Bar_Chart_Card {
+    width: 100%;
+    height: auto;
+  }
+  .Projects_Cards {
+    display: contents;
+  }
+}

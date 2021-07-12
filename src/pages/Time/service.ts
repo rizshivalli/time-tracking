@@ -54,7 +54,7 @@ export async function getTasks(project_id: string) {
 export async function getProjectsForTask() {
   const token = await getToken();
   const organization = await getOrganization();
-  const response = await request('/strapi/projects', {
+  const response = await request('/strapi/clients', {
     method: 'GET',
     headers: { Authorization: `Bearer ${token}`, orgid: organization },
   });
@@ -81,7 +81,42 @@ export async function createNewTimeRecord(params: any) {
     return response.data;
   } else {
     hide();
-    message.error(response.message);
+    message.error(`${response.message}, Please try Again`);
+    throw new Error(response.message);
+  }
+}
+
+export async function getTimeRecordByID(id: identifier) {
+  const token = await getToken();
+  const organization = await getOrganization();
+  const response = await request(`/strapi/time-records/${id}`, {
+    method: 'GET',
+    headers: { Authorization: `Bearer ${token}`, orgid: organization },
+  });
+  if (response.statusCode === 200) {
+    return response.data;
+  } else {
+    message.error(`${response.message}, Please try Again`);
+    throw new Error(response.message);
+  }
+}
+
+export async function editTimeRecord(id: identifier, params: any) {
+  const hide = message.loading('Editing Time...', 0);
+  const token = await getToken();
+  const organization = await getOrganization();
+  const response = await request(`/strapi/time-records/${id}`, {
+    method: 'PUT',
+    headers: { Authorization: `Bearer ${token}`, orgid: organization },
+    data: params,
+  });
+  if (response.statusCode === 200) {
+    hide();
+    message.success('Time Edited');
+    return response.data;
+  } else {
+    hide();
+    message.error(`${response.message}, Please try Again`);
     throw new Error(response.message);
   }
 }
@@ -101,17 +136,18 @@ export async function stopTimeRecord(id: identifier, params: any) {
     return response.data;
   } else {
     hide();
-    message.error(response.message);
+    message.error(`${response.message}, Please try Again`);
     throw new Error(response.message);
   }
 }
 
-export async function getTimeRecords(dates: { start_date: string; end_date: string }) {
+export async function getTimeRecords(dates: { start_date: string; end_date: string }, params: any) {
   const token = await getToken();
   const organization = await getOrganization();
   const response = await request(
     `/strapi/time-records?date_gte=${dates.start_date}&date_lte=${dates.end_date}`,
     {
+      params,
       headers: { Authorization: `Bearer ${token}`, orgid: organization },
     },
   );
@@ -122,7 +158,7 @@ export async function getTimeRecords(dates: { start_date: string; end_date: stri
   }
 }
 
-export async function getWeekTimeRecords(start_date: string, end_date: string) {
+export async function getWeekTimeRecords(start_date: string, end_date: string, params: any) {
   const token = await getToken();
   const organization = await getOrganization();
   const response = await request(
@@ -132,6 +168,7 @@ export async function getWeekTimeRecords(start_date: string, end_date: string) {
     )}&end_date=${getRequiredDateFormat(end_date, 'YYYY-MM-DD')}`,
     {
       headers: { Authorization: `Bearer ${token}`, orgid: organization },
+      params,
     },
   );
   if (response.statusCode === 200) {
@@ -156,7 +193,7 @@ export async function updateWeekRecords(params: any) {
     return response.statusCode;
   } else {
     hide();
-    message.error(response.message);
+    message.error(`${response.message}, Please try Again`);
     throw new Error(response.message);
   }
 }
@@ -177,46 +214,45 @@ export async function addWeekRows(params: any) {
     return response.statusCode;
   } else {
     hide();
-    message.error(response.message);
+    message.error(`${response.message}, Please try Again`);
     throw new Error(response.message);
   }
 }
 
-export async function submitWeekForApproval(params: { start_date: string; end_date: string }) {
+export async function submitWeekForApproval(id: identifier) {
   const hide = message.loading('Submitting week for approval...', 0);
   const token = await getToken();
   const organization = await getOrganization();
-  const response = await request(
-    `/strapi/approvals/submit-for-approval?start_date=${params.start_date}&end_date=${params.end_date}`,
-    {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${token}`, orgid: organization },
-    },
-  );
+  const response = await request(`/strapi/approvals/submit-for-approval?id=${id}`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}`, orgid: organization },
+  });
   if (response.statusCode === 200) {
     hide();
     message.success('Submitted for approval');
     return response.data;
   } else {
     hide();
-    message.error(response.message);
-    throw new Error(response.message);
+    message.error(`${response.message}, Please try Again`);
+    return [];
   }
 }
 
 // get list of pending Approvals
-export async function getPendingApprovals() {
+export async function getPendingApprovals(params: any) {
   const token = await getToken();
   const organization = await getOrganization();
-  const response = await request('/strapi/approvals/pending', {
+  const response = await request('/strapi/approvals/type/pending', {
     method: 'GET',
     headers: { Authorization: `Bearer ${token}`, orgid: organization },
+    params,
   });
 
   if (response.statusCode === 200) {
     return response.data;
   } else {
-    throw new Error(response.message);
+    message.error(`${response.message}, Please try Again`);
+    return [];
   }
 }
 
@@ -251,14 +287,12 @@ export async function approveTimesheet(id: identifier) {
         return response.data;
       } else {
         hide();
-        message.error(response.message);
-        throw new Error(response.message);
+        message.error(`${response.message}, Please try Again`);
       }
     })
     .catch((error) => {
       hide();
-      message.error(error.message);
-      throw new Error(error.message);
+      message.error(`${error.message}, Please try Again`);
     });
 }
 
@@ -275,4 +309,119 @@ export async function addMultipleTeamMembers(params: any[]) {
   } else {
     throw new Error(response.message);
   }
+}
+
+export async function getArchivedApprovals(params: any) {
+  const token = await getToken();
+  const organization = await getOrganization();
+  // const params = { is_archived: true, ...newParams };
+  const response = await request('/strapi/approvals/type/archived', {
+    method: 'GET',
+    headers: { Authorization: `Bearer ${token}`, orgid: organization },
+    params,
+  });
+
+  if (response.statusCode === 200) {
+    return response.data;
+  } else {
+    throw new Error(response.message);
+  }
+}
+
+export async function getUnsubmittedTimesheets(params: any) {
+  const token = await getToken();
+  const organization = await getOrganization();
+
+  const response = await request('/strapi/approvals/type/unsubmitted', {
+    method: 'GET',
+    headers: { Authorization: `Bearer ${token}`, orgid: organization },
+    params,
+  });
+
+  if (response.statusCode === 200) {
+    return response.data;
+  } else {
+    throw new Error(response.message);
+  }
+}
+
+export async function getRandomQuote() {
+  const response = await fetch('https://api.quotable.io/random');
+  const { statusCode, statusMessage, ...data } = await response.json();
+  if (!response.ok) throw new Error(`${statusCode} ${statusMessage}`);
+  return data;
+}
+
+export async function getTeamMembers() {
+  const token = await getToken();
+  const organization = await getOrganization();
+  const params = { is_archived_ne: true };
+  const response = await request('/strapi/organisation-members', {
+    method: 'GET',
+    headers: { Authorization: `Bearer ${token}`, orgid: organization },
+    params,
+  });
+
+  if (response.statusCode === 200) {
+    const newData = response.data.map((resp: any) => ({
+      label: resp.full_name,
+      value: resp.id,
+    }));
+
+    return newData;
+  } else {
+    message.error(`${response.message}, Please try Again`);
+    return [];
+  }
+}
+
+// approvals / send - unsubmitted - email;
+
+export async function sendAllUnsubmittedMail() {
+  const hide = message.loading('Sending Emails...', 0);
+  const token = await getToken();
+  const organization = await getOrganization();
+  await request(`/strapi/approvals/send-unsubmitted-email`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}`, orgid: organization },
+  })
+    .then((response) => {
+      if (response.statusCode === 200) {
+        hide();
+        message.success('Email has been successfully sent');
+        return response.data;
+      } else {
+        hide();
+        message.error(`${response.message}, Please try Again`);
+      }
+    })
+    .catch((error) => {
+      hide();
+      message.error(`${error.message}, Please try Again`);
+    });
+}
+
+export async function sendPendingApprovalRemainder(params: any) {
+  const hide = message.loading('Sending Email...', 0);
+  const token = await getToken();
+  const organization = await getOrganization();
+  await request(`/strapi/approvals/email`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}`, orgid: organization },
+    data: params,
+  })
+    .then((response) => {
+      if (response.statusCode === 200) {
+        hide();
+        message.success('Email has been successfully sent');
+        return response.data;
+      } else {
+        hide();
+        message.error(`${response.message}, Please try Again`);
+      }
+    })
+    .catch((error) => {
+      hide();
+      message.error(`${error.message}, Please try Again`);
+    });
 }
