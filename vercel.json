@@ -1,7 +1,7 @@
 {
     "headers": [
         {
-            "source": "/https://api.simplifi.ml/(.*)",
+            "source": "/api.simplifi.ml/(.*)",
             "headers": [
                 {
                     "key": "Access-Control-Allow-Credentials",
