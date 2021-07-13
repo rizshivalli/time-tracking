@@ -10,9 +10,10 @@ const isHttps = document.location.protocol === 'https:';
 
 if (process.env.NODE_ENV === 'production') {
   request.interceptors.request.use((url, options) => {
-    console.log('🚀 ~ file: global.tsx ~ line 13 ~ request.interceptors.request.use ~ url', url);
+    const nreval = url.replace('/strapi', 'https://api.simplifi.ml');
+    console.log('🚀 ~ file: global.tsx ~ line 13 ~ request.interceptors.request.use ~ url', nreval);
     return {
-      url: `https://api.simplifi.ml${url}`,
+      url: nreval,
       options: { ...options, interceptors: true },
     };
   });
