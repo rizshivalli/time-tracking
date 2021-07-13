@@ -1,4 +1,5 @@
 import { Button, message, notification } from 'antd';
+import request from 'umi-request';
 
 import React from 'react';
 import { useIntl } from 'umi';
@@ -6,6 +7,16 @@ import defaultSettings from '../config/defaultSettings';
 
 const { pwa } = defaultSettings;
 const isHttps = document.location.protocol === 'https:';
+
+if (process.env.NODE_ENV === 'production') {
+  request.interceptors.request.use((url, options) => {
+    console.log('🚀 ~ file: global.tsx ~ line 13 ~ request.interceptors.request.use ~ url', url);
+    return {
+      url: `https://api.simplifi.ml${url}`,
+      options: { ...options, interceptors: true },
+    };
+  });
+}
 
 // if pwa is true
 if (pwa) {
